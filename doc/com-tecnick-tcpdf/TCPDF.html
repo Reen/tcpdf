@@ -74,7 +74,7 @@ Source Location: /tcpdf.php<br /><br />
                 
 <h4>Version:</h4>
 <ul>
-  <li>4.2.006</li>
+  <li>4.3.005</li>
 </ul>
 
         
@@ -100,6 +100,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$CurOrientation">$CurOrientation</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$CurrentFont">$CurrentFont</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$currpagegroup">$currpagegroup</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$customlistindent">$customlistindent</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$default_table_columns">$default_table_columns</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$diffs">$diffs</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$dpi">$dpi</a></li>
@@ -179,6 +180,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$n_ocg_view">$n_ocg_view</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$offsets">$offsets</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$oldcMargin">$oldcMargin</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$opencell">$opencell</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$openMarkedContent">$openMarkedContent</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$original_lMargin">$original_lMargin</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$original_rMargin">$original_rMargin</a></li>
@@ -202,7 +204,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$spot_colors">$spot_colors</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$state">$state</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$subject">$subject</a></li>
-    <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$tagvpaces">$tagvpaces</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$tagvspaces">$tagvspaces</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$tempfontsize">$tempfontsize</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$TextColor">$TextColor</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#var$title">$title</a></li>
@@ -258,6 +260,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodCoonsPatchMesh">CoonsPatchMesh</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodCurve">Curve</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodEllipse">Ellipse</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodendPage">endPage</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodError">Error</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodFooter">Footer</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodformatPageNumber">formatPageNumber</a></li>
@@ -274,7 +277,9 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetFontsList">getFontsList</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetFooterFont">getFooterFont</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetFooterMargin">getFooterMargin</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetGraphicVars">getGraphicVars</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetGroupPageNo">getGroupPageNo</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetGroupPageNoFormatted">getGroupPageNoFormatted</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetHeaderData">getHeaderData</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetHeaderFont">getHeaderFont</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodgetHeaderMargin">getHeaderMargin</a></li>
@@ -357,6 +362,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetFooter">setFooter</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetFooterFont">setFooterFont</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetFooterMargin">setFooterMargin</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetGraphicVars">setGraphicVars</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetHeader">setHeader</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetHeaderData">setHeaderData</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetHeaderFont">setHeaderFont</a></li>
@@ -371,8 +377,10 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodSetLineStyle">SetLineStyle</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodSetLineWidth">SetLineWidth</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodSetLink">SetLink</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetListIndentWidth">setListIndentWidth</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetLIsymbol">setLIsymbol</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodSetMargins">SetMargins</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetOpenCell">setOpenCell</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetPage">setPage</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetPageFormat">setPageFormat</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodsetPageMark">setPageMark</a></li>
@@ -401,6 +409,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodSkewX">SkewX</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodSkewY">SkewY</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodStarPolygon">StarPolygon</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodstartPage">startPage</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodstartPageGroup">startPageGroup</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodStartTransform">StartTransform</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodStopTransform">StopTransform</a></li>
@@ -426,7 +435,7 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#methodwriteHTMLCell">writeHTMLCell</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_addfield">_addfield</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_beginpage">_beginpage</a></li>
-    <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_datestring">_datestring</a></li>
+    <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_datastring">_datastring</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_dochecks">_dochecks</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_dolinethrough">_dolinethrough</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_dounderline">_dounderline</a></li>
@@ -476,7 +485,6 @@ Source Location: /tcpdf.php<br /><br />
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_RC4">_RC4</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_textstring">_textstring</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_toJPEG">_toJPEG</a></li>
-    <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_uristring">_uristring</a></li>
     <li><a href="../com-tecnick-tcpdf/TCPDF.html#method_Uvalue">_Uvalue</a></li>
   </ul>
 </td>
@@ -506,7 +514,7 @@ This is a PHP class for generating PDF documents without requiring external exte
     <td><b>author:</b>&nbsp;&nbsp;</td><td>Nicola Asuni - info@tecnick.com</td>
   </tr>
   <tr>
-    <td><b>version:</b>&nbsp;&nbsp;</td><td>4.2.006</td>
+    <td><b>version:</b>&nbsp;&nbsp;</td><td>4.3.005</td>
   </tr>
   <tr>
     <td><b>link:</b>&nbsp;&nbsp;</td><td><a href="http://www.tcpdf.org">http://www.tcpdf.org</a></td>
@@ -979,6 +987,36 @@ This is a PHP class for generating PDF documents without requiring external exte
       </table>
 	</div><br /><br />
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
+	<a name="var$customlistindent"></a>
+	<p></p>
+	<h4>$customlistindent = <span class="value">&nbsp;-1</span></h4>
+	<p>[line 1105]</p>
+  <br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>var:</b>&nbsp;&nbsp;</td><td>PARSER: custom indent amount for lists.  Negative value means disabled.</td>
+  </tr>
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.007 (2008-11-12)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+</div>
+
+  <br />
+	<div class="tags">
+  <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><b>Type:</b>&nbsp;&nbsp;</td>
+      <td>HTML</td>
+    </tr>
+      </table>
+	</div><br /><br />
+	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$default_table_columns"></a>
 	<p></p>
 	<h4>$default_table_columns = <span class="value">&nbsp;4</span></h4>
@@ -1089,7 +1127,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$encoding"></a>
 	<p></p>
-	<h4>$encoding = <span class="value">&nbsp;&quot;UTF-8&quot;</span></h4>
+	<h4>$encoding = <span class="value">&nbsp;'UTF-8'</span></h4>
 	<p>[line 716]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -1224,7 +1262,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$epsmarker"></a>
 	<p></p>
-	<h4>$epsmarker = <span class="value">&nbsp;&quot;x#!#EPS#!#x&quot;</span></h4>
+	<h4>$epsmarker = <span class="value">&nbsp;'x#!#EPS#!#x'</span></h4>
 	<p>[line 1069]</p>
   String used to mark the beginning and end of EPS image blocks<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -1851,7 +1889,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$header_logo"></a>
 	<p></p>
-	<h4>$header_logo = <span class="value">&nbsp;&quot;&quot;</span></h4>
+	<h4>$header_logo = <span class="value">&nbsp;''</span></h4>
 	<p>[line 622]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -1932,7 +1970,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$header_string"></a>
 	<p></p>
-	<h4>$header_string = <span class="value">&nbsp;&quot;&quot;</span></h4>
+	<h4>$header_string = <span class="value">&nbsp;''</span></h4>
 	<p>[line 640]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -1959,7 +1997,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$header_title"></a>
 	<p></p>
-	<h4>$header_title = <span class="value">&nbsp;&quot;&quot;</span></h4>
+	<h4>$header_title = <span class="value">&nbsp;''</span></h4>
 	<p>[line 634]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -2193,7 +2231,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$InFooter"></a>
 	<p></p>
-	<h4>$InFooter = <span class="value"></span></h4>
+	<h4>$InFooter = <span class="value">&nbsp;false</span></h4>
 	<p>[line 464]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -2310,7 +2348,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$javascript"></a>
 	<p></p>
-	<h4>$javascript = <span class="value">&nbsp;&quot;&quot;</span></h4>
+	<h4>$javascript = <span class="value">&nbsp;''</span></h4>
 	<p>[line 826]</p>
   javascript code<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -2550,7 +2588,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$linestyleCap"></a>
 	<p></p>
-	<h4>$linestyleCap = <span class="value">&nbsp;&quot;0&nbsp;J&quot;</span></h4>
+	<h4>$linestyleCap = <span class="value">&nbsp;'0&nbsp;J'</span></h4>
 	<p>[line 1020]</p>
   PDF string for last line width<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -2577,7 +2615,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$linestyleDash"></a>
 	<p></p>
-	<h4>$linestyleDash = <span class="value">&nbsp;&quot;[]&nbsp;0&nbsp;d&quot;</span></h4>
+	<h4>$linestyleDash = <span class="value">&nbsp;'[]&nbsp;0&nbsp;d'</span></h4>
 	<p>[line 1034]</p>
   PDF string for last line width<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -2604,7 +2642,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$linestyleJoin"></a>
 	<p></p>
-	<h4>$linestyleJoin = <span class="value">&nbsp;&quot;0&nbsp;j&quot;</span></h4>
+	<h4>$linestyleJoin = <span class="value">&nbsp;'0&nbsp;j'</span></h4>
 	<p>[line 1027]</p>
   PDF string for last line width<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -2631,7 +2669,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$linestyleWidth"></a>
 	<p></p>
-	<h4>$linestyleWidth = <span class="value">&nbsp;&quot;&quot;</span></h4>
+	<h4>$linestyleWidth = <span class="value">&nbsp;''</span></h4>
 	<p>[line 1013]</p>
   PDF string for last line width<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -2739,7 +2777,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$lispacer"></a>
 	<p></p>
-	<h4>$lispacer = <span class="value">&nbsp;&quot;&quot;</span></h4>
+	<h4>$lispacer = <span class="value">&nbsp;''</span></h4>
 	<p>[line 709]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -2874,7 +2912,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$lisymbol"></a>
 	<p></p>
-	<h4>$lisymbol = <span class="value">&nbsp;&quot;-&quot;</span></h4>
+	<h4>$lisymbol = <span class="value">&nbsp;'-'</span></h4>
 	<p>[line 1062]</p>
   Symbol used for HTML unordered list items<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -3138,6 +3176,36 @@ This is a PHP class for generating PDF documents without requiring external exte
     <tr>
       <td><b>Type:</b>&nbsp;&nbsp;</td>
       <td>cell</td>
+    </tr>
+      </table>
+	</div><br /><br />
+	<div class="top">[ <a href="#top">Top</a> ]</div><br />
+	<a name="var$opencell"></a>
+	<p></p>
+	<h4>$opencell = <span class="value">&nbsp;true</span></h4>
+	<p>[line 1112]</p>
+  <br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>var:</b>&nbsp;&nbsp;</td><td>true keeps the border open for the cell sides that cross the page.</td>
+  </tr>
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.010 (2008-11-14)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+</div>
+
+  <br />
+	<div class="tags">
+  <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><b>Type:</b>&nbsp;&nbsp;</td>
+      <td>if</td>
     </tr>
       </table>
 	</div><br /><br />
@@ -3525,7 +3593,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$PDFVersion"></a>
 	<p></p>
-	<h4>$PDFVersion = <span class="value">&nbsp;&quot;1.7&quot;</span></h4>
+	<h4>$PDFVersion = <span class="value">&nbsp;'1.7'</span></h4>
 	<p>[line 551]</p>
   <br /><br />
 <h4>Tags:</h4>
@@ -3769,9 +3837,9 @@ This is a PHP class for generating PDF documents without requiring external exte
       </table>
 	</div><br /><br />
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
-	<a name="var$tagvpaces"></a>
+	<a name="var$tagvspaces"></a>
 	<p></p>
-	<h4>$tagvpaces = <span class="value">array()</span></h4>
+	<h4>$tagvspaces = <span class="value">array()</span></h4>
 	<p>[line 1097]</p>
   Array used for custom vertical spaces for HTML tags<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -4176,7 +4244,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 	<div class="top">[ <a href="#top">Top</a> ]</div><br />
 	<a name="var$visibility"></a>
 	<p></p>
-	<h4>$visibility = <span class="value">&quot;all&quot;</span></h4>
+	<h4>$visibility = <span class="value">&nbsp;'all'</span></h4>
 	<p>[line 913]</p>
   Restrict the rendering of some elements to screen or printout.<br /><br /><br /><br />
 <h4>Tags:</h4>
@@ -4372,7 +4440,7 @@ This is a PHP class for generating PDF documents without requiring external exte
 
   <hr />
 	<a name="method__construct"></a>
-	<h3>constructor __construct <span class="smalllinenumber">[line 1114]</span></h3>
+	<h3>constructor __construct <span class="smalllinenumber">[line 1129]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4382,7 +4450,7 @@ $orientation = 'P'], [string
 $unit = 'mm'], [mixed
 $format = 'A4'], [boolean
 $unicode = true], [String
-$encoding = &quot;UTF-8&quot;])</code>
+$encoding = 'UTF-8'])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -4435,7 +4503,7 @@ $encoding = &quot;UTF-8&quot;])</code>
   </div>
   <hr />
 	<a name="method__destruct"></a>
-	<h3>destructor __destruct <span class="smalllinenumber">[line 1217]</span></h3>
+	<h3>destructor __destruct <span class="smalllinenumber">[line 1232]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4463,7 +4531,7 @@ $encoding = &quot;UTF-8&quot;])</code>
   </div>
   <hr />
 	<a name="methodAcceptPageBreak"></a>
-	<h3>method AcceptPageBreak <span class="smalllinenumber">[line 2873]</span></h3>
+	<h3>method AcceptPageBreak <span class="smalllinenumber">[line 2861]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4494,7 +4562,7 @@ $encoding = &quot;UTF-8&quot;])</code>
   </div>
   <hr />
 	<a name="methodaddExtGState"></a>
-	<h3>method addExtGState <span class="smalllinenumber">[line 8169]</span></h3>
+	<h3>method addExtGState <span class="smalllinenumber">[line 8219]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4530,7 +4598,7 @@ $parms)</code>
   </div>
   <hr />
 	<a name="methodAddFont"></a>
-	<h3>method AddFont <span class="smalllinenumber">[line 2557]</span></h3>
+	<h3>method AddFont <span class="smalllinenumber">[line 2542]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4587,7 +4655,7 @@ $file = ''])</code>
   </div>
   <hr />
 	<a name="methodaddHtmlLink"></a>
-	<h3>method addHtmlLink <span class="smalllinenumber">[line 5747]</span></h3>
+	<h3>method addHtmlLink <span class="smalllinenumber">[line 5741]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4644,7 +4712,7 @@ $firstline = false])</code>
   </div>
   <hr />
 	<a name="methodaddHTMLVertSpace"></a>
-	<h3>method addHTMLVertSpace <span class="smalllinenumber">[line 10874]</span></h3>
+	<h3>method addHTMLVertSpace <span class="smalllinenumber">[line 10941]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4710,7 +4778,7 @@ $closing = false])</code>
   </div>
   <hr />
 	<a name="methodAddLink"></a>
-	<h3>method AddLink <span class="smalllinenumber">[line 2727]</span></h3>
+	<h3>method AddLink <span class="smalllinenumber">[line 2712]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4741,7 +4809,7 @@ $closing = false])</code>
   </div>
   <hr />
 	<a name="methodAddPage"></a>
-	<h3>method AddPage <span class="smalllinenumber">[line 1867]</span></h3>
+	<h3>method AddPage <span class="smalllinenumber">[line 1858]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4757,7 +4825,7 @@ $format = ''])</code>
 <div class="tags">
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><b>see:</b>&nbsp;&nbsp;</td><td>TCPDF(), <a href="../com-tecnick-tcpdf/TCPDF.html#methodHeader">TCPDF::Header()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodFooter">TCPDF::Footer()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodSetMargins">TCPDF::SetMargins()</a></td>
+    <td><b>see:</b>&nbsp;&nbsp;</td><td><a href="../com-tecnick-tcpdf/TCPDF.html#methodstartPage">TCPDF::startPage()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodendPage">TCPDF::endPage()</a></td>
   </tr>
   <tr>
     <td><b>since:</b>&nbsp;&nbsp;</td><td>1.0</td>
@@ -4789,7 +4857,7 @@ $format = ''])</code>
   </div>
   <hr />
 	<a name="methodAddSpotColor"></a>
-	<h3>method AddSpotColor <span class="smalllinenumber">[line 2209]</span></h3>
+	<h3>method AddSpotColor <span class="smalllinenumber">[line 2194]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4855,7 +4923,7 @@ $k)</code>
   </div>
   <hr />
 	<a name="methodAliasNbPages"></a>
-	<h3>method AliasNbPages <span class="smalllinenumber">[line 1726]</span></h3>
+	<h3>method AliasNbPages <span class="smalllinenumber">[line 8082]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4897,7 +4965,7 @@ $alias = '{nb}'])</code>
   </div>
   <hr />
 	<a name="methodAnnotation"></a>
-	<h3>method Annotation <span class="smalllinenumber">[line 2780]</span></h3>
+	<h3>method Annotation <span class="smalllinenumber">[line 2765]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -4913,7 +4981,7 @@ $spaces = 0])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
-		Puts a text annotation on a rectangular area of the page.<br /><br /><p>!!!! THIS FUNCTION IS NOT YET FULLY IMPLEMENTED !!!!</p><br /><br /><br />
+		Puts a markup annotation on a rectangular area of the page.<br /><br /><p>!!!!THE ANNOTATION SUPPORT IS NOT YET FULLY IMPLEMENTED !!!!</p><br /><br /><br />
 <h4>Tags:</h4>
 <div class="tags">
 <table border="0" cellspacing="0" cellpadding="0">
@@ -4954,7 +5022,7 @@ $spaces = 0])</code>
           <tr>
         <td class="type">string&nbsp;&nbsp;</td>
         <td><b>$text</b>&nbsp;&nbsp;</td>
-        <td>annotation text</td>
+        <td>annotation text or alternate content</td>
       </tr>
           <tr>
         <td class="type">array&nbsp;&nbsp;</td>
@@ -4972,7 +5040,7 @@ $spaces = 0])</code>
   </div>
   <hr />
 	<a name="methodarrUTF8ToUTF16BE"></a>
-	<h3>method arrUTF8ToUTF16BE <span class="smalllinenumber">[line 5657]</span></h3>
+	<h3>method arrUTF8ToUTF16BE <span class="smalllinenumber">[line 5651]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5047,7 +5115,7 @@ $setbom = true])</code>
   </div>
   <hr />
 	<a name="methodBookmark"></a>
-	<h3>method Bookmark <span class="smalllinenumber">[line 7704]</span></h3>
+	<h3>method Bookmark <span class="smalllinenumber">[line 7698]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5095,7 +5163,7 @@ $y = -1])</code>
   </div>
   <hr />
 	<a name="methodButton"></a>
-	<h3>method Button <span class="smalllinenumber">[line 7983]</span></h3>
+	<h3>method Button <span class="smalllinenumber">[line 7977]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5161,7 +5229,7 @@ $prop = array()])</code>
   </div>
   <hr />
 	<a name="methodCell"></a>
-	<h3>method Cell <span class="smalllinenumber">[line 2936]</span></h3>
+	<h3>method Cell <span class="smalllinenumber">[line 2924]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5251,7 +5319,7 @@ $stretch = 0])</code>
   </div>
   <hr />
 	<a name="methodCheckBox"></a>
-	<h3>method CheckBox <span class="smalllinenumber">[line 7963]</span></h3>
+	<h3>method CheckBox <span class="smalllinenumber">[line 7957]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5305,7 +5373,7 @@ $prop = array()])</code>
   </div>
   <hr />
 	<a name="methodcheckPageBreak"></a>
-	<h3>method checkPageBreak <span class="smalllinenumber">[line 2884]</span></h3>
+	<h3>method checkPageBreak <span class="smalllinenumber">[line 2872]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5347,7 +5415,7 @@ $h)</code>
   </div>
   <hr />
 	<a name="methodCircle"></a>
-	<h3>method Circle <span class="smalllinenumber">[line 6813]</span></h3>
+	<h3>method Circle <span class="smalllinenumber">[line 6807]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5358,7 +5426,7 @@ $y0, float
 $r, [
 $astart = 0], [
 $afinish = 360], [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()], [integer
 $nc = 8], float
@@ -5446,7 +5514,7 @@ $afinish:)</code>
   </div>
   <hr />
 	<a name="methodClip"></a>
-	<h3>method Clip <span class="smalllinenumber">[line 8429]</span></h3>
+	<h3>method Clip <span class="smalllinenumber">[line 8479]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5506,7 +5574,7 @@ $h)</code>
   </div>
   <hr />
 	<a name="methodClose"></a>
-	<h3>method Close <span class="smalllinenumber">[line 1772]</span></h3>
+	<h3>method Close <span class="smalllinenumber">[line 1762]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5537,7 +5605,7 @@ $h)</code>
   </div>
   <hr />
 	<a name="methodcloseHTMLTagHandler"></a>
-	<h3>method closeHTMLTagHandler <span class="smalllinenumber">[line 10601]</span></h3>
+	<h3>method closeHTMLTagHandler <span class="smalllinenumber">[line 10653]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5591,7 +5659,7 @@ $dom)</code>
   </div>
   <hr />
 	<a name="methodComboBox"></a>
-	<h3>method ComboBox <span class="smalllinenumber">[line 7944]</span></h3>
+	<h3>method ComboBox <span class="smalllinenumber">[line 7938]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5651,13 +5719,13 @@ $prop = array()])</code>
   </div>
   <hr />
 	<a name="methodconvertHTMLColorToDec"></a>
-	<h3>method convertHTMLColorToDec <span class="smalllinenumber">[line 5770]</span></h3>
+	<h3>method convertHTMLColorToDec <span class="smalllinenumber">[line 5764]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>array convertHTMLColorToDec(
 [string
-$color = &quot;#000000&quot;])</code>
+$color = '#000000'])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -5687,7 +5755,7 @@ $color = &quot;#000000&quot;])</code>
   </div>
   <hr />
 	<a name="methodCoonsPatchMesh"></a>
-	<h3>method CoonsPatchMesh <span class="smalllinenumber">[line 8352]</span></h3>
+	<h3>method CoonsPatchMesh <span class="smalllinenumber">[line 8402]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5789,7 +5857,7 @@ $coords_max = 1])</code>
   </div>
   <hr />
 	<a name="methodCurve"></a>
-	<h3>method Curve <span class="smalllinenumber">[line 6588]</span></h3>
+	<h3>method Curve <span class="smalllinenumber">[line 6582]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5803,7 +5871,7 @@ $x2, float
 $y2, float
 $x3, float
 $y3, [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()])</code>
     </td></tr></table>
@@ -5891,7 +5959,7 @@ $fill_color = array()])</code>
   </div>
   <hr />
 	<a name="methodEllipse"></a>
-	<h3>method Ellipse <span class="smalllinenumber">[line 6709]</span></h3>
+	<h3>method Ellipse <span class="smalllinenumber">[line 6703]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -5904,7 +5972,7 @@ $ry = 0], [
 $angle = 0], [
 $astart = 0], [
 $afinish = 360], [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()], [integer
 $nc = 8], float
@@ -6007,8 +6075,39 @@ $afinish:)</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodendPage"></a>
+	<h3>method endPage <span class="smalllinenumber">[line 1875]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void endPage(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Terminate the current page<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>see:</b>&nbsp;&nbsp;</td><td><a href="../com-tecnick-tcpdf/TCPDF.html#methodstartPage">TCPDF::startPage()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodAddPage">TCPDF::AddPage()</a></td>
+  </tr>
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.010 (2008-11-14)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodError"></a>
-	<h3>method Error <span class="smalllinenumber">[line 1751]</span></h3>
+	<h3>method Error <span class="smalllinenumber">[line 1741]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6047,7 +6146,7 @@ $msg)</code>
   </div>
   <hr />
 	<a name="methodFooter"></a>
-	<h3>method Footer <span class="smalllinenumber">[line 2095]</span></h3>
+	<h3>method Footer <span class="smalllinenumber">[line 2078]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6072,7 +6171,7 @@ $msg)</code>
   </div>
   <hr />
 	<a name="methodformatPageNumber"></a>
-	<h3>method formatPageNumber <span class="smalllinenumber">[line 10966]</span></h3>
+	<h3>method formatPageNumber <span class="smalllinenumber">[line 8143]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6111,7 +6210,7 @@ $num)</code>
   </div>
   <hr />
 	<a name="methodGetAbsX"></a>
-	<h3>method GetAbsX <span class="smalllinenumber">[line 3988]</span></h3>
+	<h3>method GetAbsX <span class="smalllinenumber">[line 3985]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6142,7 +6241,7 @@ $num)</code>
   </div>
   <hr />
 	<a name="methodgetAliasNbPages"></a>
-	<h3>method getAliasNbPages <span class="smalllinenumber">[line 1738]</span></h3>
+	<h3>method getAliasNbPages <span class="smalllinenumber">[line 8094]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6173,7 +6272,7 @@ $num)</code>
   </div>
   <hr />
 	<a name="methodGetArrStringWidth"></a>
-	<h3>method GetArrStringWidth <span class="smalllinenumber">[line 2477]</span></h3>
+	<h3>method GetArrStringWidth <span class="smalllinenumber">[line 2462]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6242,7 +6341,7 @@ $arr)</code>
   </div>
   <hr />
 	<a name="methodgetBarcode"></a>
-	<h3>method getBarcode <span class="smalllinenumber">[line 8880]</span></h3>
+	<h3>method getBarcode <span class="smalllinenumber">[line 8935]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6270,7 +6369,7 @@ $arr)</code>
   </div>
   <hr />
 	<a name="methodgetBreakMargin"></a>
-	<h3>method getBreakMargin <span class="smalllinenumber">[line 1475]</span></h3>
+	<h3>method getBreakMargin <span class="smalllinenumber">[line 1490]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6304,7 +6403,7 @@ $arr)</code>
   </div>
   <hr />
 	<a name="methodgetCellCode"></a>
-	<h3>method getCellCode <span class="smalllinenumber">[line 2961]</span></h3>
+	<h3>method getCellCode <span class="smalllinenumber">[line 2949]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6394,7 +6493,7 @@ $stretch = 0])</code>
   </div>
   <hr />
 	<a name="methodgetCellHeightRatio"></a>
-	<h3>method getCellHeightRatio <span class="smalllinenumber">[line 8255]</span></h3>
+	<h3>method getCellHeightRatio <span class="smalllinenumber">[line 8305]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6419,7 +6518,7 @@ $stretch = 0])</code>
   </div>
   <hr />
 	<a name="methodGetCharWidth"></a>
-	<h3>method GetCharWidth <span class="smalllinenumber">[line 2503]</span></h3>
+	<h3>method GetCharWidth <span class="smalllinenumber">[line 2488]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6464,7 +6563,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetFontSize"></a>
-	<h3>method getFontSize <span class="smalllinenumber">[line 9205]</span></h3>
+	<h3>method getFontSize <span class="smalllinenumber">[line 9253]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6495,7 +6594,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetFontSizePt"></a>
-	<h3>method getFontSizePt <span class="smalllinenumber">[line 9214]</span></h3>
+	<h3>method getFontSizePt <span class="smalllinenumber">[line 9262]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6526,7 +6625,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetFontsList"></a>
-	<h3>method getFontsList <span class="smalllinenumber">[line 2535]</span></h3>
+	<h3>method getFontsList <span class="smalllinenumber">[line 2520]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6554,7 +6653,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetFooterFont"></a>
-	<h3>method getFooterFont <span class="smalllinenumber">[line 5714]</span></h3>
+	<h3>method getFooterFont <span class="smalllinenumber">[line 5708]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6582,7 +6681,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetFooterMargin"></a>
-	<h3>method getFooterMargin <span class="smalllinenumber">[line 2015]</span></h3>
+	<h3>method getFooterMargin <span class="smalllinenumber">[line 1998]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6609,8 +6708,39 @@ $char)</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodgetGraphicVars"></a>
+	<h3>method getGraphicVars <span class="smalllinenumber">[line 11052]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>array getGraphicVars(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Returns current graphic variables as array.<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>return:</b>&nbsp;&nbsp;</td><td>graphic variables</td>
+  </tr>
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.010 (2008-11-14)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodgetGroupPageNo"></a>
-	<h3>method getGroupPageNo <span class="smalllinenumber">[line 8088]</span></h3>
+	<h3>method getGroupPageNo <span class="smalllinenumber">[line 8107]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6634,8 +6764,39 @@ $char)</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodgetGroupPageNoFormatted"></a>
+	<h3>method getGroupPageNoFormatted <span class="smalllinenumber">[line 8117]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void getGroupPageNoFormatted(
+)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Returns the current group page number formatted as a string.<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>see:</b>&nbsp;&nbsp;</td><td>PaneNo(), <a href="../com-tecnick-tcpdf/TCPDF.html#methodformatPageNumber">TCPDF::formatPageNumber()</a></td>
+  </tr>
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.3.003 (2008-11-18)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodgetHeaderData"></a>
-	<h3>method getHeaderData <span class="smalllinenumber">[line 1974]</span></h3>
+	<h3>method getHeaderData <span class="smalllinenumber">[line 1957]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6663,7 +6824,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetHeaderFont"></a>
-	<h3>method getHeaderFont <span class="smalllinenumber">[line 5696]</span></h3>
+	<h3>method getHeaderFont <span class="smalllinenumber">[line 5690]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6691,7 +6852,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetHeaderMargin"></a>
-	<h3>method getHeaderMargin <span class="smalllinenumber">[line 1997]</span></h3>
+	<h3>method getHeaderMargin <span class="smalllinenumber">[line 1980]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6719,7 +6880,7 @@ $char)</code>
   </div>
   <hr />
 	<a name="methodgetHtmlDomArray"></a>
-	<h3>method getHtmlDomArray <span class="smalllinenumber">[line 9247]</span></h3>
+	<h3>method getHtmlDomArray <span class="smalllinenumber">[line 9295]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6758,7 +6919,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodgetImageRBX"></a>
-	<h3>method getImageRBX <span class="smalllinenumber">[line 2038]</span></h3>
+	<h3>method getImageRBX <span class="smalllinenumber">[line 2021]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6783,7 +6944,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodgetImageRBY"></a>
-	<h3>method getImageRBY <span class="smalllinenumber">[line 2046]</span></h3>
+	<h3>method getImageRBY <span class="smalllinenumber">[line 2029]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6808,7 +6969,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodgetImageScale"></a>
-	<h3>method getImageScale <span class="smalllinenumber">[line 1445]</span></h3>
+	<h3>method getImageScale <span class="smalllinenumber">[line 1460]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6842,7 +7003,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodgetLastH"></a>
-	<h3>method getLastH <span class="smalllinenumber">[line 1425]</span></h3>
+	<h3>method getLastH <span class="smalllinenumber">[line 1440]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6873,7 +7034,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodGetLineWidth"></a>
-	<h3>method GetLineWidth <span class="smalllinenumber">[line 6307]</span></h3>
+	<h3>method GetLineWidth <span class="smalllinenumber">[line 6301]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6907,7 +7068,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodgetMargins"></a>
-	<h3>method getMargins <span class="smalllinenumber">[line 9170]</span></h3>
+	<h3>method getMargins <span class="smalllinenumber">[line 9218]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6938,7 +7099,7 @@ $html)</code>
   </div>
   <hr />
 	<a name="methodGetNumChars"></a>
-	<h3>method GetNumChars <span class="smalllinenumber">[line 2523]</span></h3>
+	<h3>method GetNumChars <span class="smalllinenumber">[line 2508]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -6980,7 +7141,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetNumPages"></a>
-	<h3>method getNumPages <span class="smalllinenumber">[line 1854]</span></h3>
+	<h3>method getNumPages <span class="smalllinenumber">[line 1844]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7014,7 +7175,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetOriginalMargins"></a>
-	<h3>method getOriginalMargins <span class="smalllinenumber">[line 9192]</span></h3>
+	<h3>method getOriginalMargins <span class="smalllinenumber">[line 9240]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7045,7 +7206,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetPage"></a>
-	<h3>method getPage <span class="smalllinenumber">[line 1843]</span></h3>
+	<h3>method getPage <span class="smalllinenumber">[line 1833]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7079,7 +7240,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetPageGroupAlias"></a>
-	<h3>method getPageGroupAlias <span class="smalllinenumber">[line 8100]</span></h3>
+	<h3>method getPageGroupAlias <span class="smalllinenumber">[line 8129]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7104,7 +7265,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetPageHeight"></a>
-	<h3>method getPageHeight <span class="smalllinenumber">[line 1465]</span></h3>
+	<h3>method getPageHeight <span class="smalllinenumber">[line 1480]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7138,7 +7299,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetPageWidth"></a>
-	<h3>method getPageWidth <span class="smalllinenumber">[line 1455]</span></h3>
+	<h3>method getPageWidth <span class="smalllinenumber">[line 1470]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7172,7 +7333,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetPDFData"></a>
-	<h3>method getPDFData <span class="smalllinenumber">[line 5731]</span></h3>
+	<h3>method getPDFData <span class="smalllinenumber">[line 5725]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7197,7 +7358,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetRemainingWidth"></a>
-	<h3>method getRemainingWidth <span class="smalllinenumber">[line 3573]</span></h3>
+	<h3>method getRemainingWidth <span class="smalllinenumber">[line 3566]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7225,7 +7386,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetRTL"></a>
-	<h3>method getRTL <span class="smalllinenumber">[line 1391]</span></h3>
+	<h3>method getRTL <span class="smalllinenumber">[line 1406]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7253,7 +7414,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodgetScaleFactor"></a>
-	<h3>method getScaleFactor <span class="smalllinenumber">[line 1485]</span></h3>
+	<h3>method getScaleFactor <span class="smalllinenumber">[line 1500]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7287,7 +7448,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="methodGetStringWidth"></a>
-	<h3>method GetStringWidth <span class="smalllinenumber">[line 2463]</span></h3>
+	<h3>method GetStringWidth <span class="smalllinenumber">[line 2448]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7350,7 +7511,7 @@ $fontsize = 0])</code>
   </div>
   <hr />
 	<a name="methodGetX"></a>
-	<h3>method GetX <span class="smalllinenumber">[line 3973]</span></h3>
+	<h3>method GetX <span class="smalllinenumber">[line 3970]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7381,7 +7542,7 @@ $fontsize = 0])</code>
   </div>
   <hr />
 	<a name="methodGetY"></a>
-	<h3>method GetY <span class="smalllinenumber">[line 3998]</span></h3>
+	<h3>method GetY <span class="smalllinenumber">[line 3995]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7412,7 +7573,7 @@ $fontsize = 0])</code>
   </div>
   <hr />
 	<a name="methodGradient"></a>
-	<h3>method Gradient <span class="smalllinenumber">[line 8452]</span></h3>
+	<h3>method Gradient <span class="smalllinenumber">[line 8502]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7472,7 +7633,7 @@ $coords)</code>
   </div>
   <hr />
 	<a name="methodHeader"></a>
-	<h3>method Header <span class="smalllinenumber">[line 2054]</span></h3>
+	<h3>method Header <span class="smalllinenumber">[line 2037]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7497,15 +7658,15 @@ $coords)</code>
   </div>
   <hr />
 	<a name="methodImage"></a>
-	<h3>method Image <span class="smalllinenumber">[line 3654]</span></h3>
+	<h3>method Image <span class="smalllinenumber">[line 3647]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void Image(
 string
-$file, float
-$x, float
-$y, [float
+$file, [float
+$x = ''], [float
+$y = ''], [float
 $w = 0], [float
 $h = 0], [string
 $type = ''], [mixed
@@ -7599,15 +7760,15 @@ $palign = ''])</code>
   </div>
   <hr />
 	<a name="methodImageEps"></a>
-	<h3>method ImageEps <span class="smalllinenumber">[line 8623]</span></h3>
+	<h3>method ImageEps <span class="smalllinenumber">[line 8673]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void ImageEps(
 string
-$file, float
-$x, float
-$y, [float
+$file, [float
+$x = ''], [float
+$y = ''], [float
 $w = 0], [float
 $h = 0], [mixed
 $link = ''], [boolean
@@ -7689,7 +7850,7 @@ $palign = ''])</code>
   </div>
   <hr />
 	<a name="methodIncludeJS"></a>
-	<h3>method IncludeJS <span class="smalllinenumber">[line 7793]</span></h3>
+	<h3>method IncludeJS <span class="smalllinenumber">[line 7787]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7725,7 +7886,7 @@ $script)</code>
   </div>
   <hr />
 	<a name="methodlastPage"></a>
-	<h3>method lastPage <span class="smalllinenumber">[line 1833]</span></h3>
+	<h3>method lastPage <span class="smalllinenumber">[line 1823]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7767,7 +7928,7 @@ $resetmargins = false])</code>
   </div>
   <hr />
 	<a name="methodLine"></a>
-	<h3>method Line <span class="smalllinenumber">[line 6457]</span></h3>
+	<h3>method Line <span class="smalllinenumber">[line 6451]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7833,7 +7994,7 @@ $style = array()])</code>
   </div>
   <hr />
 	<a name="methodLinearGradient"></a>
-	<h3>method LinearGradient <span class="smalllinenumber">[line 8312]</span></h3>
+	<h3>method LinearGradient <span class="smalllinenumber">[line 8362]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7911,7 +8072,7 @@ $coords = array(0,0,1,0)])</code>
   </div>
   <hr />
 	<a name="methodLink"></a>
-	<h3>method Link <span class="smalllinenumber">[line 2764]</span></h3>
+	<h3>method Link <span class="smalllinenumber">[line 2749]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -7983,7 +8144,7 @@ $spaces = 0])</code>
   </div>
   <hr />
 	<a name="methodListBox"></a>
-	<h3>method ListBox <span class="smalllinenumber">[line 7921]</span></h3>
+	<h3>method ListBox <span class="smalllinenumber">[line 7915]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8043,7 +8204,7 @@ $prop = array()])</code>
   </div>
   <hr />
 	<a name="methodLn"></a>
-	<h3>method Ln <span class="smalllinenumber">[line 3946]</span></h3>
+	<h3>method Ln <span class="smalllinenumber">[line 3943]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8091,7 +8252,7 @@ $cell = false])</code>
   </div>
   <hr />
 	<a name="methodMirrorH"></a>
-	<h3>method MirrorH <span class="smalllinenumber">[line 6099]</span></h3>
+	<h3>method MirrorH <span class="smalllinenumber">[line 6093]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8133,7 +8294,7 @@ $x = ''])</code>
   </div>
   <hr />
 	<a name="methodMirrorL"></a>
-	<h3>method MirrorL <span class="smalllinenumber">[line 6132]</span></h3>
+	<h3>method MirrorL <span class="smalllinenumber">[line 6126]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8187,7 +8348,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodMirrorP"></a>
-	<h3>method MirrorP <span class="smalllinenumber">[line 6120]</span></h3>
+	<h3>method MirrorP <span class="smalllinenumber">[line 6114]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8235,7 +8396,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodMirrorV"></a>
-	<h3>method MirrorV <span class="smalllinenumber">[line 6109]</span></h3>
+	<h3>method MirrorV <span class="smalllinenumber">[line 6103]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8277,7 +8438,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodMultiCell"></a>
-	<h3>method MultiCell <span class="smalllinenumber">[line 3190]</span></h3>
+	<h3>method MultiCell <span class="smalllinenumber">[line 3178]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8391,7 +8552,7 @@ $ishtml = false])</code>
   </div>
   <hr />
 	<a name="methodOpen"></a>
-	<h3>method Open <span class="smalllinenumber">[line 1762]</span></h3>
+	<h3>method Open <span class="smalllinenumber">[line 1752]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8422,7 +8583,7 @@ $ishtml = false])</code>
   </div>
   <hr />
 	<a name="methodopenHTMLTagHandler"></a>
-	<h3>method openHTMLTagHandler <span class="smalllinenumber">[line 10372]</span></h3>
+	<h3>method openHTMLTagHandler <span class="smalllinenumber">[line 10419]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8476,7 +8637,7 @@ $dom)</code>
   </div>
   <hr />
 	<a name="methodOutput"></a>
-	<h3>method Output <span class="smalllinenumber">[line 4086]</span></h3>
+	<h3>method Output <span class="smalllinenumber">[line 4083]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8524,7 +8685,7 @@ $dest = 'I'])</code>
   </div>
   <hr />
 	<a name="methodPageNo"></a>
-	<h3>method PageNo <span class="smalllinenumber">[line 2194]</span></h3>
+	<h3>method PageNo <span class="smalllinenumber">[line 2179]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8558,7 +8719,7 @@ $dest = 'I'])</code>
   </div>
   <hr />
 	<a name="methodPageNoFormatted"></a>
-	<h3>method PageNoFormatted <span class="smalllinenumber">[line 10976]</span></h3>
+	<h3>method PageNoFormatted <span class="smalllinenumber">[line 8153]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8589,7 +8750,7 @@ $dest = 'I'])</code>
   </div>
   <hr />
 	<a name="methodPieSector"></a>
-	<h3>method PieSector <span class="smalllinenumber">[line 8546]</span></h3>
+	<h3>method PieSector <span class="smalllinenumber">[line 8596]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8691,7 +8852,7 @@ $o:)</code>
   </div>
   <hr />
 	<a name="methodpixelsToUnits"></a>
-	<h3>method pixelsToUnits <span class="smalllinenumber">[line 5822]</span></h3>
+	<h3>method pixelsToUnits <span class="smalllinenumber">[line 5816]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8730,7 +8891,7 @@ $px)</code>
   </div>
   <hr />
 	<a name="methodPolycurve"></a>
-	<h3>method Polycurve <span class="smalllinenumber">[line 6645]</span></h3>
+	<h3>method Polycurve <span class="smalllinenumber">[line 6639]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8739,7 +8900,7 @@ float
 $x0, float
 $y0, float
 $segments, [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()])</code>
     </td></tr></table>
@@ -8802,14 +8963,14 @@ $fill_color = array()])</code>
   </div>
   <hr />
 	<a name="methodPolygon"></a>
-	<h3>method Polygon <span class="smalllinenumber">[line 6838]</span></h3>
+	<h3>method Polygon <span class="smalllinenumber">[line 6832]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void Polygon(
 array
 $p, [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()])</code>
     </td></tr></table>
@@ -8859,7 +9020,7 @@ $fill_color = array()])</code>
   </div>
   <hr />
 	<a name="methodRadialGradient"></a>
-	<h3>method RadialGradient <span class="smalllinenumber">[line 8330]</span></h3>
+	<h3>method RadialGradient <span class="smalllinenumber">[line 8380]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8937,7 +9098,7 @@ $coords = array(0.5,0.5,0.5,0.5,1)])</code>
   </div>
   <hr />
 	<a name="methodRadioButton"></a>
-	<h3>method RadioButton <span class="smalllinenumber">[line 7903]</span></h3>
+	<h3>method RadioButton <span class="smalllinenumber">[line 7897]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -8985,7 +9146,7 @@ $prop = array()])</code>
   </div>
   <hr />
 	<a name="methodRect"></a>
-	<h3>method Rect <span class="smalllinenumber">[line 6492]</span></h3>
+	<h3>method Rect <span class="smalllinenumber">[line 6486]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9063,7 +9224,7 @@ $fill_color = array()])</code>
   </div>
   <hr />
 	<a name="methodRegularPolygon"></a>
-	<h3>method RegularPolygon <span class="smalllinenumber">[line 6937]</span></h3>
+	<h3>method RegularPolygon <span class="smalllinenumber">[line 6931]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9075,10 +9236,10 @@ $r, integer
 $ns, [float
 $angle = 0], [boolean
 $draw_circle = false], [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()], [string
-$circle_style = &quot;&quot;], [array
+$circle_style = ''], [array
 $circle_outLine_style = array()], [array
 $circle_fill_color = array()], float
 $r:)</code>
@@ -9174,7 +9335,7 @@ $r:)</code>
   </div>
   <hr />
 	<a name="methodRotate"></a>
-	<h3>method Rotate <span class="smalllinenumber">[line 6187]</span></h3>
+	<h3>method Rotate <span class="smalllinenumber">[line 6181]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9228,7 +9389,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodRoundedRect"></a>
-	<h3>method RoundedRect <span class="smalllinenumber">[line 7041]</span></h3>
+	<h3>method RoundedRect <span class="smalllinenumber">[line 7035]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9239,8 +9400,8 @@ $y, float
 $w, float
 $h, float
 $r, [string
-$round_corner = &quot;1111&quot;], [string
-$style = &quot;&quot;], [array
+$round_corner = '1111'], [string
+$style = ''], [array
 $border_style = array()], [array
 $fill_color = array()])</code>
     </td></tr></table>
@@ -9315,7 +9476,7 @@ $fill_color = array()])</code>
   </div>
   <hr />
 	<a name="methodScale"></a>
-	<h3>method Scale <span class="smalllinenumber">[line 6065]</span></h3>
+	<h3>method Scale <span class="smalllinenumber">[line 6059]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9375,7 +9536,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodScaleX"></a>
-	<h3>method ScaleX <span class="smalllinenumber">[line 6028]</span></h3>
+	<h3>method ScaleX <span class="smalllinenumber">[line 6022]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9429,7 +9590,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodScaleXY"></a>
-	<h3>method ScaleXY <span class="smalllinenumber">[line 6052]</span></h3>
+	<h3>method ScaleXY <span class="smalllinenumber">[line 6046]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9483,7 +9644,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodScaleY"></a>
-	<h3>method ScaleY <span class="smalllinenumber">[line 6040]</span></h3>
+	<h3>method ScaleY <span class="smalllinenumber">[line 6034]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9537,7 +9698,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodsetAlpha"></a>
-	<h3>method setAlpha <span class="smalllinenumber">[line 8212]</span></h3>
+	<h3>method setAlpha <span class="smalllinenumber">[line 8262]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9579,7 +9740,7 @@ $bm = 'Normal'])</code>
   </div>
   <hr />
 	<a name="methodSetAuthor"></a>
-	<h3>method SetAuthor <span class="smalllinenumber">[line 1693]</span></h3>
+	<h3>method SetAuthor <span class="smalllinenumber">[line 1708]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9621,7 +9782,7 @@ $author)</code>
   </div>
   <hr />
 	<a name="methodSetAutoPageBreak"></a>
-	<h3>method SetAutoPageBreak <span class="smalllinenumber">[line 1565]</span></h3>
+	<h3>method SetAutoPageBreak <span class="smalllinenumber">[line 1580]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9669,13 +9830,13 @@ $margin = 0])</code>
   </div>
   <hr />
 	<a name="methodsetBarcode"></a>
-	<h3>method setBarcode <span class="smalllinenumber">[line 8871]</span></h3>
+	<h3>method setBarcode <span class="smalllinenumber">[line 8926]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void setBarcode(
 [string
-$bc = &quot;&quot;])</code>
+$bc = ''])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -9705,7 +9866,7 @@ $bc = &quot;&quot;])</code>
   </div>
   <hr />
 	<a name="methodSetBooklet"></a>
-	<h3>method SetBooklet <span class="smalllinenumber">[line 10915]</span></h3>
+	<h3>method SetBooklet <span class="smalllinenumber">[line 10982]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9756,7 +9917,7 @@ $outer = -1])</code>
   </div>
   <hr />
 	<a name="methodsetCellHeightRatio"></a>
-	<h3>method setCellHeightRatio <span class="smalllinenumber">[line 8246]</span></h3>
+	<h3>method setCellHeightRatio <span class="smalllinenumber">[line 8296]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9792,7 +9953,7 @@ $h)</code>
   </div>
   <hr />
 	<a name="methodSetCellPadding"></a>
-	<h3>method SetCellPadding <span class="smalllinenumber">[line 1554]</span></h3>
+	<h3>method SetCellPadding <span class="smalllinenumber">[line 1569]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9834,7 +9995,7 @@ $pad)</code>
   </div>
   <hr />
 	<a name="methodSetCompression"></a>
-	<h3>method SetCompression <span class="smalllinenumber">[line 1656]</span></h3>
+	<h3>method SetCompression <span class="smalllinenumber">[line 1671]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9873,7 +10034,7 @@ $compress)</code>
   </div>
   <hr />
 	<a name="methodSetCreator"></a>
-	<h3>method SetCreator <span class="smalllinenumber">[line 1715]</span></h3>
+	<h3>method SetCreator <span class="smalllinenumber">[line 1730]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9915,7 +10076,7 @@ $creator)</code>
   </div>
   <hr />
 	<a name="methodsetDefaultTableColumns"></a>
-	<h3>method setDefaultTableColumns <span class="smalllinenumber">[line 8236]</span></h3>
+	<h3>method setDefaultTableColumns <span class="smalllinenumber">[line 8286]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -9951,15 +10112,15 @@ $cols = 4])</code>
   </div>
   <hr />
 	<a name="methodSetDisplayMode"></a>
-	<h3>method SetDisplayMode <span class="smalllinenumber">[line 1579]</span></h3>
+	<h3>method SetDisplayMode <span class="smalllinenumber">[line 1594]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void SetDisplayMode(
 mixed
 $zoom, [string
-$layout = &quot;SinglePage&quot;], [string
-$mode = &quot;UseNone&quot;])</code>
+$layout = 'SinglePage'], [string
+$mode = 'UseNone'])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -10002,7 +10163,7 @@ $mode = &quot;UseNone&quot;])</code>
   </div>
   <hr />
 	<a name="methodSetDrawColor"></a>
-	<h3>method SetDrawColor <span class="smalllinenumber">[line 2246]</span></h3>
+	<h3>method SetDrawColor <span class="smalllinenumber">[line 2231]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10062,7 +10223,7 @@ $col4 = -1])</code>
   </div>
   <hr />
 	<a name="methodSetDrawColorArray"></a>
-	<h3>method SetDrawColorArray <span class="smalllinenumber">[line 2224]</span></h3>
+	<h3>method SetDrawColorArray <span class="smalllinenumber">[line 2209]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10104,7 +10265,7 @@ $color)</code>
   </div>
   <hr />
 	<a name="methodSetDrawSpotColor"></a>
-	<h3>method SetDrawSpotColor <span class="smalllinenumber">[line 2283]</span></h3>
+	<h3>method SetDrawSpotColor <span class="smalllinenumber">[line 2268]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10152,7 +10313,7 @@ $tint = 100])</code>
   </div>
   <hr />
 	<a name="methodsetExtGState"></a>
-	<h3>method setExtGState <span class="smalllinenumber">[line 8181]</span></h3>
+	<h3>method setExtGState <span class="smalllinenumber">[line 8231]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10188,7 +10349,7 @@ $gs)</code>
   </div>
   <hr />
 	<a name="methodSetFillColor"></a>
-	<h3>method SetFillColor <span class="smalllinenumber">[line 2323]</span></h3>
+	<h3>method SetFillColor <span class="smalllinenumber">[line 2308]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10248,7 +10409,7 @@ $col4 = -1])</code>
   </div>
   <hr />
 	<a name="methodSetFillColorArray"></a>
-	<h3>method SetFillColorArray <span class="smalllinenumber">[line 2301]</span></h3>
+	<h3>method SetFillColorArray <span class="smalllinenumber">[line 2286]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10290,7 +10451,7 @@ $color)</code>
   </div>
   <hr />
 	<a name="methodSetFillSpotColor"></a>
-	<h3>method SetFillSpotColor <span class="smalllinenumber">[line 2364]</span></h3>
+	<h3>method SetFillSpotColor <span class="smalllinenumber">[line 2349]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10338,7 +10499,7 @@ $tint = 100])</code>
   </div>
   <hr />
 	<a name="methodSetFont"></a>
-	<h3>method SetFont <span class="smalllinenumber">[line 2683]</span></h3>
+	<h3>method SetFont <span class="smalllinenumber">[line 2668]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10392,7 +10553,7 @@ $size = 0])</code>
   </div>
   <hr />
 	<a name="methodSetFontSize"></a>
-	<h3>method SetFontSize <span class="smalllinenumber">[line 2702]</span></h3>
+	<h3>method SetFontSize <span class="smalllinenumber">[line 2687]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10434,7 +10595,7 @@ $size)</code>
   </div>
   <hr />
 	<a name="methodsetFooter"></a>
-	<h3>method setFooter <span class="smalllinenumber">[line 2156]</span></h3>
+	<h3>method setFooter <span class="smalllinenumber">[line 2140]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10462,7 +10623,7 @@ $size)</code>
   </div>
   <hr />
 	<a name="methodsetFooterFont"></a>
-	<h3>method setFooterFont <span class="smalllinenumber">[line 5705]</span></h3>
+	<h3>method setFooterFont <span class="smalllinenumber">[line 5699]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10501,7 +10662,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="methodsetFooterMargin"></a>
-	<h3>method setFooterMargin <span class="smalllinenumber">[line 2006]</span></h3>
+	<h3>method setFooterMargin <span class="smalllinenumber">[line 1989]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10536,8 +10697,47 @@ $fm = 10])</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodsetGraphicVars"></a>
+	<h3>method setGraphicVars <span class="smalllinenumber">[line 11082]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void setGraphicVars(
+$gvars
+$gvars)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Set graphic variables.<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.010 (2008-11-14)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <h4>Parameters:</h4>
+    <div class="tags">
+    <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+        <td class="type">$gvars&nbsp;&nbsp;</td>
+        <td><b>$gvars</b>&nbsp;&nbsp;</td>
+        <td>array graphic variables</td>
+      </tr>
+        </table>
+    </div><br />
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodsetHeader"></a>
-	<h3>method setHeader <span class="smalllinenumber">[line 2126]</span></h3>
+	<h3>method setHeader <span class="smalllinenumber">[line 2109]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10565,16 +10765,16 @@ $fm = 10])</code>
   </div>
   <hr />
 	<a name="methodsetHeaderData"></a>
-	<h3>method setHeaderData <span class="smalllinenumber">[line 1961]</span></h3>
+	<h3>method setHeaderData <span class="smalllinenumber">[line 1944]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void setHeaderData(
 [string
-$ln = &quot;&quot;], [string
+$ln = ''], [string
 $lw = 0], [string
-$ht = &quot;&quot;], [string
-$hs = &quot;&quot;])</code>
+$ht = ''], [string
+$hs = ''])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -10619,7 +10819,7 @@ $hs = &quot;&quot;])</code>
   </div>
   <hr />
 	<a name="methodsetHeaderFont"></a>
-	<h3>method setHeaderFont <span class="smalllinenumber">[line 5687]</span></h3>
+	<h3>method setHeaderFont <span class="smalllinenumber">[line 5681]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10658,7 +10858,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="methodsetHeaderMargin"></a>
-	<h3>method setHeaderMargin <span class="smalllinenumber">[line 1988]</span></h3>
+	<h3>method setHeaderMargin <span class="smalllinenumber">[line 1971]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10694,7 +10894,7 @@ $hm = 10])</code>
   </div>
   <hr />
 	<a name="methodsetHtmlVSpace"></a>
-	<h3>method setHtmlVSpace <span class="smalllinenumber">[line 10955]</span></h3>
+	<h3>method setHtmlVSpace <span class="smalllinenumber">[line 11022]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10733,7 +10933,7 @@ $tagvs)</code>
   </div>
   <hr />
 	<a name="methodsetImageScale"></a>
-	<h3>method setImageScale <span class="smalllinenumber">[line 1435]</span></h3>
+	<h3>method setImageScale <span class="smalllinenumber">[line 1450]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10775,7 +10975,7 @@ $scale)</code>
   </div>
   <hr />
 	<a name="methodsetJPEGQuality"></a>
-	<h3>method setJPEGQuality <span class="smalllinenumber">[line 8223]</span></h3>
+	<h3>method setJPEGQuality <span class="smalllinenumber">[line 8273]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10811,7 +11011,7 @@ $quality)</code>
   </div>
   <hr />
 	<a name="methodSetKeywords"></a>
-	<h3>method SetKeywords <span class="smalllinenumber">[line 1704]</span></h3>
+	<h3>method SetKeywords <span class="smalllinenumber">[line 1719]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10853,7 +11053,7 @@ $keywords)</code>
   </div>
   <hr />
 	<a name="methodsetLanguageArray"></a>
-	<h3>method setLanguageArray <span class="smalllinenumber">[line 5723]</span></h3>
+	<h3>method setLanguageArray <span class="smalllinenumber">[line 5717]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10892,7 +11092,7 @@ $language)</code>
   </div>
   <hr />
 	<a name="methodsetLastH"></a>
-	<h3>method setLastH <span class="smalllinenumber">[line 1416]</span></h3>
+	<h3>method setLastH <span class="smalllinenumber">[line 1431]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10934,7 +11134,7 @@ $h)</code>
   </div>
   <hr />
 	<a name="methodSetLeftMargin"></a>
-	<h3>method SetLeftMargin <span class="smalllinenumber">[line 1513]</span></h3>
+	<h3>method SetLeftMargin <span class="smalllinenumber">[line 1528]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -10976,7 +11176,7 @@ $margin)</code>
   </div>
   <hr />
 	<a name="methodSetLineStyle"></a>
-	<h3>method SetLineStyle <span class="smalllinenumber">[line 6332]</span></h3>
+	<h3>method SetLineStyle <span class="smalllinenumber">[line 6326]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11022,7 +11222,7 @@ $style)</code>
   </div>
   <hr />
 	<a name="methodSetLineWidth"></a>
-	<h3>method SetLineWidth <span class="smalllinenumber">[line 6294]</span></h3>
+	<h3>method SetLineWidth <span class="smalllinenumber">[line 6288]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11064,7 +11264,7 @@ $width)</code>
   </div>
   <hr />
 	<a name="methodSetLink"></a>
-	<h3>method SetLink <span class="smalllinenumber">[line 2742]</span></h3>
+	<h3>method SetLink <span class="smalllinenumber">[line 2727]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11117,8 +11317,47 @@ $page = -1])</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodsetListIndentWidth"></a>
+	<h3>method setListIndentWidth <span class="smalllinenumber">[line 11032]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void setListIndentWidth(
+float
+$width)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Set custom width for list indentation.<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.007 (2008-11-12)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <h4>Parameters:</h4>
+    <div class="tags">
+    <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+        <td class="type">float&nbsp;&nbsp;</td>
+        <td><b>$width</b>&nbsp;&nbsp;</td>
+        <td>width of the indentation. Use negative value to disable it.</td>
+      </tr>
+        </table>
+    </div><br />
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodsetLIsymbol"></a>
-	<h3>method setLIsymbol <span class="smalllinenumber">[line 10903]</span></h3>
+	<h3>method setLIsymbol <span class="smalllinenumber">[line 10970]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11157,7 +11396,7 @@ $symbol = '-'])</code>
   </div>
   <hr />
 	<a name="methodSetMargins"></a>
-	<h3>method SetMargins <span class="smalllinenumber">[line 1497]</span></h3>
+	<h3>method SetMargins <span class="smalllinenumber">[line 1512]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11210,8 +11449,47 @@ $right = -1])</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodsetOpenCell"></a>
+	<h3>method setOpenCell <span class="smalllinenumber">[line 11042]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void setOpenCell(
+boolean
+$isopen)</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Set the top/bottom cell sides to be open or closed when the cell cross the page.<br /><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.010 (2008-11-14)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>public</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <h4>Parameters:</h4>
+    <div class="tags">
+    <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+        <td class="type">boolean&nbsp;&nbsp;</td>
+        <td><b>$isopen</b>&nbsp;&nbsp;</td>
+        <td>if true keeps the top/bottom border open for the cell sides that cross the page.</td>
+      </tr>
+        </table>
+    </div><br />
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodsetPage"></a>
-	<h3>method setPage <span class="smalllinenumber">[line 1795]</span></h3>
+	<h3>method setPage <span class="smalllinenumber">[line 1785]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11259,14 +11537,14 @@ $resetmargins = false])</code>
   </div>
   <hr />
 	<a name="methodsetPageFormat"></a>
-	<h3>method setPageFormat <span class="smalllinenumber">[line 1269]</span></h3>
+	<h3>method setPageFormat <span class="smalllinenumber">[line 1284]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void setPageFormat(
 mixed
 $format, [string
-$orientation = &quot;P&quot;])</code>
+$orientation = 'P'])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -11304,7 +11582,7 @@ $orientation = &quot;P&quot;])</code>
   </div>
   <hr />
 	<a name="methodsetPageMark"></a>
-	<h3>method setPageMark <span class="smalllinenumber">[line 1950]</span></h3>
+	<h3>method setPageMark <span class="smalllinenumber">[line 1933]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11332,7 +11610,7 @@ $orientation = &quot;P&quot;])</code>
   </div>
   <hr />
 	<a name="methodsetPageOrientation"></a>
-	<h3>method setPageOrientation <span class="smalllinenumber">[line 1341]</span></h3>
+	<h3>method setPageOrientation <span class="smalllinenumber">[line 1356]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11383,7 +11661,7 @@ $bottommargin = ''])</code>
   </div>
   <hr />
 	<a name="methodsetPageUnit"></a>
-	<h3>method setPageUnit <span class="smalllinenumber">[line 1229]</span></h3>
+	<h3>method setPageUnit <span class="smalllinenumber">[line 1244]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11422,13 +11700,13 @@ $unit)</code>
   </div>
   <hr />
 	<a name="methodsetPDFVersion"></a>
-	<h3>method setPDFVersion <span class="smalllinenumber">[line 8265]</span></h3>
+	<h3>method setPDFVersion <span class="smalllinenumber">[line 8315]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void setPDFVersion(
 [
-$version = &quot;1.7&quot;])</code>
+$version = '1.7'])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -11458,7 +11736,7 @@ $version = &quot;1.7&quot;])</code>
   </div>
   <hr />
 	<a name="methodsetPrintFooter"></a>
-	<h3>method setPrintFooter <span class="smalllinenumber">[line 2030]</span></h3>
+	<h3>method setPrintFooter <span class="smalllinenumber">[line 2013]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11500,7 +11778,7 @@ $value)</code>
   </div>
   <hr />
 	<a name="methodsetPrintHeader"></a>
-	<h3>method setPrintHeader <span class="smalllinenumber">[line 2022]</span></h3>
+	<h3>method setPrintHeader <span class="smalllinenumber">[line 2005]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11536,7 +11814,7 @@ $val = true])</code>
   </div>
   <hr />
 	<a name="methodSetProtection"></a>
-	<h3>method SetProtection <span class="smalllinenumber">[line 5975]</span></h3>
+	<h3>method SetProtection <span class="smalllinenumber">[line 5969]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11590,7 +11868,7 @@ $owner_pass = null])</code>
   </div>
   <hr />
 	<a name="methodSetRightMargin"></a>
-	<h3>method SetRightMargin <span class="smalllinenumber">[line 1541]</span></h3>
+	<h3>method SetRightMargin <span class="smalllinenumber">[line 1556]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11632,7 +11910,7 @@ $margin)</code>
   </div>
   <hr />
 	<a name="methodsetRTL"></a>
-	<h3>method setRTL <span class="smalllinenumber">[line 1381]</span></h3>
+	<h3>method setRTL <span class="smalllinenumber">[line 1396]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11671,7 +11949,7 @@ $enable)</code>
   </div>
   <hr />
 	<a name="methodSetSubject"></a>
-	<h3>method SetSubject <span class="smalllinenumber">[line 1682]</span></h3>
+	<h3>method SetSubject <span class="smalllinenumber">[line 1697]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11713,7 +11991,7 @@ $subject)</code>
   </div>
   <hr />
 	<a name="methodsetTempRTL"></a>
-	<h3>method setTempRTL <span class="smalllinenumber">[line 1400]</span></h3>
+	<h3>method setTempRTL <span class="smalllinenumber">[line 1415]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11752,7 +12030,7 @@ $mode)</code>
   </div>
   <hr />
 	<a name="methodSetTextColor"></a>
-	<h3>method SetTextColor <span class="smalllinenumber">[line 2404]</span></h3>
+	<h3>method SetTextColor <span class="smalllinenumber">[line 2389]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11812,7 +12090,7 @@ $col4 = -1])</code>
   </div>
   <hr />
 	<a name="methodSetTextColorArray"></a>
-	<h3>method SetTextColorArray <span class="smalllinenumber">[line 2382]</span></h3>
+	<h3>method SetTextColorArray <span class="smalllinenumber">[line 2367]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11854,7 +12132,7 @@ $color)</code>
   </div>
   <hr />
 	<a name="methodSetTextSpotColor"></a>
-	<h3>method SetTextSpotColor <span class="smalllinenumber">[line 2442]</span></h3>
+	<h3>method SetTextSpotColor <span class="smalllinenumber">[line 2427]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11902,7 +12180,7 @@ $tint = 100])</code>
   </div>
   <hr />
 	<a name="methodSetTitle"></a>
-	<h3>method SetTitle <span class="smalllinenumber">[line 1671]</span></h3>
+	<h3>method SetTitle <span class="smalllinenumber">[line 1686]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11944,7 +12222,7 @@ $title)</code>
   </div>
   <hr />
 	<a name="methodSetTopMargin"></a>
-	<h3>method SetTopMargin <span class="smalllinenumber">[line 1527]</span></h3>
+	<h3>method SetTopMargin <span class="smalllinenumber">[line 1542]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -11986,17 +12264,17 @@ $margin)</code>
   </div>
   <hr />
 	<a name="methodsetUserRights"></a>
-	<h3>method setUserRights <span class="smalllinenumber">[line 8059]</span></h3>
+	<h3>method setUserRights <span class="smalllinenumber">[line 8053]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
 		<code>void setUserRights(
 [
 $enable = true], [
-$document = &quot;/FullSave&quot;], [
-$annots = &quot;/Create/Delete/Modify/Copy/Import/Export&quot;], [
-$form = &quot;/Add/Delete/FillIn/Import/Export/SubmitStandalone/SpawnTemplate&quot;], [
-$signature = &quot;/Modify&quot;])</code>
+$document = '/FullSave'], [
+$annots = '/Create/Delete/Modify/Copy/Import/Export'], [
+$form = '/Add/Delete/FillIn/Import/Export/SubmitStandalone/SpawnTemplate'], [
+$signature = '/Modify'])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
@@ -12046,7 +12324,7 @@ $signature = &quot;/Modify&quot;])</code>
   </div>
   <hr />
 	<a name="methodsetViewerPreferences"></a>
-	<h3>method setViewerPreferences <span class="smalllinenumber">[line 8295]</span></h3>
+	<h3>method setViewerPreferences <span class="smalllinenumber">[line 8345]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12082,7 +12360,7 @@ $preferences)</code>
   </div>
   <hr />
 	<a name="methodsetVisibility"></a>
-	<h3>method setVisibility <span class="smalllinenumber">[line 8133]</span></h3>
+	<h3>method setVisibility <span class="smalllinenumber">[line 8183]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12118,7 +12396,7 @@ $v)</code>
   </div>
   <hr />
 	<a name="methodSetX"></a>
-	<h3>method SetX <span class="smalllinenumber">[line 4010]</span></h3>
+	<h3>method SetX <span class="smalllinenumber">[line 4007]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12160,7 +12438,7 @@ $x)</code>
   </div>
   <hr />
 	<a name="methodSetXY"></a>
-	<h3>method SetXY <span class="smalllinenumber">[line 4071]</span></h3>
+	<h3>method SetXY <span class="smalllinenumber">[line 4068]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12208,7 +12486,7 @@ $y)</code>
   </div>
   <hr />
 	<a name="methodSetY"></a>
-	<h3>method SetY <span class="smalllinenumber">[line 4041]</span></h3>
+	<h3>method SetY <span class="smalllinenumber">[line 4038]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12256,7 +12534,7 @@ $resetx = true])</code>
   </div>
   <hr />
 	<a name="methodSkew"></a>
-	<h3>method Skew <span class="smalllinenumber">[line 6244]</span></h3>
+	<h3>method Skew <span class="smalllinenumber">[line 6238]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12316,7 +12594,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodSkewX"></a>
-	<h3>method SkewX <span class="smalllinenumber">[line 6219]</span></h3>
+	<h3>method SkewX <span class="smalllinenumber">[line 6213]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12370,7 +12648,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodSkewY"></a>
-	<h3>method SkewY <span class="smalllinenumber">[line 6231]</span></h3>
+	<h3>method SkewY <span class="smalllinenumber">[line 6225]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12424,7 +12702,7 @@ $y = ''])</code>
   </div>
   <hr />
 	<a name="methodStarPolygon"></a>
-	<h3>method StarPolygon <span class="smalllinenumber">[line 6992]</span></h3>
+	<h3>method StarPolygon <span class="smalllinenumber">[line 6986]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12437,10 +12715,10 @@ $nv, integer
 $ng, [
 $angle = 0], [
 $draw_circle = false], [string
-$style = &quot;&quot;], [array
+$style = ''], [array
 $line_style = array()], [array
 $fill_color = array()], [string
-$circle_style = &quot;&quot;], [array
+$circle_style = ''], [array
 $circle_outLine_style = array()], [array
 $circle_fill_color = array()], float
 $angle:, boolean
@@ -12547,8 +12825,56 @@ $draw_circle:)</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
+	<a name="methodstartPage"></a>
+	<h3>method startPage <span class="smalllinenumber">[line 1898]</span></h3>
+	<div class="function">
+    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
+    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
+		<code>void startPage(
+[string
+$orientation = ''], [mixed
+$format = ''])</code>
+    </td></tr></table>
+    </td></tr></table><br />
+	
+		Starts a new page to the document. The page must be closed using the endPage() function.<br /><br /><p>The origin of the coordinate system is at the top-left corner and increasing ordinates go downwards.</p><br /><br /><br />
+<h4>Tags:</h4>
+<div class="tags">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><b>see:</b>&nbsp;&nbsp;</td><td><a href="../com-tecnick-tcpdf/TCPDF.html#methodendPage">TCPDF::endPage()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodAddPage">TCPDF::AddPage()</a></td>
+  </tr>
+  <tr>
+    <td><b>since:</b>&nbsp;&nbsp;</td><td>4.2.010 (2008-11-14)</td>
+  </tr>
+  <tr>
+    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
+  </tr>
+</table>
+</div>
+<br /><br />
+
+	
+        <h4>Parameters:</h4>
+    <div class="tags">
+    <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+        <td class="type">string&nbsp;&nbsp;</td>
+        <td><b>$orientation</b>&nbsp;&nbsp;</td>
+        <td>page orientation. Possible values are (case insensitive):<ul><li>P or PORTRAIT (default)</li><li>L or LANDSCAPE</li></ul></td>
+      </tr>
+          <tr>
+        <td class="type">mixed&nbsp;&nbsp;</td>
+        <td><b>$format</b>&nbsp;&nbsp;</td>
+        <td>The format used for pages. It can be either one of the following values (case insensitive) or a custom format in the form of a two-element array containing the width and the height (expressed in the unit given by unit).<ul><li>4A0</li><li>2A0</li><li>A0</li><li>A1</li><li>A2</li><li>A3</li><li>A4 (default)</li><li>A5</li><li>A6</li><li>A7</li><li>A8</li><li>A9</li><li>A10</li><li>B0</li><li>B1</li><li>B2</li><li>B3</li><li>B4</li><li>B5</li><li>B6</li><li>B7</li><li>B8</li><li>B9</li><li>B10</li><li>C0</li><li>C1</li><li>C2</li><li>C3</li><li>C4</li><li>C5</li><li>C6</li><li>C7</li><li>C8</li><li>C9</li><li>C10</li><li>RA0</li><li>RA1</li><li>RA2</li><li>RA3</li><li>RA4</li><li>SRA0</li><li>SRA1</li><li>SRA2</li><li>SRA3</li><li>SRA4</li><li>LETTER</li><li>LEGAL</li><li>EXECUTIVE</li><li>FOLIO</li></ul></td>
+      </tr>
+        </table>
+    </div><br />
+        <div class="top">[ <a href="#top">Top</a> ]</div>
+  </div>
+  <hr />
 	<a name="methodstartPageGroup"></a>
-	<h3>method startPageGroup <span class="smalllinenumber">[line 8078]</span></h3>
+	<h3>method startPageGroup <span class="smalllinenumber">[line 8072]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12573,7 +12899,7 @@ $draw_circle:)</code>
   </div>
   <hr />
 	<a name="methodStartTransform"></a>
-	<h3>method StartTransform <span class="smalllinenumber">[line 6003]</span></h3>
+	<h3>method StartTransform <span class="smalllinenumber">[line 5997]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12604,7 +12930,7 @@ $draw_circle:)</code>
   </div>
   <hr />
 	<a name="methodStopTransform"></a>
-	<h3>method StopTransform <span class="smalllinenumber">[line 6014]</span></h3>
+	<h3>method StopTransform <span class="smalllinenumber">[line 6008]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12635,7 +12961,7 @@ $draw_circle:)</code>
   </div>
   <hr />
 	<a name="methodswapMargins"></a>
-	<h3>method swapMargins <span class="smalllinenumber">[line 10931]</span></h3>
+	<h3>method swapMargins <span class="smalllinenumber">[line 10998]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12674,7 +13000,7 @@ $reverse = true])</code>
   </div>
   <hr />
 	<a name="methodText"></a>
-	<h3>method Text <span class="smalllinenumber">[line 2834]</span></h3>
+	<h3>method Text <span class="smalllinenumber">[line 2822]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12688,12 +13014,15 @@ $clip = false])</code>
     </td></tr></table>
     </td></tr></table><br />
 	
-		Prints a character string. The origin is on the left of the first charcter, on the baseline. This method allows to place a string precisely on the page, but it is usually easier to use Cell(), MultiCell() or Write() which are the standard methods to print text.<br /><br /><br /><br />
+		Prints a character string.<br /><br /><p>The origin is on the left of the first charcter, on the baseline.  This method allows to place a string precisely on the page.</p><br /><br /><br />
 <h4>Tags:</h4>
 <div class="tags">
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><b>see:</b>&nbsp;&nbsp;</td><td><a href="../com-tecnick-tcpdf/TCPDF.html#methodSetFont">TCPDF::SetFont()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodSetTextColor">TCPDF::SetTextColor()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodCell">TCPDF::Cell()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodMultiCell">TCPDF::MultiCell()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodWrite">TCPDF::Write()</a></td>
+    <td><b>see:</b>&nbsp;&nbsp;</td><td><a href="../com-tecnick-tcpdf/TCPDF.html#methodCell">TCPDF::Cell()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodWrite">TCPDF::Write()</a>, <a href="../com-tecnick-tcpdf/TCPDF.html#methodMultiCell">TCPDF::MultiCell()</a>, WriteHTML(), WriteHTMLCell()</td>
+  </tr>
+  <tr>
+    <td><b>deprecated:</b>&nbsp;&nbsp;</td><td>deprecated since version 4.3.005 (2008-11-25)</td>
   </tr>
   <tr>
     <td><b>since:</b>&nbsp;&nbsp;</td><td>1.0</td>
@@ -12740,7 +13069,7 @@ $clip = false])</code>
   </div>
   <hr />
 	<a name="methodTextField"></a>
-	<h3>method TextField <span class="smalllinenumber">[line 7890]</span></h3>
+	<h3>method TextField <span class="smalllinenumber">[line 7884]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12794,7 +13123,7 @@ $prop = array()])</code>
   </div>
   <hr />
 	<a name="methodTransform"></a>
-	<h3>method Transform <span class="smalllinenumber">[line 6276]</span></h3>
+	<h3>method Transform <span class="smalllinenumber">[line 6270]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12836,7 +13165,7 @@ $tm)</code>
   </div>
   <hr />
 	<a name="methodTranslate"></a>
-	<h3>method Translate <span class="smalllinenumber">[line 6164]</span></h3>
+	<h3>method Translate <span class="smalllinenumber">[line 6158]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12884,7 +13213,7 @@ $t_y)</code>
   </div>
   <hr />
 	<a name="methodTranslateX"></a>
-	<h3>method TranslateX <span class="smalllinenumber">[line 6143]</span></h3>
+	<h3>method TranslateX <span class="smalllinenumber">[line 6137]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12926,7 +13255,7 @@ $t_x)</code>
   </div>
   <hr />
 	<a name="methodTranslateY"></a>
-	<h3>method TranslateY <span class="smalllinenumber">[line 6153]</span></h3>
+	<h3>method TranslateY <span class="smalllinenumber">[line 6147]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -12968,7 +13297,7 @@ $t_y)</code>
   </div>
   <hr />
 	<a name="methodunhtmlentities"></a>
-	<h3>method unhtmlentities <span class="smalllinenumber">[line 5832]</span></h3>
+	<h3>method unhtmlentities <span class="smalllinenumber">[line 5826]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13007,7 +13336,7 @@ $text_to_convert)</code>
   </div>
   <hr />
 	<a name="methodunichr"></a>
-	<h3>method unichr <span class="smalllinenumber">[line 3609]</span></h3>
+	<h3>method unichr <span class="smalllinenumber">[line 3602]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13052,7 +13381,7 @@ $c)</code>
   </div>
   <hr />
 	<a name="methodUTF8ArrSubString"></a>
-	<h3>method UTF8ArrSubString <span class="smalllinenumber">[line 3588]</span></h3>
+	<h3>method UTF8ArrSubString <span class="smalllinenumber">[line 3581]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13103,7 +13432,7 @@ $end = ''])</code>
   </div>
   <hr />
 	<a name="methodutf8Bidi"></a>
-	<h3>method utf8Bidi <span class="smalllinenumber">[line 7137]</span></h3>
+	<h3>method utf8Bidi <span class="smalllinenumber">[line 7131]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13151,7 +13480,7 @@ $forcertl = false])</code>
   </div>
   <hr />
 	<a name="methodUTF8StringToArray"></a>
-	<h3>method UTF8StringToArray <span class="smalllinenumber">[line 5504]</span></h3>
+	<h3>method UTF8StringToArray <span class="smalllinenumber">[line 5498]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13217,7 +13546,7 @@ $str)</code>
   </div>
   <hr />
 	<a name="methodutf8StrRev"></a>
-	<h3>method utf8StrRev <span class="smalllinenumber">[line 7125]</span></h3>
+	<h3>method utf8StrRev <span class="smalllinenumber">[line 7119]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13271,7 +13600,7 @@ $forcertl = false])</code>
   </div>
   <hr />
 	<a name="methodUTF8ToLatin1"></a>
-	<h3>method UTF8ToLatin1 <span class="smalllinenumber">[line 5597]</span></h3>
+	<h3>method UTF8ToLatin1 <span class="smalllinenumber">[line 5591]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13313,7 +13642,7 @@ $str)</code>
   </div>
   <hr />
 	<a name="methodUTF8ToUTF16BE"></a>
-	<h3>method UTF8ToUTF16BE <span class="smalllinenumber">[line 5581]</span></h3>
+	<h3>method UTF8ToUTF16BE <span class="smalllinenumber">[line 5575]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13364,7 +13693,7 @@ $setbom = true])</code>
   </div>
   <hr />
 	<a name="methodWrite"></a>
-	<h3>method Write <span class="smalllinenumber">[line 3338]</span></h3>
+	<h3>method Write <span class="smalllinenumber">[line 3331]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13454,7 +13783,7 @@ $firstblock = false])</code>
   </div>
   <hr />
 	<a name="methodwrite1DBarcode"></a>
-	<h3>method write1DBarcode <span class="smalllinenumber">[line 8899]</span></h3>
+	<h3>method write1DBarcode <span class="smalllinenumber">[line 8954]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13544,7 +13873,7 @@ $align = ''])</code>
   </div>
   <hr />
 	<a name="methodwriteBarcode"></a>
-	<h3>method writeBarcode <span class="smalllinenumber">[line 9120]</span></h3>
+	<h3>method writeBarcode <span class="smalllinenumber">[line 9168]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13634,7 +13963,7 @@ $code)</code>
   </div>
   <hr />
 	<a name="methodwriteHTML"></a>
-	<h3>method writeHTML <span class="smalllinenumber">[line 9566]</span></h3>
+	<h3>method writeHTML <span class="smalllinenumber">[line 9617]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13700,7 +14029,7 @@ $align = ''])</code>
   </div>
   <hr />
 	<a name="methodwriteHTMLCell"></a>
-	<h3>method writeHTMLCell <span class="smalllinenumber">[line 9236]</span></h3>
+	<h3>method writeHTMLCell <span class="smalllinenumber">[line 9284]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13796,7 +14125,7 @@ $align = ''])</code>
   </div>
   <hr />
 	<a name="method_addfield"></a>
-	<h3>method _addfield <span class="smalllinenumber">[line 7855]</span></h3>
+	<h3>method _addfield <span class="smalllinenumber">[line 7849]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13868,7 +14197,7 @@ $prop)</code>
   </div>
   <hr />
 	<a name="method_beginpage"></a>
-	<h3>method _beginpage <span class="smalllinenumber">[line 5173]</span></h3>
+	<h3>method _beginpage <span class="smalllinenumber">[line 5174]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13909,12 +14238,12 @@ $format = ''])</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
-	<a name="method_datestring"></a>
-	<h3>method _datestring <span class="smalllinenumber">[line 4986]</span></h3>
+	<a name="method_datastring"></a>
+	<h3>method _datastring <span class="smalllinenumber">[line 5283]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
-		<code>string _datestring(
+		<code>string _datastring(
 string
 $s)</code>
     </td></tr></table>
@@ -13949,7 +14278,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_dochecks"></a>
-	<h3>method _dochecks <span class="smalllinenumber">[line 4172]</span></h3>
+	<h3>method _dochecks <span class="smalllinenumber">[line 4170]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -13974,7 +14303,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_dolinethrough"></a>
-	<h3>method _dolinethrough <span class="smalllinenumber">[line 5247]</span></h3>
+	<h3>method _dolinethrough <span class="smalllinenumber">[line 5248]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14022,7 +14351,7 @@ $txt)</code>
   </div>
   <hr />
 	<a name="method_dounderline"></a>
-	<h3>method _dounderline <span class="smalllinenumber">[line 5233]</span></h3>
+	<h3>method _dounderline <span class="smalllinenumber">[line 5234]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14070,7 +14399,7 @@ $txt)</code>
   </div>
   <hr />
 	<a name="method_enddoc"></a>
-	<h3>method _enddoc <span class="smalllinenumber">[line 5132]</span></h3>
+	<h3>method _enddoc <span class="smalllinenumber">[line 5133]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14095,7 +14424,7 @@ $txt)</code>
   </div>
   <hr />
 	<a name="method_endpage"></a>
-	<h3>method _endpage <span class="smalllinenumber">[line 5211]</span></h3>
+	<h3>method _endpage <span class="smalllinenumber">[line 5212]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14120,7 +14449,7 @@ $txt)</code>
   </div>
   <hr />
 	<a name="method_escape"></a>
-	<h3>method _escape <span class="smalllinenumber">[line 5323]</span></h3>
+	<h3>method _escape <span class="smalllinenumber">[line 5272]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14159,7 +14488,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_escapetext"></a>
-	<h3>method _escapetext <span class="smalllinenumber">[line 5305]</span></h3>
+	<h3>method _escapetext <span class="smalllinenumber">[line 5310]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14198,7 +14527,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_freadint"></a>
-	<h3>method _freadint <span class="smalllinenumber">[line 5260]</span></h3>
+	<h3>method _freadint <span class="smalllinenumber">[line 5261]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14237,7 +14566,7 @@ $f)</code>
   </div>
   <hr />
 	<a name="method_generateencryptionkey"></a>
-	<h3>method _generateencryptionkey <span class="smalllinenumber">[line 5944]</span></h3>
+	<h3>method _generateencryptionkey <span class="smalllinenumber">[line 5938]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14291,7 +14620,7 @@ $protection)</code>
   </div>
   <hr />
 	<a name="method_getfontpath"></a>
-	<h3>method _getfontpath <span class="smalllinenumber">[line 4188]</span></h3>
+	<h3>method _getfontpath <span class="smalllinenumber">[line 4186]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14316,7 +14645,7 @@ $protection)</code>
   </div>
   <hr />
 	<a name="method_JScolor"></a>
-	<h3>method _JScolor <span class="smalllinenumber">[line 7831]</span></h3>
+	<h3>method _JScolor <span class="smalllinenumber">[line 7825]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14352,7 +14681,7 @@ $color)</code>
   </div>
   <hr />
 	<a name="method_md5_16"></a>
-	<h3>method _md5_16 <span class="smalllinenumber">[line 5908]</span></h3>
+	<h3>method _md5_16 <span class="smalllinenumber">[line 5902]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14397,7 +14726,7 @@ $str)</code>
   </div>
   <hr />
 	<a name="method_newobj"></a>
-	<h3>method _newobj <span class="smalllinenumber">[line 5220]</span></h3>
+	<h3>method _newobj <span class="smalllinenumber">[line 5221]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14422,7 +14751,7 @@ $str)</code>
   </div>
   <hr />
 	<a name="method_objectkey"></a>
-	<h3>method _objectkey <span class="smalllinenumber">[line 5843]</span></h3>
+	<h3>method _objectkey <span class="smalllinenumber">[line 5837]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14461,7 +14790,7 @@ $n)</code>
   </div>
   <hr />
 	<a name="method_out"></a>
-	<h3>method _out <span class="smalllinenumber">[line 5347]</span></h3>
+	<h3>method _out <span class="smalllinenumber">[line 5341]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14497,7 +14826,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_outarc"></a>
-	<h3>method _outarc <span class="smalllinenumber">[line 8526]</span></h3>
+	<h3>method _outarc <span class="smalllinenumber">[line 8576]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14569,7 +14898,7 @@ $y3)</code>
   </div>
   <hr />
 	<a name="method_outCurve"></a>
-	<h3>method _outCurve <span class="smalllinenumber">[line 6437]</span></h3>
+	<h3>method _outCurve <span class="smalllinenumber">[line 6431]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14635,7 +14964,7 @@ $y3)</code>
   </div>
   <hr />
 	<a name="method_outLine"></a>
-	<h3>method _outLine <span class="smalllinenumber">[line 6401]</span></h3>
+	<h3>method _outLine <span class="smalllinenumber">[line 6395]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14677,7 +15006,7 @@ $y)</code>
   </div>
   <hr />
 	<a name="method_outPoint"></a>
-	<h3>method _outPoint <span class="smalllinenumber">[line 6387]</span></h3>
+	<h3>method _outPoint <span class="smalllinenumber">[line 6381]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14719,7 +15048,7 @@ $y)</code>
   </div>
   <hr />
 	<a name="method_outRect"></a>
-	<h3>method _outRect <span class="smalllinenumber">[line 6418]</span></h3>
+	<h3>method _outRect <span class="smalllinenumber">[line 6412]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14782,7 +15111,7 @@ $op)</code>
   </div>
   <hr />
 	<a name="method_Ovalue"></a>
-	<h3>method _Ovalue <span class="smalllinenumber">[line 5920]</span></h3>
+	<h3>method _Ovalue <span class="smalllinenumber">[line 5914]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14833,7 +15162,7 @@ $owner_pass)</code>
   </div>
   <hr />
 	<a name="method_parsejpeg"></a>
-	<h3>method _parsejpeg <span class="smalllinenumber">[line 3822]</span></h3>
+	<h3>method _parsejpeg <span class="smalllinenumber">[line 3819]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14872,7 +15201,7 @@ $file)</code>
   </div>
   <hr />
 	<a name="method_parsepng"></a>
-	<h3>method _parsepng <span class="smalllinenumber">[line 3848]</span></h3>
+	<h3>method _parsepng <span class="smalllinenumber">[line 3845]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14911,7 +15240,7 @@ $file)</code>
   </div>
   <hr />
 	<a name="method_putannots"></a>
-	<h3>method _putannots <span class="smalllinenumber">[line 4291]</span></h3>
+	<h3>method _putannots <span class="smalllinenumber">[line 4290]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14921,7 +15250,7 @@ $n)</code>
     </td></tr></table>
     </td></tr></table><br />
 	
-		Output Page Annotations.<br /><br /><p>See section 8.4 of PDF reference.</p><br /><br /><br />
+		Output Page Annotations.<br /><br /><p>!!! THIS FUNCTION IS NOT YET COMPLETED !!!  See section 8.4 of PDF reference.</p><br /><br /><br />
 <h4>Tags:</h4>
 <div class="tags">
 <table border="0" cellspacing="0" cellpadding="0">
@@ -14953,7 +15282,7 @@ $n)</code>
   </div>
   <hr />
 	<a name="method_putbookmarks"></a>
-	<h3>method _putbookmarks <span class="smalllinenumber">[line 7729]</span></h3>
+	<h3>method _putbookmarks <span class="smalllinenumber">[line 7723]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -14978,7 +15307,7 @@ $n)</code>
   </div>
   <hr />
 	<a name="method_putcatalog"></a>
-	<h3>method _putcatalog <span class="smalllinenumber">[line 4997]</span></h3>
+	<h3>method _putcatalog <span class="smalllinenumber">[line 4998]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15003,7 +15332,7 @@ $n)</code>
   </div>
   <hr />
 	<a name="method_putcidfont0"></a>
-	<h3>method _putcidfont0 <span class="smalllinenumber">[line 4727]</span></h3>
+	<h3>method _putcidfont0 <span class="smalllinenumber">[line 4739]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15045,7 +15374,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putencryption"></a>
-	<h3>method _putencryption <span class="smalllinenumber">[line 5851]</span></h3>
+	<h3>method _putencryption <span class="smalllinenumber">[line 5845]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15073,7 +15402,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putextgstates"></a>
-	<h3>method _putextgstates <span class="smalllinenumber">[line 8191]</span></h3>
+	<h3>method _putextgstates <span class="smalllinenumber">[line 8241]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15098,7 +15427,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putfonts"></a>
-	<h3>method _putfonts <span class="smalllinenumber">[line 4613]</span></h3>
+	<h3>method _putfonts <span class="smalllinenumber">[line 4625]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15123,7 +15452,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putheader"></a>
-	<h3>method _putheader <span class="smalllinenumber">[line 5124]</span></h3>
+	<h3>method _putheader <span class="smalllinenumber">[line 5125]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15148,7 +15477,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putimages"></a>
-	<h3>method _putimages <span class="smalllinenumber">[line 4803]</span></h3>
+	<h3>method _putimages <span class="smalllinenumber">[line 4817]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15173,7 +15502,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putinfo"></a>
-	<h3>method _putinfo <span class="smalllinenumber">[line 4957]</span></h3>
+	<h3>method _putinfo <span class="smalllinenumber">[line 4971]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15198,7 +15527,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putjavascript"></a>
-	<h3>method _putjavascript <span class="smalllinenumber">[line 7803]</span></h3>
+	<h3>method _putjavascript <span class="smalllinenumber">[line 7797]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15223,7 +15552,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putocg"></a>
-	<h3>method _putocg <span class="smalllinenumber">[line 8112]</span></h3>
+	<h3>method _putocg <span class="smalllinenumber">[line 8162]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15248,7 +15577,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putpages"></a>
-	<h3>method _putpages <span class="smalllinenumber">[line 4199]</span></h3>
+	<h3>method _putpages <span class="smalllinenumber">[line 4197]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15273,7 +15602,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putresourcedict"></a>
-	<h3>method _putresourcedict <span class="smalllinenumber">[line 4885]</span></h3>
+	<h3>method _putresourcedict <span class="smalllinenumber">[line 4899]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15298,7 +15627,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putresources"></a>
-	<h3>method _putresources <span class="smalllinenumber">[line 4925]</span></h3>
+	<h3>method _putresources <span class="smalllinenumber">[line 4939]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15323,7 +15652,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putshaders"></a>
-	<h3>method _putshaders <span class="smalllinenumber">[line 8476]</span></h3>
+	<h3>method _putshaders <span class="smalllinenumber">[line 8526]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15354,7 +15683,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putspotcolors"></a>
-	<h3>method _putspotcolors <span class="smalllinenumber">[line 4858]</span></h3>
+	<h3>method _putspotcolors <span class="smalllinenumber">[line 4872]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15382,7 +15711,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putstream"></a>
-	<h3>method _putstream <span class="smalllinenumber">[line 5333]</span></h3>
+	<h3>method _putstream <span class="smalllinenumber">[line 5327]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15418,7 +15747,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_puttrailer"></a>
-	<h3>method _puttrailer <span class="smalllinenumber">[line 5110]</span></h3>
+	<h3>method _puttrailer <span class="smalllinenumber">[line 5111]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15443,7 +15772,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_puttruetypeunicode"></a>
-	<h3>method _puttruetypeunicode <span class="smalllinenumber">[line 5369]</span></h3>
+	<h3>method _puttruetypeunicode <span class="smalllinenumber">[line 5363]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15485,7 +15814,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putuserrights"></a>
-	<h3>method _putuserrights <span class="smalllinenumber">[line 8005]</span></h3>
+	<h3>method _putuserrights <span class="smalllinenumber">[line 7999]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15510,7 +15839,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putviewerpreferences"></a>
-	<h3>method _putviewerpreferences <span class="smalllinenumber">[line 5040]</span></h3>
+	<h3>method _putviewerpreferences <span class="smalllinenumber">[line 5041]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15541,7 +15870,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_putxobjectdict"></a>
-	<h3>method _putxobjectdict <span class="smalllinenumber">[line 4875]</span></h3>
+	<h3>method _putxobjectdict <span class="smalllinenumber">[line 4889]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15566,7 +15895,7 @@ $font)</code>
   </div>
   <hr />
 	<a name="method_RC4"></a>
-	<h3>method _RC4 <span class="smalllinenumber">[line 5869]</span></h3>
+	<h3>method _RC4 <span class="smalllinenumber">[line 5863]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15617,7 +15946,7 @@ $text)</code>
   </div>
   <hr />
 	<a name="method_textstring"></a>
-	<h3>method _textstring <span class="smalllinenumber">[line 5271]</span></h3>
+	<h3>method _textstring <span class="smalllinenumber">[line 5296]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15656,7 +15985,7 @@ $s)</code>
   </div>
   <hr />
 	<a name="method_toJPEG"></a>
-	<h3>method _toJPEG <span class="smalllinenumber">[line 3806]</span></h3>
+	<h3>method _toJPEG <span class="smalllinenumber">[line 3803]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15697,47 +16026,8 @@ $file)</code>
         <div class="top">[ <a href="#top">Top</a> ]</div>
   </div>
   <hr />
-	<a name="method_uristring"></a>
-	<h3>method _uristring <span class="smalllinenumber">[line 5292]</span></h3>
-	<div class="function">
-    <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
-    <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
-		<code>string _uristring(
-string
-$s)</code>
-    </td></tr></table>
-    </td></tr></table><br />
-	
-		Format an URI string<br /><br /><br /><br />
-<h4>Tags:</h4>
-<div class="tags">
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td><b>return:</b>&nbsp;&nbsp;</td><td>escaped string.</td>
-  </tr>
-  <tr>
-    <td><b>access:</b>&nbsp;&nbsp;</td><td>protected</td>
-  </tr>
-</table>
-</div>
-<br /><br />
-
-	
-        <h4>Parameters:</h4>
-    <div class="tags">
-    <table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-        <td class="type">string&nbsp;&nbsp;</td>
-        <td><b>$s</b>&nbsp;&nbsp;</td>
-        <td>string to escape.</td>
-      </tr>
-        </table>
-    </div><br />
-        <div class="top">[ <a href="#top">Top</a> ]</div>
-  </div>
-  <hr />
 	<a name="method_Uvalue"></a>
-	<h3>method _Uvalue <span class="smalllinenumber">[line 5932]</span></h3>
+	<h3>method _Uvalue <span class="smalllinenumber">[line 5926]</span></h3>
 	<div class="function">
     <table width="90%" border="0" cellspacing="0" cellpadding="1"><tr><td class="code_border">
     <table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td class="code">
@@ -15774,7 +16064,7 @@ $s)</code>
 
         <div class="credit">
 		    <hr />
-		    Documentation generated on Thu, 06 Nov 2008 18:50:26 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
+		    Documentation generated on Tue, 25 Nov 2008 16:30:53 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
 	      </div>
       </td></tr></table>
     </td>

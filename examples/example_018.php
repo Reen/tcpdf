@@ -5,7 +5,7 @@
 // Last Update : 2008-07-21
 // 
 // Description : Example 018 for TCPDF class
-//               RTL document with Farsi language
+//               RTL document with Persian language
 // 
 // Author: Nicola Asuni
 // 
@@ -22,7 +22,7 @@
 /**
  * Creates an example PDF TEST document using TCPDF
  * @package com.tecnick.tcpdf
- * @abstract TCPDF - Example: RTL document with Farsi language
+ * @abstract TCPDF - Example: RTL document with Persian language
  * @author Nicola Asuni
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
@@ -82,18 +82,18 @@ $pdf->AddPage();
 // set font
 $pdf->SetFont("dejavusans", "", 12);
 
-// Farsi and English content
-$htmlfarsi = "<span color=\"#660000\">Farsi example:</span><br />سلام بالاخره مشکل PDF فارسی به طور کامل حل شد. اینم یک نمونش.<br />مشکل حرف \"ژ\" در بعضی کلمات مانند کلمه ویژه نیز بر طرف شد.<br />نگارش حروف لام و الف پشت سر هم نیز تصحیح شد.<br />با تشکر از  \"Asuni Nicola\" و محمد علی گل کار برای پشتیبانی زبان فارسی.";
-$pdf->WriteHTML($htmlfarsi, true, 0, true, 0);
+// Persian and English content
+$htmlpersian = "<span color=\"#660000\">Persian example:</span><br />سلام بالاخره مشکل PDF فارسی به طور کامل حل شد. اینم یک نمونش.<br />مشکل حرف \"ژ\" در بعضی کلمات مانند کلمه ویژه نیز بر طرف شد.<br />نگارش حروف لام و الف پشت سر هم نیز تصحیح شد.<br />با تشکر از  \"Asuni Nicola\" و محمد علی گل کار برای پشتیبانی زبان فارسی.";
+$pdf->WriteHTML($htmlpersian, true, 0, true, 0);
 
 // set LTR direction for english translation
 $pdf->setRTL(false);
 
 $pdf->SetFontSize(10);
 
-// Farsi and English content
-$htmlfarsitranslation = "<span color=\"#0000ff\">Hi, At last Problem of Farsi PDF Solved completely. This is a example for it.<br />Problem of \"jeh\" letter in some word like \"ویژه\" (=special) fix too.<br />The joining of laa and alf letter fix now.<br />Special thanks to \"Nicola Asuni\" and \"Mohamad Ali Golkar\" for Persian support.</span>";
-$pdf->WriteHTML($htmlfarsitranslation, true, 0, true, 0);
+// Persian and English content
+$htmlpersiantranslation = "<span color=\"#0000ff\">Hi, At last Problem of Persian PDF Solved completely. This is a example for it.<br />Problem of \"jeh\" letter in some word like \"ویژه\" (=special) fix too.<br />The joining of laa and alf letter fix now.<br />Special thanks to \"Nicola Asuni\" and \"Mohamad Ali Golkar\" for Persian support.</span>";
+$pdf->WriteHTML($htmlpersiantranslation, true, 0, true, 0);
 
 // Restore RTL direction
 $pdf->setRTL(true);

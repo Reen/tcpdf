@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : unicode_data.php
 // Begin       : 2008-01-01
-// Last Update : 2008-10-23
+// Last Update : 2008-11-17
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -53,36 +53,36 @@
 /**
 * Left-to-Right Mark
 */
-define("K_LRM", 8206);
+define('K_LRM', 8206);
 /**
 * Right-to-Left Mark
 */
-define("K_RLM", 8207);
+define('K_RLM', 8207);
 /**
 * Left-to-Right Embedding
 */
-define("K_LRE", 8234);
+define('K_LRE', 8234);
 /**
 * Right-to-Left Embedding
 */
-define("K_RLE", 8235);
+define('K_RLE', 8235);
 /**
 * Pop Directional Format
 */
-define("K_PDF", 8236);
+define('K_PDF', 8236);
 /**
 * Left-to-Right Override
 */
-define("K_LRO", 8237);
+define('K_LRO', 8237);
 /**
 * Right-to-Left Override
 */
-define("K_RLO", 8238);
+define('K_RLO', 8238);
 
 /*
  * Pattern to test RTL (Righ-To-Left) strings using regular expressions.
  */
-define("K_RE_PATTERN_RTL", "/(
+define('K_RE_PATTERN_RTL', "/(
 	  \xD6\xBE                                             # R
 	| \xD7[\x80\x83\x86\x90-\xAA\xB0-\xB4]                 # R
 	| \xDF[\x80-\xAA\xB4\xB5\xBA]                          # R

@@ -1,3 +1,43 @@
+4.3.005 (2008-11-25)
+	- makefont.php was fixed.
+	- Bug item #2339877 was fixed (false loop condition detected on WriteHTML()).
+	- Bug item #2336733 was fixed (lasth value update on Multicell() when border and fill are disabled).
+	- Bug item #2342303 was fixed (automatic page-break on Image() and ImageEPS()).
+
+4.3.004 (2008-11-19)
+	- Function _textstring() was fixed (bug 2309051).
+	- All examples were updated.
+
+4.3.003 (2008-11-18)
+	- CID-0 font bug was fixed.
+	- Some functions were optimized.
+	- Function getGroupPageNoFormatted() was added.
+	- Example n. 23 was updated.
+
+4.3.002 (2008-11-17)
+	- Bug item #2305518 "CID-0 font don't work with encryption" was fixed.
+	
+4.3.001 (2008-11-17)
+	- Bug item #2300007 "download mimetype pdf" was fixed.
+	- Double quotes were replaced by single quotes to improve PHP performances.
+	- A bug relative to HTML cell borders was fixed.
+	
+4.3.000 (2008-11-14)
+	- The function setOpenCell() was added to set the top/bottom cell sides to be open or closed when the cell cross the page.
+	- A bug relative to list items indentation was fixed.
+	- A bug relative to borders on HTML tables and Multicell was fixed.
+	- A bug relative to rowspanned cells was fixed.
+	- A bug relative to html images across pages was fixed.
+	
+4.2.009 (2008-11-13)
+	- Spaces between li tags are now automatically removed.
+	
+4.2.008 (2008-11-12)
+	- A bug relative to fill color on next page was fixed.
+	
+4.2.007 (2008-11-12)
+	- The function setListIndentWidth() was added to set custom indentation widht for HTML lists.
+	
 4.2.006 (2008-11-06)
 	- A bug relative to HTML justification was fixed.
 	

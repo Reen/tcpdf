@@ -2,8 +2,8 @@
 //============================================================+
 // File name   : makefont.php
 // Begin       : 2004-12-31
-// Last Update : 2008-08-05
-// Version     : 1.2.001
+// Last Update : 2008-11-24
+// Version     : 1.2.002
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 // 	Copyright (C) 2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -76,7 +76,7 @@ function MakeFont($fontfile, $fmfile, $embedded=true, $enc="cp1252", $patch=arra
 		} elseif ($ffext == 'pfb') {
 			$type = 'Type1';
 		} else {
-			die('Error: unrecognized font file extension: '.$ext);
+			die('Error: unrecognized font file extension: '.$ffext);
 		}
 		if ($enc) {
 			$map = ReadMap($enc);
@@ -429,7 +429,7 @@ function MakeFontDescriptor($fm, $symbolic = false) {
 	if (isset($fm['FontBBox'])) {
 		$fbb = $fm['FontBBox'];
 	} else {
-		$fbb = array(0, $des-100, 1000, $asc+100);
+		$fbb = array(0, $desc-100, 1000, $asc+100);
 	}
 	$fd .= ",'FontBBox'=>'[".$fbb[0].' '.$fbb[1].' '.$fbb[2].' '.$fbb[3]."]'";
 	//ItalicAngle

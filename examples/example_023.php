@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_023.php
 // Begin       : 2008-03-04
-// Last Update : 2008-08-24
+// Last Update : 2008-11-18
 // 
 // Description : Example 023 for TCPDF class
 //               Page Groups
@@ -43,7 +43,7 @@ class MYPDF extends TCPDF {
 		// Set font
 		$this->SetFont('helvetica','I',8);
 		// Print page number
-		$this->Cell(0,10,'Page '.$this->getGroupPageNo().'/'.$this->getPageGroupAlias(),0,0,'C');
+		$this->Cell(0,10,'Page '.$this->getGroupPageNoFormatted().'/'.$this->getPageGroupAlias(),0,0,'C');
 	}
 }
 

@@ -1,3 +1,6 @@
+4.3.006 (2008-12-01)
+	- A regular expression on getHtmlDomArray() to find HTML tags was fixed.
+
 4.3.005 (2008-11-25)
 	- makefont.php was fixed.
 	- Bug item #2339877 was fixed (false loop condition detected on WriteHTML()).

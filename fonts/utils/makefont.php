@@ -2,8 +2,8 @@
 //============================================================+
 // File name   : makefont.php
 // Begin       : 2004-12-31
-// Last Update : 2008-11-24
-// Version     : 1.2.002
+// Last Update : 2008-12-03
+// Version     : 1.2.003
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 // 	Copyright (C) 2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -90,7 +90,7 @@ function MakeFont($fontfile, $fmfile, $embedded=true, $enc="cp1252", $patch=arra
 		}
 		$fd = MakeFontDescriptor($fm, empty($map));
 	} elseif ($fmext == 'ufm') {
-		$enc = "";
+		$enc = '';
 		if (($ffext == 'ttf') OR ($ffext == 'otf')) {
 			$type = 'TrueTypeUnicode';
 		} else {

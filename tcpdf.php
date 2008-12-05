@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-11-29
+// Last Update : 2008-12-04
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.3.006
+// Version     : 4.3.007
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -121,7 +121,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.3.006
+ * @version 4.3.007
  */
 
 /**
@@ -151,14 +151,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.3.006 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.3.007 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.3.006
+	* @version 4.3.007
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1190,7 +1190,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->setPageFormat($format, $orientation);
 			//Page margins (1 cm)
 			$margin = 28.35 / $this->k;
-			$this->SetMargins($margin,$margin);
+			$this->SetMargins($margin, $margin);
 			//Interior cell margin (1 mm)
 			$this->cMargin = $margin / 10;
 			//Line width (0.2 mm)
@@ -2490,9 +2490,8 @@ if (!class_exists('TCPDF', false)) {
 			if (isset($cw[$char])) {
 				$w = $cw[$char];
 			} elseif (isset($this->CurrentFont['dw'])) {
+				// default width
 				$w = $this->CurrentFont['dw'];
-			} elseif (isset($this->CurrentFont['desc']['MissingWidth'])) {
-				$w = $this->CurrentFont['desc']['MissingWidth']; // set default size
 			} else {
 				$w = 500; // default width
 			}
@@ -2534,7 +2533,7 @@ if (!class_exists('TCPDF', false)) {
 		* Changed to support UTF-8 Unicode [Nicola Asuni, 2005-01-02].
 		* @param string $family Font family. The name can be chosen arbitrarily. If it is a standard family name, it will override the corresponding font.
 		* @param string $style Font style. Possible values are (case insensitive):<ul><li>empty string: regular (default)</li><li>B: bold</li><li>I: italic</li><li>BI or IB: bold italic</li></ul>
-		* @param string $file The font definition file. By default, the name is built from the family and style, in lower case with no space.
+		* @param string $file The font definition file. By default, the name is built from the family and style, in lower case with no spaces.
 		* @return array containing the font data, or false in case of error.
 		* @since 1.5
 		* @see SetFont()
@@ -2583,22 +2582,43 @@ if (!class_exists('TCPDF', false)) {
 			if (isset($this->fonts[$fontkey])) {
 				return $fontdata;
 			}
-			if ($file == '') {
-				$file = str_replace(' ', '', $family).strtolower($style).'.php';
-			}
-			if (!file_exists($this->_getfontpath().$file)) {
-				// try to load the basic file without styles
-				$file = str_replace(' ', '', $family).'.php';
-			}
 			if (isset($type)) {
 				unset($type); 
 			}
 			if (isset($cw)) {
 				unset($cw); 
 			}
-			include($this->_getfontpath().$file);
+			// search and include font file
+			if (empty($file) OR ((!file_exists($file)) AND (!file_exists($this->_getfontpath().$file)))) {
+				// build a standard filename
+				$file = str_replace(' ', '', $family).strtolower($style).'.php';
+			}
+			if (file_exists($file)) {
+				include($file);
+			} elseif (file_exists($this->_getfontpath().$file)) {
+				include($this->_getfontpath().$file);
+			} else {
+				// try a new filename without style suffix
+				$file = str_replace(' ', '', $family).'.php';
+				if (file_exists($this->_getfontpath().$file)) {
+					include($this->_getfontpath().$file);
+				} elseif (file_exists($file)) {
+					include($file);
+				}
+			}		
 			if ((!isset($type)) OR (!isset($cw))) {
-				$this->Error('Could not include font definition file');
+				$this->Error('Could not include font definition file: '.$family.'');
+			}
+			if (!isset($enc)) {
+				$enc = '';
+			}
+			if (!isset($dw)) {
+				// set default width
+				if (isset($desc['MissingWidth']) AND ($desc['MissingWidth'] > 0)) {
+					$dw = $desc['MissingWidth'];
+				} else {
+					$dw = $cw[ord('"')];
+				}
 			}
 			$i = count($this->fonts) + 1;			
 			// register CID font (all styles at once)
@@ -2608,24 +2628,17 @@ if (!class_exists('TCPDF', false)) {
 					$sname = $name.$qual;
 					$sfontkey = $family.$skey;
 					$this->fonts[$sfontkey] = array('i' => $i, 'type' => $type, 'name' => $sname, 'desc' => $desc, 'cidinfo' => $cidinfo, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'dw' => $dw, 'enc' => $enc);
-					$i = count($this->fonts) + 1;
+					$i++;
 				}
 				$file = '';
 			} elseif ($type == 'core') {
-				$def_width = $cw[ord('"')];
-				$this->fonts[$fontkey] = array('i' => $i, 'type' => 'core', 'name' => $this->CoreFonts[$fontkey], 'up' => -100, 'ut' => 50, 'cw' => $cw, 'dw' => $def_width);
+				$this->fonts[$fontkey] = array('i' => $i, 'type' => 'core', 'name' => $this->CoreFonts[$fontkey], 'up' => -100, 'ut' => 50, 'cw' => $cw, 'dw' => $dw);
 			} elseif (($type == 'TrueType') OR ($type == 'Type1')) {
-				if (!isset($file)) {
-					$file = '';
-				}
-				if (!isset($enc)) {
-					$enc = '';
-				}
-				$this->fonts[$fontkey] = array('i' => $i, 'type' => $type, 'name' => $name, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'file' => $file, 'enc' => $enc, 'desc' => $desc);
+				$this->fonts[$fontkey] = array('i' => $i, 'type' => $type, 'name' => $name, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'dw' => $dw, 'file' => $file, 'enc' => $enc, 'desc' => $desc);
 			} elseif ($type == 'TrueTypeUnicode') {
-				$this->fonts[$fontkey] = array('i' => $i, 'type' => $type, 'name' => $name, 'desc' => $desc, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'enc' => $enc, 'file' => $file, 'ctg' => $ctg);
+				$this->fonts[$fontkey] = array('i' => $i, 'type' => $type, 'name' => $name, 'desc' => $desc, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'dw' => $dw, 'enc' => $enc, 'file' => $file, 'ctg' => $ctg);
 			} else {
-				$this->Error('Unknow font type');
+				$this->Error('Unknow font type: '.$type.'');
 			}
 			if (isset($diff) AND (!empty($diff))) {
 				//Search existing encodings
@@ -2644,7 +2657,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->fonts[$fontkey]['diff'] = $d;
 			}
 			if (!empty($file)) {
-				if ((strcasecmp($type,'TrueType') == 0) OR (strcasecmp($type,'TrueTypeUnicode') == 0)) {
+				if ((strcasecmp($type,'TrueType') == 0) OR (strcasecmp($type, 'TrueTypeUnicode') == 0)) {
 					$this->FontFiles[$file] = array('length1' => $originalsize);
 				} elseif ($type != 'core') {
 					$this->FontFiles[$file] = array('length1' => $size1, 'length2' => $size2);
@@ -2975,7 +2988,7 @@ if (!class_exists('TCPDF', false)) {
 				$s .= sprintf('%.2f %.2f %.2f %.2f re %s ', $xk, (($this->h - $this->y) * $k), ($w * $k), (-$h * $k), $op);
 			}
 			if (is_string($border)) {
-				$lm = $this->LineWidth / 2;
+				$lm = ($this->LineWidth / 2);
 				$x = $this->x;
 				$y = $this->y;
 				if (strpos($border,'L') !== false) {
@@ -3641,10 +3654,12 @@ if (!class_exists('TCPDF', false)) {
 		* @param boolean $resize If true resize (reduce) the image to fit $w and $h (requires GD library).
 		* @param int $dpi dot-per-inch resolution used on resize
 		* @param string $palign Allows to center or align the image on the current line. Possible values are:<ul><li>L : left align</li><li>C : center</li><li>R : right align</li><li>'' : empty string : left for LTR or right for RTL</li></ul>
+		* @param boolean $ismask true if this image is a mask, false otherwise
+		* @param mixed $imgmask image object returned by this function or false
+		* @return image information
 		* @since 1.1
-		* @see AddLink()
 		*/
-		public function Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='') {
+		public function Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false) {
 			if ($x === '') {
 				$x = $this->x;
 			}
@@ -3692,8 +3707,11 @@ if (!class_exists('TCPDF', false)) {
 				// GD image handler function
 				$gdfunction = 'imagecreatefrom'.$type;
 				$info = false;
-				if ((method_exists($this,$mtd)) AND (!($resize AND function_exists($gdfunction)))) {
+				if ((method_exists($this, $mtd)) AND (!($resize AND function_exists($gdfunction)))) {
 					$info = $this->$mtd($file);
+					if ($info == 'pngalpha') {
+						return $this->ImagePngAlpha($file, $x, $y, $w, $h, 'PNG', $link, $align, $resize, $dpi, $palign);
+					}
 				} 
 				if (!$info) {
 					if (function_exists($gdfunction)) {
@@ -3714,7 +3732,14 @@ if (!class_exists('TCPDF', false)) {
 					return;
 				}
 				set_magic_quotes_runtime($mqr);
+				if ($ismask) {
+					// force grayscale
+					$info['cs'] = 'DeviceGray'; 
+				}
 				$info['i'] = count($this->images) + 1;
+				if ($imgmask !== false) {
+					$info['masked'] = $imgmask;
+				}
 				// add image to document
 				$this->images[$file] = $info;
 			} else {
@@ -3759,7 +3784,13 @@ if (!class_exists('TCPDF', false)) {
 					$this->img_rb_x = $ximg + $w;
 				}
 			}
-			$xkimg = $ximg * $this->k;
+			
+			if ($ismask) {
+				// embed hidden, ouside the canvas
+				$xkimg = ($this->pagedim[$this->page]['w'] + 10);
+			} else {
+				$xkimg = $ximg * $this->k;
+			}
 			$this->_out(sprintf('q %.2f 0 0 %.2f %.2f %.2f cm /I%d Do Q', ($w * $this->k), ($h * $this->k), $xkimg, (($this->h - ($y + $h)) * $this->k), $info['i']));
 			if ($link) {
 				$this->Link($ximg, $y, $w, $h, $link, 0);
@@ -3790,6 +3821,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 			}
 			$this->endlinex = $this->img_rb_x;
+			return $info['i']; 
 		}
 				
 		/**
@@ -3801,7 +3833,7 @@ if (!class_exists('TCPDF', false)) {
 		* @access protected
 		*/
 		protected function _toJPEG($image) {
-			$tempname = tempnam(K_PATH_CACHE,'jpg');
+			$tempname = tempnam(K_PATH_CACHE, 'jpg');
 			imagejpeg($image, $tempname, $this->jpeg_quality);
 			imagedestroy($image);
 			$retvars = $this->_parsejpeg($tempname);
@@ -3861,6 +3893,7 @@ if (!class_exists('TCPDF', false)) {
 			$bpc = ord(fread($f,1));
 			if ($bpc > 8) {
 				//$this->Error('16-bit depth not supported: '.$file);
+				fclose($f);
 				return false;
 			}
 			$ct = ord(fread($f,1));
@@ -3871,19 +3904,23 @@ if (!class_exists('TCPDF', false)) {
 			} elseif ($ct == 3) {
 				$colspace = 'Indexed';
 			} else {
-				//$this->Error('Alpha channel not supported: '.$file);
-				return false;
+				// alpha channel
+				fclose($f);
+				return 'pngalpha';
 			}
 			if (ord(fread($f,1)) != 0) {
 				//$this->Error('Unknown compression method: '.$file);
+				fclose($f);
 				return false;
 			}
 			if (ord(fread($f,1)) != 0) {
 				//$this->Error('Unknown filter method: '.$file);
+				fclose($f);
 				return false;
 			}
 			if (ord(fread($f,1)) != 0) {
 				//$this->Error('Interlacing not supported: '.$file);
+				fclose($f);
 				return false;
 			}
 			fread($f,4);
@@ -3894,18 +3931,18 @@ if (!class_exists('TCPDF', false)) {
 			$data = '';
 			do {
 				$n = $this->_freadint($f);
-				$type = fread($f,4);
+				$type = fread($f, 4);
 				if ($type == 'PLTE') {
 					//Read palette
-					$pal = fread($f,$n);
-					fread($f,4);
+					$pal = fread($f, $n);
+					fread($f, 4);
 				} elseif ($type == 'tRNS') {
 					//Read transparency info
-					$t = fread($f,$n);
+					$t = fread($f, $n);
 					if ($ct == 0) {
-						$trns = array(ord(substr($t,1,1)));
+						$trns = array(ord(substr($t, 1, 1)));
 					} elseif ($ct == 2) {
-						$trns = array(ord(substr($t,1,1)), ord(substr($t,3,1)), ord(substr($t,5,1)));
+						$trns = array(ord(substr($t, 1, 1)), ord(substr($t, 3, 1)), ord(substr($t, 5, 1)));
 					} else {
 						$pos = strpos($t,chr(0));
 						if ($pos !== false) {
@@ -3915,22 +3952,86 @@ if (!class_exists('TCPDF', false)) {
 					fread($f, 4);
 				} elseif ($type == 'IDAT') {
 					//Read image data block
-					$data .= fread($f,$n);
+					$data .= fread($f, $n);
 					fread($f, 4);
 				} elseif ($type == 'IEND') {
 					break;
 				} else {
-					fread($f, $n+4);
+					fread($f, $n + 4);
 				}
-			}
-			while ($n);
+			} while ($n);
 			if (($colspace == 'Indexed') AND (empty($pal))) {
 				//$this->Error('Missing palette in '.$file);
+				fclose($f);
 				return false;
 			}
 			fclose($f);
 			return array('w' => $w, 'h' => $h, 'cs' => $colspace, 'bpc' => $bpc, 'f' => 'FlateDecode', 'parms' => $parms, 'pal' => $pal, 'trns' => $trns, 'data' => $data);
 		}
+		
+		/**
+		* Extract info from a PNG image with alpha channel using the GD library.
+		* @param string $file Name of the file containing the image.
+		* @param float $x Abscissa of the upper-left corner.
+		* @param float $y Ordinate of the upper-left corner.
+		* @param float $w Width of the image in the page. If not specified or equal to zero, it is automatically calculated.
+		* @param float $h Height of the image in the page. If not specified or equal to zero, it is automatically calculated.
+		* @param string $type Image format. Possible values are (case insensitive): JPEG and PNG (whitout GD library) and all images supported by GD: GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM;. If not specified, the type is inferred from the file extension.
+		* @param mixed $link URL or identifier returned by AddLink().
+		* @param string $align Indicates the alignment of the pointer next to image insertion relative to image height. The value can be:<ul><li>T: top-right for LTR or top-left for RTL</li><li>M: middle-right for LTR or middle-left for RTL</li><li>B: bottom-right for LTR or bottom-left for RTL</li><li>N: next line</li></ul>
+		* @param boolean $resize If true resize (reduce) the image to fit $w and $h (requires GD library).
+		* @param int $dpi dot-per-inch resolution used on resize
+		* @param string $palign Allows to center or align the image on the current line. Possible values are:<ul><li>L : left align</li><li>C : center</li><li>R : right align</li><li>'' : empty string : left for LTR or right for RTL</li></ul>
+		* @author Valentin Schmidt, Nicola Asuni
+		* @since 4.3.007 (2008-12-04)
+		* @see Image()
+		*/
+		protected function ImagePngAlpha($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='') {
+			// get image size
+			list($wpx, $hpx) = getimagesize($file);
+			// generate images
+			$img = imagecreatefrompng($file);
+			$imgalpha = imagecreate($wpx, $hpx);
+			// generate gray scale pallete
+			for($c = 0; $c < 256; $c++) {
+				ImageColorAllocate($imgalpha, $c, $c, $c);
+			}
+			// extract alpha channel
+			for ($xpx = 0; $xpx < $wpx; $xpx++) {
+				for ($ypx = 0; $ypx < $hpx; $ypx++) {
+					$colorindex = imagecolorat($img, $xpx, $ypx);
+					$col = imagecolorsforindex($img, $colorindex);
+					imagesetpixel($imgalpha, $xpx, $ypx, $this->getGDgamma((127 - $col['alpha']) * 255 / 127));
+				}
+			}
+			// create temp alpha file
+			$tempfile_alpha = tempnam(K_PATH_CACHE, 'mska');
+			imagepng($imgalpha, $tempfile_alpha);
+			imagedestroy($imgalpha);
+			// extract image without alpha channel
+			$imgplain = imagecreatetruecolor($wpx, $hpx);
+			imagecopy($imgplain, $img, 0, 0, 0, 0, $wpx, $hpx);
+			// create temp image file
+			$tempfile_plain = tempnam(K_PATH_CACHE, 'mskp');
+			imagepng($imgplain, $tempfile_plain);
+			imagedestroy($imgplain);
+			// embed mask image
+			$imgmask = $this->Image($tempfile_alpha, $x, $y, $w, $h, 'PNG', '', '', $resize, $dpi, '', true, false);
+			// embed image, masked with previously embedded mask
+			$this->Image($tempfile_plain, $x, $y, $w, $h, $type, $link, $align, $resize, $dpi, $palign, false, $imgmask);
+			// remove temp files
+			unlink($tempfile_alpha);
+			unlink($tempfile_plain);
+		}
+
+		/**
+		* Correct the gamma value to be used with GD library
+		* @param float $v the gamma value to be corrected
+		* @since 4.3.007 (2008-12-04)
+		*/
+		protected function getGDgamma($v) {
+			return (pow(($v / 255), 2.2) * 255);
+		} 
 		
 		/**
 		* Performs a line break. 
@@ -4773,7 +4874,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('/BaseFont /'.$name);
 			$this->_out('/Subtype /CIDFontType0');
 			$cidinfo = '/Registry '.$this->_datastring($font['cidinfo']['Registry']);
-			$cidinfo .= ' /Ordering '.$this->_datastring($font['cidinfo']['Ordering']);	
+			$cidinfo .= ' /Ordering '.$this->_datastring($font['cidinfo']['Ordering']);
 			$cidinfo .= ' /Supplement '.$font['cidinfo']['Supplement'];
 			$this->_out('/CIDSystemInfo <<'.$cidinfo.'>>');
 			$this->_out('/FontDescriptor '.($this->n + 1).' 0 R');
@@ -4804,7 +4905,9 @@ if (!class_exists('TCPDF', false)) {
 			$this->_newobj();
 			$s = '<</Type /FontDescriptor /FontName /'.$name;
 			foreach ($font['desc'] as $k => $v) {
-				$s .= ' /'.$k.' '.$v;
+				if ($k != 'Style') {
+					$s .= ' /'.$k.' '.$v.'';
+				}
 			}
 			$this->_out($s.'>>');
 			$this->_out('endobj');
@@ -4825,10 +4928,10 @@ if (!class_exists('TCPDF', false)) {
 				$this->_out('/Width '.$info['w']);
 				$this->_out('/Height '.$info['h']);
 				if (isset($info['masked'])) {
-					$this->_out('/SMask '.($this->n-1).' 0 R');
+					$this->_out('/SMask '.($this->n - 1).' 0 R');
 				}
 				if ($info['cs'] == 'Indexed') {
-					$this->_out('/ColorSpace [/Indexed /DeviceRGB '.(strlen($info['pal']) / 3 - 1).' '.($this->n + 1).' 0 R]');
+					$this->_out('/ColorSpace [/Indexed /DeviceRGB '.((strlen($info['pal']) / 3) - 1).' '.($this->n + 1).' 0 R]');
 				} else {
 					$this->_out('/ColorSpace /'.$info['cs']);
 					if ($info['cs'] == 'DeviceCMYK') {
@@ -4842,7 +4945,7 @@ if (!class_exists('TCPDF', false)) {
 				if (isset($info['parms'])) {
 					$this->_out($info['parms']);
 				}
-				if (isset($info['trns']) and is_array($info['trns'])) {
+				if (isset($info['trns']) AND is_array($info['trns'])) {
 					$trns='';
 					for($i=0; $i < count($info['trns']); $i++) {
 						$trns .= $info['trns'][$i].' '.$info['trns'][$i].' ';
@@ -5380,9 +5483,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('/BaseFont /'.$font['name'].'');
 			$this->_out('/CIDSystemInfo '.($this->n + 2).' 0 R'); 
 			$this->_out('/FontDescriptor '.($this->n + 3).' 0 R');
-			if (isset($font['desc']['MissingWidth'])) {
-				$this->_out('/DW '.$font['desc']['MissingWidth'].''); // The default width for glyphs in the CIDFont MissingWidth
-			}
+			$this->_out('/DW '.$font['dw'].''); // default width
 			$w = '';
 			foreach ($font['cw'] as $cid => $width) {
 				$w .= ''.$cid.' ['.$width.'] '; // define a specific width for each individual CID
@@ -5814,7 +5915,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @access public
 		 */
 		public function pixelsToUnits($px) {
-			return $px / $this->k;
+			return ($px / $this->k);
 		}
 			
 		/**
@@ -5829,13 +5930,14 @@ if (!class_exists('TCPDF', false)) {
 		
 		// ENCRYPTION METHODS ----------------------------------
 		// SINCE 2.0.000 (2008-01-02)
+		
 		/**
 		* Compute encryption key depending on object number where the encrypted data is stored
 		* @param int $n object number
 		* @since 2.0.000 (2008-01-02)
 		*/
 		protected function _objectkey($n) {
-			return substr($this->_md5_16($this->encryption_key.pack('VXxx',$n)),0,10);
+			return substr($this->_md5_16($this->encryption_key.pack('VXxx', $n)), 0, 10);
 		}
 		
 		/**
@@ -5862,10 +5964,10 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		protected function _RC4($key, $text) {
 			if ($this->last_rc4_key != $key) {
-				$k = str_repeat($key, 256/strlen($key)+1);
-				$rc4 = range(0,255);
+				$k = str_repeat($key, ((256 / strlen($key)) + 1));
+				$rc4 = range(0, 255);
 				$j = 0;
-				for ($i=0; $i < 256; $i++) {
+				for ($i = 0; $i < 256; $i++) {
 					$t = $rc4[$i];
 					$j = ($j + $t + ord($k{$i})) % 256;
 					$rc4[$i] = $rc4[$j];
@@ -5880,7 +5982,7 @@ if (!class_exists('TCPDF', false)) {
 			$a = 0;
 			$b = 0;
 			$out = '';
-			for ($i=0; $i < $len; $i++) {
+			for ($i = 0; $i < $len; $i++) {
 				$a = ($a + 1) % 256;
 				$t = $rc4[$a];
 				$b = ($b + $t) % 256;
@@ -5900,7 +6002,7 @@ if (!class_exists('TCPDF', false)) {
 		* @author Klemen Vodopivec
 		*/
 		protected function _md5_16($str) {
-			return pack('H*',md5($str));
+			return pack('H*', md5($str));
 		}
 		
 		/**
@@ -5913,7 +6015,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		protected function _Ovalue($user_pass, $owner_pass) {
 			$tmp = $this->_md5_16($owner_pass);
-			$owner_RC4_key = substr($tmp,0,5);
+			$owner_RC4_key = substr($tmp, 0, 5);
 			return $this->_RC4($owner_RC4_key, $user_pass);
 		}
 		
@@ -5937,17 +6039,17 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		protected function _generateencryptionkey($user_pass, $owner_pass, $protection) {
 			// Pad passwords
-			$user_pass = substr($user_pass.$this->padding,0,32);
-			$owner_pass = substr($owner_pass.$this->padding,0,32);
+			$user_pass = substr($user_pass.$this->padding, 0, 32);
+			$owner_pass = substr($owner_pass.$this->padding, 0, 32);
 			// Compute O value
 			$this->Ovalue = $this->_Ovalue($user_pass, $owner_pass);
 			// Compute encyption key
 			$tmp = $this->_md5_16($user_pass.$this->Ovalue.chr($protection)."\xFF\xFF\xFF");
-			$this->encryption_key = substr($tmp,0,5);
+			$this->encryption_key = substr($tmp, 0, 5);
 			// Compute U value
 			$this->Uvalue = $this->_Uvalue();
 			// Compute P value
-			$this->Pvalue = -(($protection^255)+1);
+			$this->Pvalue = -(($protection^255) + 1);
 		}
 		
 		/**

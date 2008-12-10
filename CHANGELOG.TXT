@@ -1,3 +1,15 @@
+4.4.003 (2008-12-09)
+	- Bug item #2412147 "Warning on line 3367" was fixed.
+	- Method setHtmlLinksStyle() was added to set default HTML link colors and font style.
+	- Method addHtmlLink() was changed to use color and style defined on the inline CSS.
+	
+4.4.002 (2008-12-09)
+	- Borders on Multicell() were fixed.
+	- Problem of Multicell() on Header function (Bug item #2407579) was fixed.
+	- Problem on graphics tranformations applied to Multicell() was fixed.
+	- Support for ImageMagick was added.
+	- Width calculation for nested tables was fixed.
+	
 4.4.001 (2008-12-08)
 	- Some missing core fonts were added on fonts directory.
 	- CID0 fonts rendering was fixed.

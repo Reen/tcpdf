@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-08
+// Last Update : 2008-12-09
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.4.001
+// Version     : 4.4.003
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -121,7 +121,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.4.001
+ * @version 4.4.003
  */
 
 /**
@@ -151,14 +151,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.4.001 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.003 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.4.001
+	* @version 4.4.003
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -649,10 +649,10 @@ if (!class_exists('TCPDF', false)) {
 		// variables for html parser
 		
 		/**
-		 * @var HTML PARSER: store current link.
+		 * @var HTML PARSER: array to store current link and rendering styles.
 		 * @access protected
 		 */
-		protected $HREF;
+		protected $HREF = array();
 		
 		/**
 		 * @var store available fonts list.
@@ -1124,6 +1124,28 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 4.4.001 (2008-12-08)
 		 */
 		protected $premode = false;
+				
+		/**
+		 * Array used to store positions of graphics transformation blocks inside the page buffer.
+		 * keys are the page numbers
+		 * @access protected
+		 * @since 4.4.002 (2008-12-09)
+		 */
+		protected $tranfmrk = array();
+				
+		/**
+		 * Default color for html links
+		 * @access protected
+		 * @since 4.4.003 (2008-12-09)
+		 */
+		protected $htmlLinkColorArray = array(0, 0, 255);
+		
+		/**
+		 * Default font style to add to html links
+		 * @access protected
+		 * @since 4.4.003 (2008-12-09)
+		 */
+		protected $htmlLinkFontStyle = 'U';
 		
 		//------------------------------------------------------------
 		// METHODS
@@ -1154,6 +1176,7 @@ if (!class_exists('TCPDF', false)) {
 			//Initialization of properties
 			$this->isunicode = $unicode;
 			$this->page = 0;
+			$this->tranfmrk[0] = array();
 			$this->pagedim = array();
 			$this->n = 2;
 			$this->buffer = '';
@@ -1222,7 +1245,7 @@ if (!class_exists('TCPDF', false)) {
 			//Set default PDF version number
 			$this->PDFVersion = '1.7';
 			$this->encoding = $encoding;
-			$this->HREF = '';
+			$this->HREF = array();
 			$this->getFontsList();
 			$this->fgcolor = array('R' => 0, 'G' => 0, 'B' => 0);
 			$this->bgcolor = array('R' => 255, 'G' => 255, 'B' => 255);
@@ -1237,6 +1260,8 @@ if (!class_exists('TCPDF', false)) {
 			$this->jpeg_quality = 75;
 			// initialize some settings
 			$this->utf8Bidi(array(''));
+			// set default font
+			$this->SetFont($this->FontFamily, $this->FontStyle, $this->FontSizePt);
 		}
 		
 		/**
@@ -1928,13 +1953,13 @@ if (!class_exists('TCPDF', false)) {
 			// restore graphic settings
 			$this->setGraphicVars($gvars);
 			// mark this point
-			$this->intmrk[$this->page] = strlen($this->pages[$this->page]);
+			$this->setPageMark();
 			// print page header
 			$this->setHeader();
 			// restore graphic settings
 			$this->setGraphicVars($gvars);
 			// mark this point
-			$this->intmrk[$this->page] = strlen($this->pages[$this->page]);
+			$this->setPageMark();
 		}
 			
 		/**
@@ -3316,15 +3341,15 @@ if (!class_exists('TCPDF', false)) {
 					if ($page == $startpage) {
 						$this->y = $starty; // put cursor at the beginning of cell on the first page
 						$h = $this->getPageHeight() - $starty - $this->getBreakMargin();
-						$cborder = $border ? 'LTR' : 0;
+						$cborder = $this->getBorderMode($border, $position='start');
 					} elseif ($page == $endpage) {
 						$this->y = $this->tMargin; // put cursor at the beginning of last page
 						$h = $currentY - $this->tMargin;
-						$cborder = $border ? 'LRB' : 0;
+						$cborder = $this->getBorderMode($border, $position='end');
 					} else {
 						$this->y = $this->tMargin; // put cursor at the beginning of the current page
 						$h = $this->getPageHeight() - $this->tMargin - $this->getBreakMargin();
-						$cborder = $border ? 'LR' : 0;
+						$cborder = $this->getBorderMode($border, $position='middle');
 					}
 					$nx = $x;
 					// account for margin changes
@@ -3336,9 +3361,6 @@ if (!class_exists('TCPDF', false)) {
 						}
 					}
 					$this->SetX($nx);
-					if (!$this->opencell) {
-						$cborder = $border;
-					}
 					$ccode = $this->getCellCode($w, $h, '', $cborder, 1, '', $fill);
 					if ($cborder OR $fill) {
 						$pstart = substr($this->pages[$this->page], 0, $this->intmrk[$this->page]);
@@ -3355,10 +3377,18 @@ if (!class_exists('TCPDF', false)) {
 				// design a cell around the text
 				$ccode = $this->getCellCode($w, $h, '', $border, 1, '', $fill);
 				if ($border OR $fill) {
-					$pstart = substr($this->pages[$this->page], 0, $this->intmrk[$this->page]);
-					$pend = substr($this->pages[$this->page], $this->intmrk[$this->page]);
+					if (end($this->tranfmrk[$this->page]) !== false) {
+						$pagemarkkey = key($this->tranfmrk[$this->page]);
+						$pagemark = &$this->tranfmrk[$this->page][$pagemarkkey];
+					} elseif ($this->InFooter) {
+						$pagemark = &$this->footerpos[$this->page];
+					} else {
+						$pagemark = &$this->intmrk[$this->page];
+					}
+					$pstart = substr($this->pages[$this->page], 0, $pagemark);
+					$pend = substr($this->pages[$this->page], $pagemark);
 					$this->pages[$this->page] = $pstart.$ccode."\n".$pend;
-					$this->intmrk[$this->page] += strlen($ccode."\n");
+					$pagemark += strlen($ccode."\n");
 				}
 			}
 			// Get end-of-cell Y position
@@ -3379,6 +3409,85 @@ if (!class_exists('TCPDF', false)) {
 				$this->SetX($x + $w);
 			}
 			return $nl;
+		}
+		
+		/**
+		* Get the border mode accounting for multicell position (opens bottom side of multicell crossing pages)
+		* @param mixed $border Indicates if borders must be drawn around the cell block. The value can be either a number:<ul><li>0: no border (default)</li><li>1: frame</li></ul>or a string containing some or all of the following characters (in any order):<ul><li>L: left</li><li>T: top</li><li>R: right</li><li>B: bottom</li></ul>
+		* @param string multicell position: 'start', 'middle', 'end'
+		* @return border mode
+		* @access protected
+		* @since 4.4.002 (2008-12-09)
+		*/
+		protected function getBorderMode($border, $position='start') {
+			if ((!$this->opencell) AND ($border == 1)) {
+				return 1;
+			}
+			$cborder = '';
+			switch ($position) {
+				case 'start': {
+					if ($border == 1) {
+						$cborder = 'LTR';
+					} else {
+						if (!(false === strpos($border, 'L'))) {
+							$cborder .= 'L';
+						}
+						if (!(false === strpos($border, 'T'))) {
+							$cborder .= 'T';
+						}
+						if (!(false === strpos($border, 'R'))) {
+							$cborder .= 'R';
+						}
+						if ((!$this->opencell) AND (!(false === strpos($border, 'B')))) {
+							$cborder .= 'B';
+						}
+					}
+					break;
+				}
+				case 'middle': {
+					if ($border == 1) {
+						$cborder = 'LR';
+					} else {
+						if (!(false === strpos($border, 'L'))) {
+							$cborder .= 'L';
+						}
+						if ((!$this->opencell) AND (!(false === strpos($border, 'T')))) {
+							$cborder .= 'T';
+						}
+						if (!(false === strpos($border, 'R'))) {
+							$cborder .= 'R';
+						}
+						if ((!$this->opencell) AND (!(false === strpos($border, 'B')))) {
+							$cborder .= 'B';
+						}
+					}
+					break;
+				}
+				case 'end': {
+					if ($border == 1) {
+						$cborder = 'LRB';
+					} else {
+						if (!(false === strpos($border, 'L'))) {
+							$cborder .= 'L';
+						}
+						if ((!$this->opencell) AND (!(false === strpos($border, 'T')))) {
+							$cborder .= 'T';
+						}
+						if (!(false === strpos($border, 'R'))) {
+							$cborder .= 'R';
+						}
+						if (!(false === strpos($border, 'B'))) {
+							$cborder .= 'B';
+						}
+					}
+					break;
+				}
+				default: {
+					$cborder = $border;
+					break;
+				}
+			}
+			return $cborder;			
 		}
 		
 		/**
@@ -3776,6 +3885,7 @@ if (!class_exists('TCPDF', false)) {
 				$gdfunction = 'imagecreatefrom'.$type;
 				$info = false;
 				if ((method_exists($this, $mtd)) AND (!($resize AND function_exists($gdfunction)))) {
+					// TCPDF image functions
 					$info = $this->$mtd($file);
 					if ($info == 'pngalpha') {
 						return $this->ImagePngAlpha($file, $x, $y, $w, $h, 'PNG', $link, $align, $resize, $dpi, $palign);
@@ -3783,6 +3893,7 @@ if (!class_exists('TCPDF', false)) {
 				} 
 				if (!$info) {
 					if (function_exists($gdfunction)) {
+						// GD library
 						$img = $gdfunction($file);
 						if ($resize) {
 							$imgr = imagecreatetruecolor($neww, $newh);
@@ -3791,6 +3902,20 @@ if (!class_exists('TCPDF', false)) {
 						} else {
 							$info = $this->_toJPEG($img);
 						}
+					} elseif (extension_loaded('imagick')) {
+						// ImageMagick library
+						$img = new Imagick();
+						$img->readImage($file);
+						if ($resize) {
+							$img->resizeImage($neww, $newh, imagick::FILTER_CUBIC, 1, false);
+						}
+						$img->setCompressionQuality($this->jpeg_quality);
+						$img->setImageFormat('jpeg');
+						$tempname = tempnam(K_PATH_CACHE, 'jpg');
+						$img->writeImage($tempname);
+						$info = $this->_parsejpeg($tempname);
+						unlink($tempname);
+						$img->destroy();
 					} else {
 						return;
 					}
@@ -4012,7 +4137,7 @@ if (!class_exists('TCPDF', false)) {
 					} elseif ($ct == 2) {
 						$trns = array(ord(substr($t, 1, 1)), ord(substr($t, 3, 1)), ord(substr($t, 5, 1)));
 					} else {
-						$pos = strpos($t,chr(0));
+						$pos = strpos($t, chr(0));
 						if ($pos !== false) {
 							$trns = array($pos);
 						}
@@ -5523,7 +5648,9 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		protected function _beginpage($orientation='', $format='') {
 			$this->page++;
-			$this->pages[$this->page] = ''; // this mark should be removed before output
+			$this->pages[$this->page] = '';
+			// initialize array for graphics tranformation positions inside a page buffer
+			$this->tranfmrk[$this->page] = array();
 			$this->state = 2;
 			if (empty($orientation)) {
 				if (isset($this->CurOrientation)) {
@@ -5977,21 +6104,33 @@ if (!class_exists('TCPDF', false)) {
 		 * @param string $name link name
 		 * @param int $fill Indicates if the cell background must be painted (1) or transparent (0). Default value: 0.
 		 * @param boolean $firstline if true prints only the first line and return the remaining string.
+		 * @param array $color array of RGB text color
+		 * @param string $style font style (U, D, B, I)
 		 * @return the number of cells used or the remaining text if $firstline = true;
 		 * @access public
 		 */
-		public function addHtmlLink($url, $name, $fill=0, $firstline=false) {
+		public function addHtmlLink($url, $name, $fill=0, $firstline=false, $color='', $style=-1) {
 			if ($url{0} == '#') {
 				// convert url to internal link
 				$page = intval(substr($url, 1));
 				$url = $this->AddLink();
 				$this->SetLink($url, 0, $page);
 			}
+			// store current settings
 			$prevcolor = $this->fgcolor;
-			$this->SetTextColor(0, 0, 255);
 			$prevstyle = $this->FontStyle;
-			$this->SetFont('', $this->FontStyle.'U');
+			if (empty($color)) {
+				$this->SetTextColorArray($this->htmlLinkColorArray);
+			} else {
+				$this->SetTextColorArray($color);
+			}
+			if ($style == -1) {
+				$this->SetFont('', $this->FontStyle.$this->htmlLinkFontStyle);
+			} else {
+				$this->SetFont('', $this->FontStyle.$style);
+			}
 			$ret = $this->Write($this->lasth, $name, $url, $fill, '', false, 0, $firstline);
+			// restore settings
 			$this->SetFont('', $prevstyle);
 			$this->SetTextColorArray($prevcolor);
 			return $ret;
@@ -6228,7 +6367,6 @@ if (!class_exists('TCPDF', false)) {
 		// END OF ENCRYPTION FUNCTIONS -------------------------
 		
 		// START TRANSFORMATIONS SECTION -----------------------
-		// authors: Moritz Wagner, Andreas Wurmser, Nicola Asuni
 		
 		/**
 		* Starts a 2D tranformation saving current graphic state.
@@ -6239,6 +6377,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function StartTransform() {
 			$this->_out('q');
+			$this->tranfmrk[$this->page][] = strlen($this->pages[$this->page]);
 		}
 		
 		/**
@@ -6253,6 +6392,7 @@ if (!class_exists('TCPDF', false)) {
 			if (isset($this->transfmatrix)) {
 				array_pop($this->transfmatrix);
 			}
+			array_pop($this->tranfmrk[$this->page]);
 		}
 		/**
 		* Horizontal Scaling.
@@ -6514,6 +6654,11 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out(sprintf('%.3f %.3f %.3f %.3f %.3f %.3f cm', $tm[0], $tm[1], $tm[2], $tm[3], $tm[4], $tm[5]));
 			// store transformation matrix
 			$this->transfmatrix[] = array('a' => $tm[0], 'b' => $tm[1], 'c' => $tm[2], 'd' => $tm[3], 'e' => $tm[4], 'f' => $tm[5]);
+			// update tranformation mark
+			if (end($this->tranfmrk[$this->page]) !== false) {
+				$key = key($this->tranfmrk[$this->page]);
+				$this->tranfmrk[$this->page][$key] = strlen($this->pages[$this->page]);
+			}
 		}
 		
 		// END TRANSFORMATIONS SECTION -------------------------
@@ -9571,6 +9716,12 @@ if (!class_exists('TCPDF', false)) {
 				$html = preg_replace("'<pre([^\>]*)>(.*?)\n(.*?)</pre>'si", "<pre\\1>\\2<br />\\3</pre>", $html);
 			}
 			$html = str_replace("\n", ' ', $html);
+			/*
+			$html = preg_replace("'<div([^\>]*)>'si", "<br /><table><tr><td\\1>", $html);
+			$html = preg_replace("'</div>'si", "</td></tr></table>", $html);
+			$html = preg_replace("'<pre([^\>]*)>'si", "<table><tr><td\\1>", $html);
+			$html = preg_replace("'</pre>'si", "</td></tr></table>", $html);
+			*/
 			// remove extra spaces from tables
 			$html = preg_replace('/[\s]*<\/table>[\s]*/', '</table>', $html);
 			$html = preg_replace('/[\s]*<\/tr>[\s]*/', '</tr>', $html);
@@ -9748,10 +9899,12 @@ if (!class_exists('TCPDF', false)) {
 								$decors = explode(' ', strtolower($dom[$key]['style']['text-decoration']));
 								foreach ($decors as $dec) {
 									$dec = trim($dec);
-									if ($dec{0} == 'u') {
-										$dom[$key]['fontstyle'] .= 'U';
-									} elseif ($dec{0} == 'l') {
-										$dom[$key]['fontstyle'] .= 'D';
+									if (!empty($dec)) {
+										if ($dec{0} == 'u') {
+											$dom[$key]['fontstyle'] .= 'U';
+										} elseif ($dec{0} == 'l') {
+											$dom[$key]['fontstyle'] .= 'D';
+										}
 									}
 								}
 							}
@@ -10331,19 +10484,26 @@ if (!class_exists('TCPDF', false)) {
 					unset($opentagpos);
 				}
 				if ($dom[$key]['tag']) {
-					if ($dom[$key]['opening']) {	
+					if ($dom[$key]['opening']) {
+						if ($dom[$key]['value'] == 'table') {
+							// calculate cell width
+							if (isset($dom[$key]['width'])) {
+								$table_width = $this->pixelsToUnits($dom[$key]['width']);
+							} else {
+								if ($this->rtl) {
+									$table_width = $this->x - $this->lMargin;
+								} else {
+									$table_width = $this->w - $this->rMargin - $this->x;
+								}
+								$table_width -= (2 * $this->cMargin);
+							}
+						}
 						// table content is handled in a special way
 						if (($dom[$key]['value'] == 'td') OR ($dom[$key]['value'] == 'th')) {
 							$trid = $dom[$key]['parent'];
 							$table_el = $dom[$trid]['parent'];
 							if (!isset($dom[$table_el]['cols'])) {
 								$dom[$table_el]['cols'] = $trid['cols'];
-							}
-							// calculate cell width
-							if (isset($dom[$trid]['width'])) {
-								$table_width = $this->pixelsToUnits($dom[$trid]['width']);
-							} else {
-								$table_width = $w;
 							}
 							if (isset($dom[($dom[$trid]['parent'])]['attribute']['cellpadding'])) {
 								$currentcmargin = $this->pixelsToUnits($dom[($dom[$trid]['parent'])]['attribute']['cellpadding']);
@@ -10454,7 +10614,6 @@ if (!class_exists('TCPDF', false)) {
 							if (isset($dom[$parentid]['bgcolor']) AND ($dom[$parentid]['bgcolor'] !== false)) {
 								$dom[$trid]['cellpos'][($cellid - 1)]['bgcolor'] = $dom[$parentid]['bgcolor'];
 							}
-							
 							$prevLastH= $this->lasth;
 							// ****** write the cell content ******
 							$this->MultiCell($cellw, 0, $cell_content, false, $lalign, false, 2, '', '', true, 0, true);
@@ -10571,9 +10730,9 @@ if (!class_exists('TCPDF', false)) {
 						$firstblock = false;
 					}
 					$strrest = '';
-					if ($this->HREF) {
+					if (!empty($this->HREF)) {
 						// HTML <a> Link
-						$strrest = $this->addHtmlLink($this->HREF, $dom[$key]['value'], $wfill, true);
+						$strrest = $this->addHtmlLink($this->HREF['url'], $dom[$key]['value'], $wfill, true, $this->HREF['color'], $this->HREF['style']);
 					} else {
 						$ctmpmargin = $this->cMargin;
 						$this->cMargin = 0;
@@ -10746,8 +10905,35 @@ if (!class_exists('TCPDF', false)) {
 				}
 				case 'a': {
 					if (array_key_exists('href', $tag['attribute'])) {
-						$this->HREF = $tag['attribute']['href'];
+						$this->HREF['url'] = $tag['attribute']['href'];
 					}
+					$this->HREF['color'] = $this->htmlLinkColorArray;
+					$this->HREF['style'] = $this->htmlLinkFontStyle;
+					if (array_key_exists('style', $tag['attribute'])) {
+						// get style attributes
+						preg_match_all('/([^;:\s]*):([^;]*)/', $tag['attribute']['style'], $style_array, PREG_PATTERN_ORDER);
+						$astyle = array();
+						while (list($id, $name) = each($style_array[1])) {
+							$astyle[strtolower($name)] = trim($style_array[2][$id]);
+						}
+						if (isset($astyle['color'])) {
+							$this->HREF['color'] = $this->convertHTMLColorToDec($astyle['color']);
+						}
+						if (isset($astyle['text-decoration'])) {
+							$this->HREF['style'] = '';
+							$decors = explode(' ', strtolower($astyle['text-decoration']));
+							foreach ($decors as $dec) {
+								$dec = trim($dec);
+								if (!empty($dec)) {
+									if ($dec{0} == 'u') {
+										$this->HREF['style'] .= 'U';
+									} elseif ($dec{0} == 'l') {
+										$this->HREF['style'] .= 'D';
+									}
+								}
+							}
+						}
+					}		
 					break;
 				}
 				case 'img': {
@@ -11045,15 +11231,15 @@ if (!class_exists('TCPDF', false)) {
 									if ($page == $startpage) {
 										$this->y = $parent['starty']; // put cursor at the beginning of row on the first page
 										$ch = $this->getPageHeight() - $parent['starty'] - $this->getBreakMargin();
-										$cborder = $border ? 'LTR' : 0;
+										$cborder = $this->getBorderMode($border, $position='start');
 									} elseif ($page == $endpage) {
 										$this->y = $this->tMargin; // put cursor at the beginning of last page
 										$ch = $endy - $this->tMargin;
-										$cborder = $border ? 'LRB' : 0;
+										$cborder = $this->getBorderMode($border, $position='end');
 									} else {
 										$this->y = $this->tMargin; // put cursor at the beginning of the current page
 										$ch = $this->getPageHeight() - $this->tMargin - $this->getBreakMargin();
-										$cborder = $border ? 'LR' : 0;
+										$cborder = $this->getBorderMode($border, $position='middle');
 									}
 									if (isset($cellpos['bgcolor']) AND ($cellpos['bgcolor']) !== false) {
 										$this->SetFillColorArray($cellpos['bgcolor']);
@@ -11070,9 +11256,6 @@ if (!class_exists('TCPDF', false)) {
 										} elseif ((!$this->rtl) AND ($this->pagedim[$page]['lm'] != $this->pagedim[$startpage]['olm'])) {
 											$this->x += ($this->pagedim[$page]['olm'] - $this->pagedim[$startpage]['olm']);
 										}
-									}
-									if (!$this->opencell) {
-										$cborder = $border;
 									}
 									// design a cell around the text
 									$ccode = $this->FillColor."\n".$this->getCellCode($cw, $ch, '', $cborder, 1, '', $fill);
@@ -11098,10 +11281,18 @@ if (!class_exists('TCPDF', false)) {
 								// design a cell around the text
 								$ccode = $this->FillColor."\n".$this->getCellCode($cw, $ch, '', $border, 1, '', $fill);
 								if ($border OR $fill) {
-									$pstart = substr($this->pages[$this->page], 0, $this->intmrk[$this->page]);
-									$pend = substr($this->pages[$this->page], $this->intmrk[$this->page]);
+									if (end($this->tranfmrk[$this->page]) !== false) {
+										$pagemarkkey = key($this->tranfmrk[$this->page]);
+										$pagemark = &$this->tranfmrk[$this->page][$pagemarkkey];
+									} elseif ($this->InFooter) {
+										$pagemark = &$this->footerpos[$this->page];
+									} else {
+										$pagemark = &$this->intmrk[$this->page];
+									}
+									$pstart = substr($this->pages[$this->page], 0, $pagemark);
+									$pend = substr($this->pages[$this->page], $pagemark);
 									$this->pages[$this->page] = $pstart.$ccode."\n".$pend;
-									$this->intmrk[$this->page] += strlen($ccode."\n");
+									$pagemark += strlen($ccode."\n");
 								}					
 							}
 						}					
@@ -11332,6 +11523,18 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function setOpenCell($isopen) {
 			$this->opencell = $isopen;
+        }
+        
+        /**
+		* Set the color and font style for HTML links.
+		* @param array $color RGB array of colors
+		* @param string $fontstyle additional font styles to add
+		* @access public
+		* @since 4.4.003 (2008-12-09)
+		*/
+		public function setHtmlLinksStyle($color=array(0,0,255), $fontstyle='U') {
+			$this->htmlLinkColorArray = $color;
+			$this->htmlLinkFontStyle = $fontstyle;
         }
         
         /**

@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-07
+// Last Update : 2008-12-08
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.4.000
+// Version     : 4.4.001
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -121,7 +121,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.4.000
+ * @version 4.4.001
  */
 
 /**
@@ -151,14 +151,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.4.000 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.001 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.4.000
+	* @version 4.4.001
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1117,6 +1117,13 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 4.4.000 (2008-12-07)
 		 */
 		protected $embeddedfiles = array();
+		
+		/**
+		 * @var boolean true when inside html pre tag
+		 * @access protected
+		 * @since 4.4.001 (2008-12-08)
+		 */
+		protected $premode = false;
 		
 		//------------------------------------------------------------
 		// METHODS
@@ -3460,7 +3467,9 @@ if (!class_exists('TCPDF', false)) {
 						}
 						$w = $linew;
 						$tmpcmargin = $this->cMargin;
-						$this->cMargin = 0;
+						if ($maxh == 0) {
+							$this->cMargin = 0;
+						}
 					}
 					$this->Cell($w, $h, $this->UTF8ArrSubString($chars, $j, $i), 0, 1, $talign, $fill, $link, $stretch);
 					if ($firstline) {
@@ -3515,7 +3524,9 @@ if (!class_exists('TCPDF', false)) {
 									}
 									$w = $linew;
 									$tmpcmargin = $this->cMargin;
-									$this->cMargin = 0;
+									if ($maxh == 0) {
+										$this->cMargin = 0;
+									}
 								}
 								$this->Cell($w, $h, $this->UTF8ArrSubString($chars, $j, $i), 0, 1, $align, $fill, $link, $stretch);
 								if ($firstline) {
@@ -3542,7 +3553,9 @@ if (!class_exists('TCPDF', false)) {
 								}
 								$w = $linew;
 								$tmpcmargin = $this->cMargin;
-								$this->cMargin = 0;
+								if ($maxh == 0) {
+									$this->cMargin = 0;
+								}
 							}
 							$this->Cell($w, $h, $this->UTF8ArrSubString($chars, $j, ($sep + $endspace)), 0, 1, $align, $fill, $link, $stretch);
 							if ($firstline) {
@@ -3609,7 +3622,9 @@ if (!class_exists('TCPDF', false)) {
 					}
 					$w = $linew;
 					$tmpcmargin = $this->cMargin;
-					$this->cMargin = 0;
+					if ($maxh == 0) {
+						$this->cMargin = 0;
+					}
 				}
 				$this->Cell($w, $h, $this->UTF8ArrSubString($chars, $j, $nb), 0, $ln, $align, $fill, $link, $stretch);
 				if ($firstline) {
@@ -4905,11 +4920,12 @@ if (!class_exists('TCPDF', false)) {
 		/**
 		* Outputs font widths
 		* @parameter array $font font data
+		* @parameter int $cidoffset offset for CID values
 		* @author Nicola Asuni
 		* @access protected
 		* @since 4.4.000 (2008-12-07)
 		*/
-		protected function _putfontwidths($font) {
+		protected function _putfontwidths($font, $cidoffset=0) {
 			ksort($font['cw']);
 			$rangeid = 0;
 			$range = array();
@@ -4918,6 +4934,7 @@ if (!class_exists('TCPDF', false)) {
 			$interval = false;
 			// for each character
 			foreach ($font['cw'] as $cid => $width) {
+				$cid -= $cidoffset;
 				if ($width != $font['dw']) {	
 					if ($cid == ($prevcid + 1)) {
 						// consecutive CID
@@ -5031,7 +5048,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('/CIDSystemInfo <<'.$cidinfo.'>>');
 			$this->_out('/FontDescriptor '.($this->n + 1).' 0 R');
 			$this->_out('/DW '.$font['dw'].''); // default width
-			$this->_putfontwidths($font);
+			$this->_putfontwidths($font, 0);
 			$this->_out('/CIDToGIDMap '.($this->n + 2).' 0 R');
 			$this->_out('>>');
 			$this->_out('endobj');			
@@ -5083,13 +5100,14 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 3.2.000 (2008-06-23)
 		 */
 		protected function _putcidfont0($font) {
+			$cidoffset = 31;
 			if (isset($font['cidinfo']['uni2cid'])) {
 				// convert unicode to cid.
 				$uni2cid = $font['cidinfo']['uni2cid'];
 				$cw = array();
 				foreach ($font['cw'] as $uni => $width) {
 					if (isset($uni2cid[$uni])) {
-						$cw[$uni2cid[$uni]] = $width;
+						$cw[($uni2cid[$uni] + $cidoffset)] = $width;
 					} elseif ($uni < 256) {
 						$cw[$uni] = $width;
 					} // else unknown character
@@ -5123,7 +5141,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('/CIDSystemInfo <<'.$cidinfo.'>>');
 			$this->_out('/FontDescriptor '.($this->n + 1).' 0 R');
 			$this->_out('/DW '.$font['dw']);
-			$this->_putfontwidths($font);
+			$this->_putfontwidths($font, $cidoffset);
 			$this->_out('>>');
 			$this->_out('endobj');
 			$this->_newobj();
@@ -9543,10 +9561,16 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		protected function getHtmlDomArray($html) {
 			// remove all unsupported tags (the line below lists all supported tags)
-			$html = strip_tags($html, '<marker/><a><b><blockquote><br><br/><dd><del><div><dl><dt><em><font><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><small><span><strong><sub><sup><table><td><th><tr><u><ul>'); 
-			//replace carriage returns, newlines and tabs
-			$repTable = array("\t" => ' ', "\n" => ' ', "\r" => ' ', "\0" => ' ', "\x0B" => ' ', "\\" => "\\\\");
+			$html = strip_tags($html, '<marker/><a><b><blockquote><br><br/><dd><del><div><dl><dt><em><font><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><pre><small><span><strong><sub><sup><table><td><th><tr><tt><u><ul>'); 
+			//replace some blank characters
+			$html = preg_replace('@(\r\n|\r)@', "\n", $html);
+			$repTable = array("\t" => ' ', "\0" => ' ', "\x0B" => ' ', "\\" => "\\\\");
 			$html = strtr($html, $repTable);
+			while (preg_match("'<pre([^\>]*)>(.*?)\n(.*?)</pre>'si", $html)) {
+				// preserve newlines on <pre> tag
+				$html = preg_replace("'<pre([^\>]*)>(.*?)\n(.*?)</pre>'si", "<pre\\1>\\2<br />\\3</pre>", $html);
+			}
+			$html = str_replace("\n", ' ', $html);
 			// remove extra spaces from tables
 			$html = preg_replace('/[\s]*<\/table>[\s]*/', '</table>', $html);
 			$html = preg_replace('/[\s]*<\/tr>[\s]*/', '</tr>', $html);
@@ -9561,7 +9585,7 @@ if (!class_exists('TCPDF', false)) {
 			$html = preg_replace('/<img/', ' <img', $html);
 			$html = preg_replace('/<img([^\>]*)>/xi', '<img\\1><span></span>', $html);
 			$html = preg_replace('/[\s]*<li/', '<li', $html);
-			$html = preg_replace('/<\/li>[\s]*/', '</li>', $html);
+			$html = preg_replace('/<\/li>[\s]*/', '</li>', $html);			
 			// pattern for generic tag
 			$tagpattern = '/(<[^>]+>)/';
 			// explodes the string
@@ -9648,7 +9672,7 @@ if (!class_exists('TCPDF', false)) {
 						// split style attributes
 						if (isset($dom[$key]['attribute']['style'])) {
 							// get style attributes
-							preg_match_all('/([^:\s]*):([^;]*)/', $dom[$key]['attribute']['style'], $style_array, PREG_PATTERN_ORDER);
+							preg_match_all('/([^;:\s]*):([^;]*)/', $dom[$key]['attribute']['style'], $style_array, PREG_PATTERN_ORDER);
 							$dom[$key]['style'] = array(); // reset style attribute array
 							while (list($id, $name) = each($style_array[1])) {
 								$dom[$key]['style'][strtolower($name)] = trim($style_array[2][$id]);
@@ -9795,6 +9819,9 @@ if (!class_exists('TCPDF', false)) {
 						if ($dom[$key]['value'] == 'del') {
 							$dom[$key]['fontstyle'] .= 'D';
 						}
+						if (($dom[$key]['value'] == 'pre') OR ($dom[$key]['value'] == 'tt')) {
+							$dom[$key]['fontname'] = 'courier';
+						}
 						if (($dom[$key]['value']{0} == 'h') AND (intval($dom[$key]['value']{1}) > 0) AND (intval($dom[$key]['value']{1}) < 7)) {
 							$headsize = (4 - intval($dom[$key]['value']{1})) * 2;
 							$dom[$key]['fontsize'] = $dom[0]['fontsize'] + $headsize;
@@ -9879,7 +9906,8 @@ if (!class_exists('TCPDF', false)) {
 			$newline = true;
 			$loop = 0;
 			$curpos = 0;
-			$blocktags = array('blockquote','br','dd','div','dt','h1','h2','h3','h4','h5','h6','hr','li','ol','p','ul'); 
+			$blocktags = array('blockquote','br','dd','div','dt','h1','h2','h3','h4','h5','h6','hr','li','ol','p','ul');
+			$this->premode = false;
 			if (isset($this->PageAnnots[$this->page])) {
 				$pask = count($this->PageAnnots[$this->page]);
 			} else {
@@ -10514,7 +10542,7 @@ if (!class_exists('TCPDF', false)) {
 					}
 					// text
 					$this->htmlvspace = 0;
-					if ($this->rtl OR $this->tmprtl) {
+					if ((!$this->premode) AND ($this->rtl OR $this->tmprtl)) {
 						// reverse spaces order
 						$len1 = strlen($dom[$key]['value']);
 						$lsp = $len1 - strlen(ltrim($dom[$key]['value']));
@@ -10530,16 +10558,19 @@ if (!class_exists('TCPDF', false)) {
 						$dom[$key]['value'] = $tmpstr;
 					}
 					if ($newline) {
-						if (($this->rtl OR $this->tmprtl)) {
-							$dom[$key]['value'] = rtrim($dom[$key]['value']);
-						} else {
-							$dom[$key]['value'] = ltrim($dom[$key]['value']);
+						if (!$this->premode) {
+							if (($this->rtl OR $this->tmprtl)) {
+								$dom[$key]['value'] = rtrim($dom[$key]['value']);
+							} else {
+								$dom[$key]['value'] = ltrim($dom[$key]['value']);
+							}
 						}
 						$newline = false;
 						$firstblock = true;
 					} else {
 						$firstblock = false;
 					}
+					$strrest = '';
 					if ($this->HREF) {
 						// HTML <a> Link
 						$strrest = $this->addHtmlLink($this->HREF, $dom[$key]['value'], $wfill, true);
@@ -10725,6 +10756,7 @@ if (!class_exists('TCPDF', false)) {
 						if ($tag['attribute']['src'][0] == '/') {
 							$tag['attribute']['src'] = $_SERVER['DOCUMENT_ROOT'].$tag['attribute']['src'];
 						}
+						$tag['attribute']['src'] = urldecode($tag['attribute']['src']);
 						$tag['attribute']['src'] = str_replace(K_PATH_URL, K_PATH_MAIN, $tag['attribute']['src']);
 						if (!isset($tag['attribute']['width'])) {
 							$tag['attribute']['width'] = 0;
@@ -10867,6 +10899,11 @@ if (!class_exists('TCPDF', false)) {
 				}
 				case 'p': {
 					$this->addHTMLVertSpace(2, $cell, '', $firstorlast, $tag['value'], false);
+					break;
+				}
+				case 'pre': {
+					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], false);
+					$this->premode = true;
 					break;
 				}
 				case 'sup': {
@@ -11115,6 +11152,11 @@ if (!class_exists('TCPDF', false)) {
 				}
 				case 'p': {
 					$this->addHTMLVertSpace(2, $cell, '', $firstorlast, $tag['value'], true);
+					break;
+				}
+				case 'pre': {
+					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], true);
+					$this->premode = false;
 					break;
 				}
 				case 'dl': {

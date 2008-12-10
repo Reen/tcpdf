@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_006.php
 // Begin       : 2008-03-04
-// Last Update : 2008-12-05
+// Last Update : 2008-12-08
 // 
 // Description : Example 006 for TCPDF class
 //               WriteHTML and RTL support
@@ -199,6 +199,35 @@ $html = $teststr1."<br />".$teststr2."<br />".$teststr3."<br />".$teststr3."<br 
 
 // output the HTML content
 $pdf->writeHTML($html, true, 0, true, 0);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// test pre tag
+
+// add a page
+$pdf->AddPage();
+
+$htmlcontent = <<<EOF
+<div style="background-color:#880000;color:white;">
+Hello World!<br />
+Hello
+</div>
+<pre style="background-color:#336699;color:white;">
+int main() {
+    printf("HelloWorld");
+    return 0;
+}
+</pre>
+<tt>Monospace font</tt>, normal font, <tt>monospace font</tt>, normal font.
+<br />
+<div style="background-color:#880000;color:white;">DIV LEVEL 1<div style="background-color:#008800;color:white;">DIV LEVEL 2</div>DIV LEVEL 1</div>
+<br />
+<span style="background-color:#880000;color:white;">SPAN LEVEL 1 <span style="background-color:#008800;color:white;">SPAN LEVEL 2</span> SPAN LEVEL 1</span>
+EOF;
+
+// output the HTML content
+$pdf->writeHTML($htmlcontent, true, 0, true, 0);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // reset pointer to the last page
 $pdf->lastPage();

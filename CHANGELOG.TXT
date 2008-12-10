@@ -1,3 +1,9 @@
+4.4.001 (2008-12-08)
+	- Some missing core fonts were added on fonts directory.
+	- CID0 fonts rendering was fixed.
+	- HTML support was improved (<pre> and <tt> tags are now supported).
+	- Bug item #2406022 "Left padding bug in MultiCell with maxh" was fixed.
+	
 4.4.000 (2008-12-07)
 	- File attachments are now supported (see example n. 41).
 	- Font functions were optimized to reduce document size.

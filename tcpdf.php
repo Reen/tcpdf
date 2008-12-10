@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-09
+// Last Update : 2008-12-10
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.4.003
+// Version     : 4.4.005
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -83,6 +83,7 @@
 // Yukihiro Nakadaira for CID-0 CJK fonts fixes.
 // Kosmas Papachristos for some CSS improvements.
 // Marcel Partap for some fixes.
+// Won Kyu Park for several suggestions, fixes and patches.
 // Anyone that has reported a bug or sent a suggestion.
 //============================================================+
 
@@ -121,7 +122,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.4.003
+ * @version 4.4.005
  */
 
 /**
@@ -151,14 +152,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.4.003 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.005 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.4.003
+	* @version 4.4.005
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -9757,6 +9758,7 @@ if (!class_exists('TCPDF', false)) {
 			$dom[$key]['bgcolor'] = false;
 			$dom[$key]['fgcolor'] = $this->fgcolor;
 			$dom[$key]['align'] = '';
+			$dom[$key]['listtype'] = '';
 			$key++;
 			$level = array();
 			array_push($level, 0); // root
@@ -9783,6 +9785,9 @@ if (!class_exists('TCPDF', false)) {
 						$dom[$key]['bgcolor'] = $dom[($dom[($dom[$key]['parent'])]['parent'])]['bgcolor'];
 						$dom[$key]['fgcolor'] = $dom[($dom[($dom[$key]['parent'])]['parent'])]['fgcolor'];
 						$dom[$key]['align'] = $dom[($dom[($dom[$key]['parent'])]['parent'])]['align'];
+						if (isset($dom[($dom[($dom[$key]['parent'])]['parent'])]['listtype'])) {
+							$dom[$key]['listtype'] = $dom[($dom[($dom[$key]['parent'])]['parent'])]['listtype'];
+						}
 						// set the number of columns in table tag
 						if (($dom[$key]['value'] == 'tr') AND (!isset($dom[($dom[($dom[$key]['parent'])]['parent'])]['cols']))) {
 							$dom[($dom[($dom[$key]['parent'])]['parent'])]['cols'] = $dom[($dom[$key]['parent'])]['cols'];
@@ -9806,13 +9811,16 @@ if (!class_exists('TCPDF', false)) {
 							$dom[$key]['self'] = true;
 						}
 						// copy some values from parent
+						$parentkey = 0;
 						if ($key > 0) {
-							$dom[$key]['fontname'] = $dom[($dom[$key]['parent'])]['fontname'];
-							$dom[$key]['fontstyle'] = $dom[($dom[$key]['parent'])]['fontstyle'];
-							$dom[$key]['fontsize'] = $dom[($dom[$key]['parent'])]['fontsize'];
-							$dom[$key]['bgcolor'] = $dom[($dom[$key]['parent'])]['bgcolor'];
-							$dom[$key]['fgcolor'] = $dom[($dom[$key]['parent'])]['fgcolor'];
-							$dom[$key]['align'] = $dom[($dom[$key]['parent'])]['align'];
+							$parentkey = $dom[$key]['parent'];
+							$dom[$key]['fontname'] = $dom[$parentkey]['fontname'];
+							$dom[$key]['fontstyle'] = $dom[$parentkey]['fontstyle'];
+							$dom[$key]['fontsize'] = $dom[$parentkey]['fontsize'];
+							$dom[$key]['bgcolor'] = $dom[$parentkey]['bgcolor'];
+							$dom[$key]['fgcolor'] = $dom[$parentkey]['fgcolor'];
+							$dom[$key]['align'] = $dom[$parentkey]['align'];
+							$dom[$key]['listtype'] = $dom[$parentkey]['listtype'];
 						}
 						// get attributes
 						preg_match_all('/([^=\s]*)=["\']?([^"\']*)["\']?/', $element, $attr_array, PREG_PATTERN_ORDER);
@@ -9842,10 +9850,18 @@ if (!class_exists('TCPDF', false)) {
 									}
 								}
 							}
+							// list-style-type
+							if (isset($dom[$key]['style']['list-style-type'])) {
+								$dom[$key]['listtype'] = trim(strtolower($dom[$key]['style']['list-style-type']));
+								if ($dom[$key]['listtype'] == 'inherit') {
+									$dom[$key]['listtype'] = $dom[$parentkey]['listtype'];
+								}
+							}
 							// font size
 							if (isset($dom[$key]['style']['font-size'])) {
 								$fsize = trim($dom[$key]['style']['font-size']);
 								switch ($fsize) {
+									// absolute-size
 									case 'xx-small': {
 										$dom[$key]['fontsize'] = $dom[0]['fontsize'] - 4;
 										break;
@@ -9874,8 +9890,17 @@ if (!class_exists('TCPDF', false)) {
 										$dom[$key]['fontsize'] = $dom[0]['fontsize'] + 6;
 										break;
 									}
+									// relative-size
+									case 'smaller': {
+										$dom[$key]['fontsize'] = $dom[$parentkey]['fontsize'] - 3;
+										break;
+									}
+									case 'larger': {
+										$dom[$key]['fontsize'] = $dom[$parentkey]['fontsize'] - 3;
+										break;
+									}
 									default: {
-										$dom[$key]['fontsize'] = intval($fsize);
+										$dom[$key]['fontsize'] = $this->getHTMLUnitToPoints($fsize, $dom[$parentkey]['fontsize'], 'pt');
 									}
 								}
 							}
@@ -10110,7 +10135,7 @@ if (!class_exists('TCPDF', false)) {
 						AND ($dom[$key]['value'] == 'img') 
 						AND (isset($dom[$key]['attribute']['height']))
 						AND ($dom[$key]['attribute']['height'] > 0)
-						AND (!((($this->y + $this->pixelsToUnits($dom[$key]['attribute']['height'])) > $this->PageBreakTrigger) 
+						AND (!((($this->y + $this->getHTMLUnitToPoints($dom[$key]['attribute']['height'], $this->lasth, 'px')) > $this->PageBreakTrigger) 
 							AND (!$this->InFooter) 
 							AND $this->AcceptPageBreak()))
 						) {
@@ -10143,7 +10168,7 @@ if (!class_exists('TCPDF', false)) {
 								}
 							}
 						}
-						$this->y += (($curfontsize / $this->k) - $this->pixelsToUnits($dom[$key]['attribute']['height']));
+						$this->y += (($curfontsize / $this->k) - $this->getHTMLUnitToPoints($dom[$key]['attribute']['height'], $this->lasth, 'px'));
 						$minstartliney = min($this->y, $minstartliney);
 					} elseif (isset($dom[$key]['fontname']) OR isset($dom[$key]['fontstyle']) OR isset($dom[$key]['fontsize'])) {
 						// account for different font size
@@ -10486,16 +10511,17 @@ if (!class_exists('TCPDF', false)) {
 				if ($dom[$key]['tag']) {
 					if ($dom[$key]['opening']) {
 						if ($dom[$key]['value'] == 'table') {
+							if ($this->rtl) {
+								$wtmp = $this->x - $this->lMargin;
+							} else {
+								$wtmp = $this->w - $this->rMargin - $this->x;
+							}
+							$wtmp -= (2 * $this->cMargin);
 							// calculate cell width
 							if (isset($dom[$key]['width'])) {
-								$table_width = $this->pixelsToUnits($dom[$key]['width']);
+								$table_width = $this->getHTMLUnitToPoints($dom[$key]['width'], $wtmp, 'px');
 							} else {
-								if ($this->rtl) {
-									$table_width = $this->x - $this->lMargin;
-								} else {
-									$table_width = $this->w - $this->rMargin - $this->x;
-								}
-								$table_width -= (2 * $this->cMargin);
+								$table_width = $wtmp;
 							}
 						}
 						// table content is handled in a special way
@@ -10506,13 +10532,13 @@ if (!class_exists('TCPDF', false)) {
 								$dom[$table_el]['cols'] = $trid['cols'];
 							}
 							if (isset($dom[($dom[$trid]['parent'])]['attribute']['cellpadding'])) {
-								$currentcmargin = $this->pixelsToUnits($dom[($dom[$trid]['parent'])]['attribute']['cellpadding']);
+								$currentcmargin = $this->getHTMLUnitToPoints($dom[($dom[$trid]['parent'])]['attribute']['cellpadding'], 1, 'px');
 							} else {
 								$currentcmargin = 0;		
 							}
 							$this->cMargin = $currentcmargin;
 							if (isset($dom[($dom[$trid]['parent'])]['attribute']['cellspacing'])) {
-								$cellspacing = $this->pixelsToUnits($dom[($dom[$trid]['parent'])]['attribute']['cellspacing']);
+								$cellspacing = $this->getHTMLUnitToPoints($dom[($dom[$trid]['parent'])]['attribute']['cellspacing'], 1, 'px');
 							} else {
 								$cellspacing = 0;
 							}
@@ -10522,10 +10548,11 @@ if (!class_exists('TCPDF', false)) {
 								$cellspacingx = $cellspacing;
 							}
 							$colspan = $dom[$key]['attribute']['colspan'];
+							$wtmp = ($colspan * ($table_width / $dom[$table_el]['cols']));
 							if (isset($dom[$key]['width'])) {
-								$cellw = $this->pixelsToUnits($dom[$key]['width']);
+								$cellw = $this->getHTMLUnitToPoints($dom[$key]['width'], $wtmp, 'px');
 							} else {
-								$cellw = ($colspan * ($table_width / $dom[$table_el]['cols']));
+								$cellw = $wtmp;
 							}
 							$cellw -= $cellspacing;
 							if (isset($dom[$key]['content'])) {
@@ -10682,16 +10709,7 @@ if (!class_exists('TCPDF', false)) {
 						$this->SetFont($pfontname, $pfontstyle, $pfontsize);
 						$this->lasth = $this->FontSize * $this->cell_height_ratio;
 						$minstartliney = $this->y;
-						$tmpx = $this->x;
-						$lspace = $this->GetStringWidth($this->lispacer.'  ');
-						if ($this->rtl) {
-							$this->x += $lspace;
-						} else {
-							$this->x -= $lspace;
-						}
-						$this->Write($this->lasth, $this->lispacer, '', false, '', false, 0, false);
-						$this->x = $tmpx;
-						$this->lispacer = '';
+						$this->putHtmlListBullet($this->listnum, $this->lispacer, $pfontsize);
 						$this->SetFont($curfontname, $curfontstyle, $curfontsize);
 						$this->lasth = $this->FontSize * $this->cell_height_ratio;
 						if (is_numeric($pfontsize) AND ($pfontsize > 0) AND is_numeric($curfontsize) AND ($curfontsize > 0) AND ($pfontsize != $curfontsize)) {
@@ -10872,12 +10890,12 @@ if (!class_exists('TCPDF', false)) {
 					$cs = 0;
 					$dom[$key]['rowspans'] = array();
 					if (isset($tag['attribute']['cellpadding'])) {
-						$cp = $this->pixelsToUnits($tag['attribute']['cellpadding']);
+						$cp = $this->getHTMLUnitToPoints($tag['attribute']['cellpadding'], 1, 'px');
 						$this->oldcMargin = $this->cMargin;
 						$this->cMargin = $cp;
 					}
 					if (isset($tag['attribute']['cellspacing'])) {
-						$cs = $this->pixelsToUnits($tag['attribute']['cellspacing']);
+						$cs = $this->getHTMLUnitToPoints($tag['attribute']['cellspacing'], 1, 'px');
 					}
 					$this->checkPageBreak((2 * $cp) + (2 * $cs) + $this->lasth);
 					break;
@@ -10890,10 +10908,11 @@ if (!class_exists('TCPDF', false)) {
 				case 'hr': {
 					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], false);
 					$this->htmlvspace = 0;
+					$wtmp = $this->w - $this->lMargin - $this->rMargin;
 					if ((isset($tag['attribute']['width'])) AND ($tag['attribute']['width'] != '')) {
-						$hrWidth = $this->pixelsToUnits($tag['attribute']['width']);
+						$hrWidth = $this->getHTMLUnitToPoints($tag['attribute']['width'], $wtmp, 'px');
 					} else {
-						$hrWidth = $this->w - $this->lMargin - $this->rMargin;
+						$hrWidth = $wtmp;
 					}
 					$x = $this->GetX();
 					$y = $this->GetY();
@@ -10986,7 +11005,6 @@ if (!class_exists('TCPDF', false)) {
 								$xpos -= $this->GetStringWidth(' ');
 							}
 						}
-						
 						if (($type == 'eps') OR ($type == 'ai')) {
 							$this->ImageEps($tag['attribute']['src'], $xpos, $this->GetY(), $this->pixelsToUnits($tag['attribute']['width']), $this->pixelsToUnits($tag['attribute']['height']), '', true, $align);
 						} else {
@@ -11049,20 +11067,27 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'li': {
-					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], false);
+					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], false);					
 					if ($this->listordered[$this->listnum]) {
+						// ordered item
+						if (!empty($parent['attribute']['type'])) {
+							$this->lispacer = $parent['attribute']['type'];
+						} elseif (!empty($parent['listtype'])) {
+							$this->lispacer = $parent['listtype'];
+						} else {
+							$this->lispacer = '#';
+						}
+						$this->listcount[$this->listnum]++;
 						if (isset($tag['attribute']['value'])) {
 							$this->listcount[$this->listnum] = intval($tag['attribute']['value']);
 						}
-						$this->listcount[$this->listnum]++;
-						if ($this->rtl) {
-							$this->lispacer = '.'.($this->listcount[$this->listnum]);
-						} else {
-							$this->lispacer = ($this->listcount[$this->listnum]).'.';
-						}
 					} else {
-						//unordered list symbol
-						$this->lispacer = $this->lisymbol;
+						// unordered item
+						if (!empty($parent['listtype'])) {
+							$this->lispacer = $parent['listtype'];
+						} else {
+							$this->lispacer = '!';
+						}
 					}
 					break;
 				}
@@ -11155,7 +11180,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->setPage($parent['endpage']);
 					$this->y = $parent['endy'];
 					if (isset($dom[$table_el]['attribute']['cellspacing'])) {
-						$cellspacing = $this->pixelsToUnits($dom[$table_el]['attribute']['cellspacing']);
+						$cellspacing = $this->getHTMLUnitToPoints($dom[$table_el]['attribute']['cellspacing'], 1, 'px');
 						$this->y += $cellspacing;
 					}				
 					$this->Ln(0, $cell);
@@ -11297,7 +11322,7 @@ if (!class_exists('TCPDF', false)) {
 							}
 						}					
 						if (isset($table_el['attribute']['cellspacing'])) {
-							$cellspacing = $this->pixelsToUnits($table_el['attribute']['cellspacing']);
+							$cellspacing = $this->getHTMLUnitToPoints($table_el['attribute']['cellspacing'], 1, 'px');
 							$this->y += $cellspacing;
 						}				
 						$this->Ln(0, $cell);
@@ -11537,6 +11562,283 @@ if (!class_exists('TCPDF', false)) {
 			$this->htmlLinkFontStyle = $fontstyle;
         }
         
+        /**
+		* convert html string containing value and unit of measure to points.
+		* @param string $htmlval string containing values and unit
+		* @param string $refsize reference value in points
+		* @param string $defaultunit default unit (can be one of the following: %, em, ex, px, in, mm, pc, pt).
+		* @return float points
+		* @access protected
+		* @since 4.4.004 (2008-12-10)
+		*/
+        protected function getHTMLUnitToPoints($htmlval, $refsize=1, $defaultunit='px') {
+			$supportedunits = array('%', 'em', 'ex', 'px', 'in', 'cm', 'mm', 'pc', 'pt');
+			$retval = 0;
+			$value = 0;
+			$unit = 'px';
+			if (in_array($defaultunit, $supportedunits)) {
+				$unit = $defaultunit;
+			}
+			if (is_numeric($htmlval)) {
+				$value = floatval($htmlval);
+			} elseif (preg_match('/([0-9\.]+)/', $htmlval, $mnum)) {
+				$value = floatval($mnum[1]);
+				if (preg_match('/([a-z%]+)/', $htmlval, $munit)) {
+					if (in_array($munit[1], $supportedunits)) {
+						$unit = $munit[1];
+					}
+				}
+			}
+			switch ($unit) {
+				// percentage
+				case '%': {
+					$retval = ($value * $refsize) / 100;
+					break;
+				}
+				// relative-size
+				case 'em': {
+					$retval = ($value * $refsize);
+					break;
+				}
+				case 'ex': {
+					$retval = $value * ($refsize / 2);
+					break;
+				}
+				case 'px': {
+					$retval = $this->pixelsToUnits($value);
+					break;
+				}
+				// absolute-size
+				case 'in': {
+					$retval = $value * $this->dpi;
+					break;
+				}
+				case 'cm': {
+					$retval = $value / 2.54 * $this->dpi;
+					break;
+				}
+				case 'mm': {
+					$retval = $value / 25.4 * $this->dpi;
+					break;
+				}
+				case 'pc': {
+					$retval = $value * 12;
+					break;
+				}
+				case 'pt': {
+					$retval = $value;
+				}
+			}
+			return $retval;
+		}
+		
+		/**
+		* Returns the Roman representation of an integer number
+		* @param int number to convert
+		* @return string roman representation of the specified number
+		* @access public
+		* @since 4.4.004 (2008-12-10)
+		*/
+		public function intToRoman($number) {
+			$roman = '';
+			while ($number >= 1000) {
+				$roman .= 'M';
+				$number -= 1000;
+			}
+			while ($number >= 900) {
+				$roman .= 'CM';
+				$number -= 900;
+			}
+			while ($number >= 500) {
+				$roman .= 'D';
+				$number -= 500;
+			}
+			while ($number >= 400) {
+				$roman .= 'CD';
+				$number -= 400;
+			}
+			while ($number >= 100) {
+				$roman .= 'C';
+				$number -= 100;
+			}
+			while ($number >= 90){
+			$roman .= 'XC';
+			$number -= 90;
+			}
+			while ($number >= 50) {
+				$roman .= 'L';
+				$number -= 50;
+			}
+			while ($number >= 40) {
+				$roman .= 'XL';
+				$number -= 40;
+			}
+			while ($number >= 10) {
+			$roman .= 'X';
+			$number -= 10;
+			}
+			while ($number >= 9) {
+				$roman .= 'IX';
+				$number -= 9;
+			}
+			while ($number >= 5) {
+				$roman .= 'V';
+				$number -= 5;
+			}
+			while ($number >= 4) {
+			$roman .= 'IV';
+			$number -= 4;
+			}
+			while ($number >= 1) {
+				$roman .= 'I';
+				$number--;
+			}
+			return $roman;
+		}
+		
+		/**
+		* Output an HTML list bullet or ordered item symbol
+		* @param int $listdepth list nesting level
+		* @param string $listtype type of list
+		* @param float $size current font size
+		* @access protected
+		* @since 4.4.004 (2008-12-10)
+		*/
+		protected function putHtmlListBullet($listdepth, $listtype='', $size=10) {
+		    $fill = '';
+		    $color = array(0, 0, 0);
+		    $width = 0;
+		    $textitem = '';
+		    $tmpx = $this->x;		
+			$lspace = $this->GetStringWidth('  ');
+			if ($listtype == '!') {
+				// set default list type for unordered list
+				$deftypes = array('disc', 'circle', 'square');
+				$listtype = $deftypes[($listdepth - 1) % 3];
+			} elseif ($listtype == '#') {
+				// set default list type for ordered list
+				$listtype = 'decimal';
+			}
+        	switch ($listtype) {
+        		// unordered types
+				case 'none': {
+					break;
+				}
+				case 'disc': {
+					$fill = 'F';
+				}
+				case 'circle': {
+					$r = $size / 16;
+					$fill .= 'D';
+					$lspace += (2 * $r);
+					if ($this->rtl) {
+						$this->x += $lspace;
+					} else {
+						$this->x -= $lspace;
+					}
+					$this->Circle(($this->x + $r), ($this->y + ($this->lasth / 2)), $r, 0, 360, $fill, array('color'=>$color), $color, 8);
+					break;
+				}
+				case 'square': {
+					$l = $size / 8;
+					$lspace += $l;
+					if ($this->rtl) {
+						$this->x += $lspace;
+					} else {
+						$this->x -= $lspace;
+					}
+					$this->Rect($this->x, ($this->y + (($this->lasth - $l)/ 2)), $l, $l, 'F', array(), $color);
+					break;
+				}
+				// ordered types
+				
+				// $this->listcount[$this->listnum];
+				// $textitem
+				case '1':
+				case 'decimal': {
+					$textitem = $this->listcount[$this->listnum];
+					break;
+				}
+				case 'decimal-leading-zero': {
+					$textitem = sprintf("%02d", $this->listcount[$this->listnum]);
+					break;
+				}
+				case 'i':
+				case 'lower-roman': {
+					$textitem = strtolower($this->intToRoman($this->listcount[$this->listnum]));
+					break;
+				}
+				case 'I':
+				case 'upper-roman': {
+					$textitem = $this->intToRoman($this->listcount[$this->listnum]);
+					break;
+				}
+				case 'a':
+				case 'lower-alpha':
+				case 'lower-latin': {
+					$textitem = chr(97 + $this->listcount[$this->listnum] - 1);
+					break;
+				}
+				case 'A':
+				case 'upper-alpha': 
+				case 'upper-latin': {
+					$textitem = chr(65 + $this->listcount[$this->listnum] - 1);
+					break;
+				}
+				case 'lower-greek': {
+					$textitem = $this->unichr(945 + $this->listcount[$this->listnum] - 1);
+					break;
+				}
+				/*
+				// Types to be implemented (special handling)
+				case 'hebrew': {
+					break;
+				}
+				case 'armenian': {
+					break;
+				}
+				case 'georgian': {
+					break;
+				}
+				case 'cjk-ideographic': {
+					break;
+				}
+				case 'hiragana': {
+					break;
+				}
+				case 'katakana': {
+					break;
+				}
+				case 'hiragana-iroha': {
+					break;
+				}
+				case 'katakana-iroha': {
+					break;
+				}
+				*/
+				default: {
+					$textitem = $this->listcount[$this->listnum];
+				}
+			}
+			if (!empty($textitem)) {
+				// print ordered item
+				if ($this->rtl) {
+					$textitem = '.'.$textitem;
+				} else {
+					$textitem = $textitem.'.';
+				}
+				$lspace += $this->GetStringWidth($textitem);
+				if ($this->rtl) {
+					$this->x += $lspace;
+				} else {
+					$this->x -= $lspace;
+				}
+				$this->Write($this->lasth, $textitem, '', false, '', false, 0, false);
+			}
+			$this->x = $tmpx;
+			$this->lispacer = '';
+		}
+		
         /**
 		* Returns current graphic variables as array.
 		* @return array graphic variables

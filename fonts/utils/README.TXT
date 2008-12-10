@@ -25,15 +25,19 @@ The PDF Core (standard) fonts are:
 
 Setting up a font for usage with TCPDF requires the following steps:
 
-   1. Convert all font filenames to lowercase.
+   1. Convert all font filenames to lowercase and rename using the following schema:
+          * [basic-font-name-in-lowercase].ttf for regular font
+          * [basic-font-name-in-lowercase]b.ttf for bold variation
+          * [basic-font-name-in-lowercase]i.ttf for oblique variation
+          * [basic-font-name-in-lowercase]bi.ttf for bold oblique variation
 
    2. Generate the font's metrics file.
-          * For Type1 font files this first step is not necessary because the AFM file is usually shipped with the font. In case you have only a metric file in PFM format, use the pfm2afm utility (fonts/utils/pfm2afm.exe) to get the AFM file. If you own a Type1 font in ASCII format (.pfa), you can convert it to binary format with Type 1 utilities.
-          * For TrueTypeUnicode or TrueType font files, use the the provided ttf2ufm utility (fonts/utils/ttf2ufm.exe):
+          * For Type1 font files this first step is not necessary because the AFM file is usually shipped with the font. In case you have only a metric file in PFM format, use the pfm2afm utility (fonts/utils/pfm2afm) to get the AFM file. If you own a Type1 font in ASCII format (.pfa), you can convert it to binary format with Type 1 utilities.
+          * For TrueTypeUnicode or TrueType font files, use the the provided ttf2ufm utility (fonts/utils/ttf2ufm):
 
             $ ttf2ufm -a -F myfont.ttf
 
-          * For OpenTypeUnicode or OpenType font files, use the the provided ttf2ufm utility (fonts/utils/ttf2ufm.exe):
+          * For OpenTypeUnicode or OpenType font files, use the the provided ttf2ufm utility (fonts/utils/ttf2ufm):
 
             $ ttf2ufm -a -F myfont.otf
 

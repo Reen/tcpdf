@@ -1,7 +1,26 @@
+4.4.000 (2008-12-07)
+	- File attachments are now supported (see example n. 41).
+	- Font functions were optimized to reduce document size.
+	- makefont.php was updated.
+	- Linux binaries were added on /fonts/utils
+	- All fonts were updated.
+	- $autopadding parameter was added to Multicell() to disable automatic padding features.
+	- $maxh parameter was added to Multicell() and Write() to set a maximum height.
+
+4.3.009 (2008-12-05)
+	- Bug item #2392989 (Custom header + setlinewidth + cell border bug) was fixed.
+	
+4.3.008 (2008-12-05)
+	- Bug item #2390566 "rect bug" was fixed.
+	- File path was fixed for font embedded files.
+	- SetFont() method signature was changed to include the font filename.
+	- Some font-related methods were improved.
+	- Methods getFontFamily() and getFontStyle() were added.
+	
 4.3.007 (2008-12-03)
 	- PNG alpha channel is now supported (GD library is required).
 	- AddFont() function now support custom font file path on $file parameter.
-	- The default with variable ($dw) is now always defined for any font.
+	- The default width variable ($dw) is now always defined for any font.
 	- The 'Style' attribute on CID-0 fonts was removed because of protection bug.
 	
 4.3.006 (2008-12-01)
@@ -687,7 +706,7 @@
 
 1.53.0.TC004 (2005-01-04)
 	- this changelog were added.
-	- removed comercial fonts for licensing issue.
+	- removed commercial fonts for licensing issue.
 	- Bitstream Vera Fonts were added (http://www.bitstream.com/font_rendering/products/dev_fonts/vera.html).
 	- Now the AddFont and SetFont functions returns the basic font if the styled version do not exist.
 

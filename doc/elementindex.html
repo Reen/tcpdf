@@ -205,6 +205,8 @@
 	<div>
 		<h2>e</h2>
 		<dl>
+							<dt><b>$embeddedfiles</b></dt>
+				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$embeddedfiles">TCPDF::$embeddedfiles</a></dd>
 							<dt><b>$encoding</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$encoding">TCPDF::$encoding</a></dd>
 							<dt><b>$encrypted</b></dt>
@@ -303,12 +305,16 @@
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetCellHeightRatio">TCPDF::getCellHeightRatio()</a></dd>
 							<dt><b>GetCharWidth</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodGetCharWidth">TCPDF::GetCharWidth()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the length of the char in user unit for the current font.<br /></dd>
+							<dt><b>getFontFamily</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontFamily">TCPDF::getFontFamily()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the current font family name.</dd>
 							<dt><b>getFontSize</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontSize">TCPDF::getFontSize()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the current font size.</dd>
 							<dt><b>getFontSizePt</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontSizePt">TCPDF::getFontSizePt()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the current font size in points unit.</dd>
 							<dt><b>getFontsList</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontsList">TCPDF::getFontsList()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Fill the list of available fonts ($this-&gt;fontlist).</dd>
+							<dt><b>getFontStyle</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontStyle">TCPDF::getFontStyle()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the current font style.</dd>
 							<dt><b>getFooterFont</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFooterFont">TCPDF::getFooterFont()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Get Footer font.</dd>
 							<dt><b>getFooterMargin</b></dt>
@@ -1127,12 +1133,16 @@
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putcatalog">TCPDF::_putcatalog()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Output Catalog.</dd>
 							<dt><b>_putcidfont0</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putcidfont0">TCPDF::_putcidfont0()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Output CID-0 fonts.</dd>
+							<dt><b>_putEmbeddedFiles</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putEmbeddedFiles">TCPDF::_putEmbeddedFiles()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Embedd the attached files.</dd>
 							<dt><b>_putencryption</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putencryption">TCPDF::_putencryption()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Put encryption on PDF document.</dd>
 							<dt><b>_putextgstates</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putextgstates">TCPDF::_putextgstates()</a></dd>
 							<dt><b>_putfonts</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putfonts">TCPDF::_putfonts()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Output fonts.</dd>
+							<dt><b>_putfontwidths</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putfontwidths">TCPDF::_putfontwidths()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Outputs font widths</dd>
 							<dt><b>_putheader</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_putheader">TCPDF::_putheader()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Output PDF header.</dd>
 							<dt><b>_putimages</b></dt>
@@ -1184,7 +1194,7 @@
 	<a href="elementindex.html#top">top</a><br>
         <div class="credit">
 		    <hr />
-		    Documentation generated on Thu, 04 Dec 2008 14:07:29 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
+		    Documentation generated on Sun, 07 Dec 2008 20:08:31 +0100 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
 	      </div>
       </td></tr></table>
     </td>

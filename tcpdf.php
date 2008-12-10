@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-04
+// Last Update : 2008-12-07
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.3.007
+// Version     : 4.4.000
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -121,7 +121,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.3.007
+ * @version 4.4.000
  */
 
 /**
@@ -151,14 +151,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.3.007 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.000 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.3.007
+	* @version 4.4.000
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1110,6 +1110,13 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 4.2.010 (2008-11-14)
 		 */
 		protected $opencell = true;
+		
+		/**
+		 * @var array of files to embedd
+		 * @access protected
+		 * @since 4.4.000 (2008-12-07)
+		 */
+		protected $embeddedfiles = array();
 		
 		//------------------------------------------------------------
 		// METHODS
@@ -2492,8 +2499,11 @@ if (!class_exists('TCPDF', false)) {
 			} elseif (isset($this->CurrentFont['dw'])) {
 				// default width
 				$w = $this->CurrentFont['dw'];
+			} elseif (isset($cw[32])) {
+				// default width
+				$dw = $cw[32];
 			} else {
-				$w = 500; // default width
+				$w = 600;
 			}
 			return ($w * $this->FontSize / 1000);
 		}
@@ -2520,7 +2530,7 @@ if (!class_exists('TCPDF', false)) {
 			$fontsdir = opendir($this->_getfontpath());
 			while (($file = readdir($fontsdir)) !== false) {
 				if (substr($file, -4) == '.php') {
-						array_push($this->fontlist, strtolower(basename($file, '.php')));
+					array_push($this->fontlist, strtolower(basename($file, '.php')));
 				}
 			}
 			closedir($fontsdir);
@@ -2530,15 +2540,14 @@ if (!class_exists('TCPDF', false)) {
 		* Imports a TrueType, Type1, core, or CID0 font and makes it available.
 		* It is necessary to generate a font definition file first (read /fonts/utils/README.TXT). 
 		* The definition file (and the font file itself when embedding) must be present either in the current directory or in the one indicated by K_PATH_FONTS if the constant is defined. If it could not be found, the error "Could not include font definition file" is generated.
-		* Changed to support UTF-8 Unicode [Nicola Asuni, 2005-01-02].
 		* @param string $family Font family. The name can be chosen arbitrarily. If it is a standard family name, it will override the corresponding font.
 		* @param string $style Font style. Possible values are (case insensitive):<ul><li>empty string: regular (default)</li><li>B: bold</li><li>I: italic</li><li>BI or IB: bold italic</li></ul>
-		* @param string $file The font definition file. By default, the name is built from the family and style, in lower case with no spaces.
+		* @param string $fontfile The font definition file. By default, the name is built from the family and style, in lower case with no spaces.
 		* @return array containing the font data, or false in case of error.
 		* @since 1.5
 		* @see SetFont()
 		*/
-		public function AddFont($family, $style='', $file='') {
+		public function AddFont($family, $style='', $fontfile='') {
 			if (empty($family)) {
 				if (!empty($this->FontFamily)) {
 					$family = $this->FontFamily;
@@ -2575,6 +2584,7 @@ if (!class_exists('TCPDF', false)) {
 			if (strpos($tempstyle, 'I') !== false) {
 				$style .= 'I';
 			}
+			$bistyle = $style;
 			$fontkey = $family.$style;
 			$font_style = $style.($this->underline ? 'U' : '').($this->linethrough ? 'D' : '');
 			$fontdata = array('fontkey' => $fontkey, 'family' => $family, 'style' => $font_style);
@@ -2589,48 +2599,52 @@ if (!class_exists('TCPDF', false)) {
 				unset($cw); 
 			}
 			// search and include font file
-			if (empty($file) OR ((!file_exists($file)) AND (!file_exists($this->_getfontpath().$file)))) {
+			if (empty($fontfile) OR ((!file_exists($fontfile)) AND (!file_exists($this->_getfontpath().$fontfile)))) {
 				// build a standard filename
-				$file = str_replace(' ', '', $family).strtolower($style).'.php';
+				$fontfile = str_replace(' ', '', $family).strtolower($style).'.php';
 			}
-			if (file_exists($file)) {
-				include($file);
-			} elseif (file_exists($this->_getfontpath().$file)) {
-				include($this->_getfontpath().$file);
+			if (file_exists($fontfile)) {
+				include($fontfile);
+			} elseif (file_exists($this->_getfontpath().$fontfile)) {
+				include($this->_getfontpath().$fontfile);
 			} else {
 				// try a new filename without style suffix
-				$file = str_replace(' ', '', $family).'.php';
-				if (file_exists($this->_getfontpath().$file)) {
-					include($this->_getfontpath().$file);
-				} elseif (file_exists($file)) {
-					include($file);
+				$fontfile = str_replace(' ', '', $family).'.php';
+				if (file_exists($this->_getfontpath().$fontfile)) {
+					include($this->_getfontpath().$fontfile);
+				} elseif (file_exists($fontfile)) {
+					include($fontfile);
 				}
-			}		
+			}
 			if ((!isset($type)) OR (!isset($cw))) {
 				$this->Error('Could not include font definition file: '.$family.'');
+			}
+			if (!isset($file)) {
+				$file = '';
 			}
 			if (!isset($enc)) {
 				$enc = '';
 			}
-			if (!isset($dw)) {
+			if (!isset($dw) OR empty($dw)) {
 				// set default width
 				if (isset($desc['MissingWidth']) AND ($desc['MissingWidth'] > 0)) {
 					$dw = $desc['MissingWidth'];
+				} elseif (isset($cw[32])) {
+					$dw = $cw[32];
 				} else {
-					$dw = $cw[ord('"')];
+					$dw = 600;
 				}
 			}
 			$i = count($this->fonts) + 1;			
 			// register CID font (all styles at once)
 			if ($type == 'cidfont0') {
+				$file = ''; // not embedded
 				$styles = array('' => '', 'B' => ',Bold', 'I' => ',Italic', 'BI' => ',BoldItalic');
-				foreach ($styles as $skey => $qual) {
-					$sname = $name.$qual;
-					$sfontkey = $family.$skey;
-					$this->fonts[$sfontkey] = array('i' => $i, 'type' => $type, 'name' => $sname, 'desc' => $desc, 'cidinfo' => $cidinfo, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'dw' => $dw, 'enc' => $enc);
-					$i++;
+				$sname = $name.$styles[$bistyle];
+				if ((strpos($bistyle, 'B') !== false) AND (isset($desc['StemV'])) AND ($desc['StemV'] == 70)) {
+					$desc['StemV'] = 120;
 				}
-				$file = '';
+				$this->fonts[$fontkey] = array('i' => $i, 'type' => $type, 'name' => $sname, 'desc' => $desc, 'cidinfo' => $cidinfo, 'up' => $up, 'ut' => $ut, 'cw' => $cw, 'dw' => $dw, 'enc' => $enc);
 			} elseif ($type == 'core') {
 				$this->fonts[$fontkey] = array('i' => $i, 'type' => 'core', 'name' => $this->CoreFonts[$fontkey], 'up' => -100, 'ut' => 50, 'cw' => $cw, 'dw' => $dw);
 			} elseif (($type == 'TrueType') OR ($type == 'Type1')) {
@@ -2675,16 +2689,17 @@ if (!class_exists('TCPDF', false)) {
 		* @param string $family Family font. It can be either a name defined by AddFont() or one of the standard Type1 families (case insensitive):<ul><li>times (Times-Roman)</li><li>timesb (Times-Bold)</li><li>timesi (Times-Italic)</li><li>timesbi (Times-BoldItalic)</li><li>helvetica (Helvetica)</li><li>helveticab (Helvetica-Bold)</li><li>helveticai (Helvetica-Oblique)</li><li>helveticabi (Helvetica-BoldOblique)</li><li>courier (Courier)</li><li>courierb (Courier-Bold)</li><li>courieri (Courier-Oblique)</li><li>courierbi (Courier-BoldOblique)</li><li>symbol (Symbol)</li><li>zapfdingbats (ZapfDingbats)</li></ul> It is also possible to pass an empty string. In that case, the current family is retained.
 		* @param string $style Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line trough</li></ul> or any combination. The default value is regular. Bold and italic styles do not apply to Symbol and ZapfDingbats basic fonts or other fonts when not defined.
 		* @param float $size Font size in points. The default value is the current size. If no size has been specified since the beginning of the document, the value taken is 12
+		* @param string $fontfile The font definition file. By default, the name is built from the family and style, in lower case with no spaces.
 		* @since 1.0
 		* @see AddFont(), SetFontSize()
 		*/
-		public function SetFont($family, $style='', $size=0) {
+		public function SetFont($family, $style='', $size=0, $fontfile='') {
 			//Select a font; size given in points
 			if ($size == 0) {
 				$size = $this->FontSizePt;
 			}
 			// try to add font (if not already added)
-			$fontdata =  $this->AddFont($family, $style);
+			$fontdata = $this->AddFont($family, $style, $fontfile);
 			$this->FontFamily = $fontdata['family'];
 			$this->FontStyle = $fontdata['style'];
 			$this->CurrentFont = &$this->fonts[$fontdata['fontkey']];
@@ -2817,6 +2832,32 @@ if (!class_exists('TCPDF', false)) {
 				}
 			}
 			$this->PageAnnots[$this->page][] = array('x' => $x, 'y' => $y, 'w' => $w, 'h' => $h, 'txt' => $text, 'opt' => $opt, 'numspaces' => $spaces);
+			if (($opt['Subtype'] == 'FileAttachment') AND (!empty($opt['FS'])) AND file_exists($opt['FS']) AND (!isset($this->embeddedfiles[basename($opt['FS'])]))) {
+				$this->embeddedfiles[basename($opt['FS'])] = array('file' => $opt['FS'], 'n' => ($this->n + 10000));
+			}
+		}
+					
+		/**
+		* Embedd the attached files.
+		* @since 4.4.000 (2008-12-07)
+		* @access protected
+		* @see Annotation()
+		*/
+		protected function _putEmbeddedFiles() {
+			reset($this->embeddedfiles);
+			foreach ($this->embeddedfiles as $filename => $filedata) {
+				$data = file_get_contents($filedata['file']);
+				$filter = '';
+				if ($this->compress) {
+					$data = gzcompress($data);
+					$filter = ' /Filter /FlateDecode';
+				}
+				$this->offsets[$filedata['n']] = strlen($this->buffer);
+				$this->_out($filedata['n'].' 0 obj');
+				$this->_out('<</Type /EmbeddedFile'.$filter.' /Length '.strlen($data).' >>');
+				$this->_putstream($data);
+				$this->_out('endobj');
+			}
 		}
 		
 		/**
@@ -3183,12 +3224,14 @@ if (!class_exists('TCPDF', false)) {
 		* @param int $y y position in user units
 		* @param boolean $reseth if true reset the last cell height (default true).
 		* @param int $stretch stretch carachter mode: <ul><li>0 = disabled</li><li>1 = horizontal scaling only if necessary</li><li>2 = forced horizontal scaling</li><li>3 = character spacing only if necessary</li><li>4 = forced character spacing</li></ul>
-		* @param boolean $ishtml se to true if $txt is HTML content (default = false).
+		* @param boolean $ishtml set to true if $txt is HTML content (default = false).
+		* @param boolean $autopadding if true, uses internal padding and automatically adjust it to account for line width.
+		* @param float $maxh maximum height. It should be >= $h and less then remaining space to the bottom of the page, or 0 for disable this feature. This feature works only when $ishtml=false.
 		* @return int Return the number of cells or 1 for html mode.
 		* @since 1.3
 		* @see SetFont(), SetDrawColor(), SetFillColor(), SetTextColor(), SetLineWidth(), Cell(), Write(), SetAutoPageBreak()
 		*/
-		public function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false) {	
+		public function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0) {	
 			if (empty($this->lasth) OR $reseth) {
 				//set row height
 				$this->lasth = $this->FontSize * $this->cell_height_ratio;
@@ -3226,29 +3269,33 @@ if (!class_exists('TCPDF', false)) {
 				$this->SetRightMargin($this->w - $this->x - $w);
 			}
 			$starty = $this->y;
-			// Adjust internal padding
-			if ($this->cMargin < ($this->LineWidth / 2)) {
-				$this->cMargin = ($this->LineWidth / 2);
+			if ($autopadding) {
+				// Adjust internal padding
+				if ($this->cMargin < ($this->LineWidth / 2)) {
+					$this->cMargin = ($this->LineWidth / 2);
+				}
+				// Add top space if needed
+				if (($this->lasth - $this->FontSize) < $this->LineWidth) {
+					$this->y += $this->LineWidth / 2;
+				}
+				// add top padding
+				$this->y += $this->cMargin;
 			}
-			// Add top space if needed
-			if (($this->lasth - $this->FontSize) < $this->LineWidth) {
-				$this->y += $this->LineWidth / 2;
-			}
-			// add top padding
-			$this->y += $this->cMargin;
 			if ($ishtml) {
 				// ******* Write HTML text
 				$this->writeHTML($txt, true, 0, $reseth, true, $align);
 				$nl = 1;
 			} else {
 				// ******* Write text
-				$nl = $this->Write($this->lasth, $txt, '', 0, $align, true, $stretch, false);
+				$nl = $this->Write($this->lasth, $txt, '', 0, $align, true, $stretch, false, false, $maxh);
 			}
-			// add bottom padding
-			$this->y += $this->cMargin;
-			// Add bottom space if needed
-			if (($this->lasth - $this->FontSize) < $this->LineWidth) {
-				$this->y += $this->LineWidth / 2;
+			if ($autopadding) {
+				// add bottom padding
+				$this->y += $this->cMargin;
+				// Add bottom space if needed
+				if (($this->lasth - $this->FontSize) < $this->LineWidth) {
+					$this->y += $this->LineWidth / 2;
+				}
 			}
 			// Get end-of-text Y position
 			$currentY = $this->GetY();
@@ -3338,10 +3385,11 @@ if (!class_exists('TCPDF', false)) {
 		* @param int $stretch stretch carachter mode: <ul><li>0 = disabled</li><li>1 = horizontal scaling only if necessary</li><li>2 = forced horizontal scaling</li><li>3 = character spacing only if necessary</li><li>4 = forced character spacing</li></ul>
 		* @param boolean $firstline if true prints only the first line and return the remaining string.
 		* @param boolean $firstblock if true the string is the starting of a line.
+		* @param float $maxh maximum height. The remaining unprinted text will be returned. It should be >= $h and less then remaining space to the bottom of the page, or 0 for disable this feature.
 		* @return mixed Return the number of cells or the remaining string if $firstline = true.
 		* @since 1.5
 		*/
-		public function Write($h, $txt, $link='', $fill=0, $align='', $ln=false, $stretch=0, $firstline=false, $firstblock=false) {
+		public function Write($h, $txt, $link='', $fill=0, $align='', $ln=false, $stretch=0, $firstline=false, $firstblock=false, $maxh=0) {
 			// remove carriage returns
 			$s = str_replace("\r", '', $txt);
 			// check if string contains arabic text
@@ -3368,6 +3416,8 @@ if (!class_exists('TCPDF', false)) {
 			// store current position
 			$prevx = $this->x;
 			$prevy = $this->y;
+			// max Y
+			$maxy = $this->y + $maxh - $h - (2 * $this->cMargin);
 			// calculate remaining line width ($w)
 			if ($this->rtl) {
 				$w = $this->x - $this->lMargin;
@@ -3384,6 +3434,9 @@ if (!class_exists('TCPDF', false)) {
 			$linebreak = false;
 			// for each character
 			while ($i < $nb) {
+				if (($maxh > 0) AND ($this->y >= $maxy) ) {
+					$firstline = true;
+				}
 				//Get the current character
 				$c = $chars[$i];
 				if ($c == 10) { // 10 = "\n" = new line
@@ -4668,20 +4721,34 @@ if (!class_exists('TCPDF', false)) {
 							break;
 						}
 						case 'fileattachment': {
-							$iconsapp = array('Graph', 'Paperclip', 'PushPin', 'Tag');
-							if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
-								$annots .= ' /Name /'.$pl['opt']['name'];
-							} else {
-								$annots .= ' /Name /PushPin';
+							if (!isset($pl['opt']['fs'])) {
+								break;
+							}
+							$filename = basename($pl['opt']['fs']);
+							if (isset($this->embeddedfiles[$filename]['n'])) {
+								$annots .= ' /FS <</Type /Filespec /F '.$this->_datastring($filename).' /EF <</F '.$this->embeddedfiles[$filename]['n'].' 0 R>> >>';
+								$iconsapp = array('Graph', 'Paperclip', 'PushPin', 'Tag');
+								if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
+									$annots .= ' /Name /'.$pl['opt']['name'];
+								} else {
+									$annots .= ' /Name /PushPin';
+								}
 							}
 							break;
 						}
 						case 'sound': {
-							$iconsapp = array('Speaker', 'Mic');
-							if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
-								$annots .= ' /Name /'.$pl['opt']['name'];
-							} else {
-								$annots .= ' /Name /Speaker';
+							if (!isset($pl['opt']['sound'])) {
+								break;
+							}
+							$filename = basename($pl['opt']['sound']);
+							if (isset($this->embeddedfiles[$filename]['n'])) {
+								// to be completed...
+								$iconsapp = array('Speaker', 'Mic');
+								if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
+									$annots .= ' /Name /'.$pl['opt']['name'];
+								} else {
+									$annots .= ' /Name /Speaker';
+								}
 							}
 							break;
 						}
@@ -4720,7 +4787,6 @@ if (!class_exists('TCPDF', false)) {
 
 		/**
 		* Output fonts.
-		* _putfonts
 		* @access protected
 		*/
 		protected function _putfonts() {
@@ -4734,33 +4800,41 @@ if (!class_exists('TCPDF', false)) {
 			$mqr = get_magic_quotes_runtime();
 			set_magic_quotes_runtime(0);
 			foreach ($this->FontFiles as $file => $info) {
-				//Font file embedding
-				$this->_newobj();
-				$this->FontFiles[$file]['n'] = $this->n;
-				$font = file_get_contents($this->_getfontpath().strtolower($file));
-				$compressed = (substr($file, -2) == '.z');
-				if ((!$compressed) AND (isset($info['length2']))) {
-					$header = (ord($font{0}) == 128);
-					if ($header) {
-						//Strip first binary header
-						$font = substr($font,6);
+				// search and get font file to embedd
+				$filepath = '';
+				if (file_exists($file)) {
+					$filepath = strtolower($file);
+				} elseif (file_exists($this->_getfontpath().$file)) {
+					$filepath = $this->_getfontpath().strtolower($file);
+				}
+				if (!empty($filepath)) {
+					$font = file_get_contents($filepath);
+					$compressed = (substr($file, -2) == '.z');
+					if ((!$compressed) AND (isset($info['length2']))) {
+						$header = (ord($font{0}) == 128);
+						if ($header) {
+							//Strip first binary header
+							$font = substr($font, 6);
+						}
+						if ($header AND (ord($font{$info['length1']}) == 128)) {
+							//Strip second binary header
+							$font = substr($font, 0, $info['length1']).substr($font, ($info['length1'] + 6));
+						}
 					}
-					if ($header AND (ord($font{$info['length1']}) == 128)) {
-						//Strip second binary header
-						$font = substr($font, 0, $info['length1']).substr($font, ($info['length1'] + 6));
+					$this->_newobj();
+					$this->FontFiles[$file]['n'] = $this->n;
+					$this->_out('<</Length '.strlen($font));
+					if ($compressed) {
+						$this->_out('/Filter /FlateDecode');
 					}
+					$this->_out('/Length1 '.$info['length1']);
+					if (isset($info['length2'])) {
+						$this->_out('/Length2 '.$info['length2'].' /Length3 0');
+					}
+					$this->_out('>>');
+					$this->_putstream($font);
+					$this->_out('endobj');
 				}
-				$this->_out('<</Length '.strlen($font));
-				if ($compressed) {
-					$this->_out('/Filter /FlateDecode');
-				}
-				$this->_out('/Length1 '.$info['length1']);
-				if (isset($info['length2'])) {
-					$this->_out('/Length2 '.$info['length2'].' /Length3 0');
-				}
-				$this->_out('>>');
-				$this->_putstream($font);
-				$this->_out('endobj');
 			}
 			set_magic_quotes_runtime($mqr);
 			foreach ($this->fonts as $k => $font) {
@@ -4797,12 +4871,11 @@ if (!class_exists('TCPDF', false)) {
 					}
 					$this->_out('>>');
 					$this->_out('endobj');
-					//Widths
+					// Widths
 					$this->_newobj();
 					$cw = &$font['cw'];
 					$s = '[';
-					for($i=32; $i <= 255; $i++) {
-						//$s .= $cw[chr($i)].' ';
+					for($i = 32; $i < 256; $i++) {
 						$s .= $cw[$i].' ';
 					}
 					$this->_out($s.']');
@@ -4811,11 +4884,10 @@ if (!class_exists('TCPDF', false)) {
 					$this->_newobj();
 					$s = '<</Type /FontDescriptor /FontName /'.$name;
 					foreach ($font['desc'] as $k => $v) {
-						$s .= ' /'.$k.' '.$v;
+						$s .= ' /'.$k.' '.$v.'';
 					}
-					$file = $font['file'];
-					if ($file) {
-						$s .= ' /FontFile'.($type == 'Type1' ? '' : '2').' '.$this->FontFiles[$file]['n'].' 0 R';
+					if (!empty($font['file'])) {
+						$s .= ' /FontFile'.($type == 'Type1' ? '' : '2').' '.$this->FontFiles[$font['file']]['n'].' 0 R';
 					}
 					$this->_out($s.'>>');
 					$this->_out('endobj');
@@ -4828,6 +4900,179 @@ if (!class_exists('TCPDF', false)) {
 					$this->$mtd($font);
 				}
 			}
+		}
+		
+		/**
+		* Outputs font widths
+		* @parameter array $font font data
+		* @author Nicola Asuni
+		* @access protected
+		* @since 4.4.000 (2008-12-07)
+		*/
+		protected function _putfontwidths($font) {
+			ksort($font['cw']);
+			$rangeid = 0;
+			$range = array();
+			$prevcid = -2;
+			$prevwidth = -1;
+			$interval = false;
+			// for each character
+			foreach ($font['cw'] as $cid => $width) {
+				if ($width != $font['dw']) {	
+					if ($cid == ($prevcid + 1)) {
+						// consecutive CID
+						if ($width == $prevwidth) {
+							if ($width == $range[$rangeid][0]) {
+								$range[$rangeid][] = $width;
+							} else {
+								array_pop($range[$rangeid]);
+								// new range
+								$rangeid = $prevcid;
+								$range[$rangeid] = array();
+								$range[$rangeid][] = $prevwidth;
+								$range[$rangeid][] = $width;
+							}
+							$interval = true;
+							$range[$rangeid]['interval'] = true;
+						} else {
+							if ($interval) {
+								// new range
+								$rangeid = $cid;
+								$range[$rangeid] = array();
+								$range[$rangeid][] = $width;
+							} else {
+								$range[$rangeid][] = $width;
+							}
+							$interval = false;
+						}
+					} else {
+						// new range
+						$rangeid = $cid;
+						$range[$rangeid] = array();
+						$range[$rangeid][] = $width;
+						$interval = false;
+					}
+					$prevcid = $cid;
+					$prevwidth = $width;
+				}
+			}
+			// optimize ranges
+			$prevk = -1;
+			$nextk = -1;
+			$prevint = false;
+			foreach ($range as $k => $ws) {
+				$cws = count($ws);
+				if (($k == $nextk) AND (!$prevint) AND ((!isset($ws['interval'])) OR ($cws < 4))) {
+					if (isset($range[$k]['interval'])) {
+						unset($range[$k]['interval']);
+					}
+					$range[$prevk] = array_merge($range[$prevk], $range[$k]);
+					unset($range[$k]);
+				} else {
+					$prevk = $k;
+				}
+				$nextk = $k + $cws;
+				if (isset($ws['interval'])) {
+					if ($cws > 3) {
+						$prevint = true;
+					} else {
+						$prevint = false;
+					}
+					unset($range[$k]['interval']);
+					$nextk--;
+				} else {
+					$prevint = false;
+				}
+			}
+			// output data
+			$w = '';
+			foreach ($range as $k => $ws) {
+				if (count(array_count_values($ws)) == 1) {
+					// interval mode is more compact
+					$w .= ' '.$k.' '.($k + count($ws) - 1).' '.$ws[0];
+				} else {
+					// range mode
+					$w .= ' '.$k.' [ '.implode(' ', $ws).' ]';
+				}
+			}
+			$this->_out('/W ['.$w.' ]');
+		}
+		
+		/**
+		* Adds unicode fonts.<br>
+		* Based on PDF Reference 1.3 (section 5)
+		* @parameter array $font font data
+		* @access protected
+		* @author Nicola Asuni
+		* @since 1.52.0.TC005 (2005-01-05)
+		*/
+		protected function _puttruetypeunicode($font) {
+			// Type0 Font
+			// A composite font composed of other fonts, organized hierarchically
+			$this->_newobj();
+			$this->_out('<</Type /Font');
+			$this->_out('/Subtype /Type0');
+			$this->_out('/BaseFont /'.$font['name'].'');
+			$this->_out('/Encoding /Identity-H'); //The horizontal identity mapping for 2-byte CIDs; may be used with CIDFonts using any Registry, Ordering, and Supplement values.
+			$this->_out('/ToUnicode /Identity-H');
+			$this->_out('/DescendantFonts ['.($this->n + 1).' 0 R]');
+			$this->_out('>>');
+			$this->_out('endobj');
+			// CIDFontType2
+			// A CIDFont whose glyph descriptions are based on TrueType font technology
+			$this->_newobj();
+			$this->_out('<</Type /Font');
+			$this->_out('/Subtype /CIDFontType2');
+			$this->_out('/BaseFont /'.$font['name'].'');
+			// A dictionary containing entries that define the character collection of the CIDFont.
+			$cidinfo = '/Registry '.$this->_datastring('Adobe');
+			$cidinfo .= ' /Ordering '.$this->_datastring('Identity');
+			$cidinfo .= ' /Supplement 0';
+			$this->_out('/CIDSystemInfo <<'.$cidinfo.'>>');
+			$this->_out('/FontDescriptor '.($this->n + 1).' 0 R');
+			$this->_out('/DW '.$font['dw'].''); // default width
+			$this->_putfontwidths($font);
+			$this->_out('/CIDToGIDMap '.($this->n + 2).' 0 R');
+			$this->_out('>>');
+			$this->_out('endobj');			
+			// Font descriptor
+			// A font descriptor describing the CIDFont default metrics other than its glyph widths
+			$this->_newobj();
+			$this->_out('<</Type /FontDescriptor');
+			$this->_out('/FontName /'.$font['name']);
+			foreach ($font['desc'] as $key => $value) {
+				$this->_out('/'.$key.' '.$value);
+			}
+			if (!empty($font['file'])) {
+				// A stream containing a TrueType font
+				$this->_out('/FontFile2 '.$this->FontFiles[$font['file']]['n'].' 0 R');
+			}
+			$this->_out('>>');
+			$this->_out('endobj');
+			$this->_newobj();
+			if (isset($font['ctg']) AND (!empty($font['ctg']))) {
+				// Embed CIDToGIDMap
+				// A specification of the mapping from CIDs to glyph indices
+				// search and get CTG font file to embedd
+				$ctgfile = strtolower($font['ctg']);
+				if (!file_exists($ctgfile)) {
+					$ctgfile = $this->_getfontpath().$ctgfile;
+				}
+				if (!file_exists($ctgfile)) {
+					$this->Error('Font file not found: '.$ctgfile);
+				}
+				$size = filesize($ctgfile);
+				$this->_out('<</Length '.$size.'');
+				if (substr($ctgfile, -2) == '.z') { // check file extension
+					// Decompresses data encoded using the public-domain 
+					// zlib/deflate compression method, reproducing the 
+					// original text or binary data
+					$this->_out('/Filter /FlateDecode');
+				}
+				$this->_out('>>');
+				$this->_putstream(file_get_contents($ctgfile));
+			}
+			$this->_out('endobj');
 		}
 		
 		/**
@@ -4844,12 +5089,11 @@ if (!class_exists('TCPDF', false)) {
 				$cw = array();
 				foreach ($font['cw'] as $uni => $width) {
 					if (isset($uni2cid[$uni])) {
-						$cw[($uni2cid[$uni] + 31)] = $width;
-					} elseif ($uni <= 255) {
+						$cw[$uni2cid[$uni]] = $width;
+					} elseif ($uni < 256) {
 						$cw[$uni] = $width;
 					} // else unknown character
 				}
-				ksort($cw);
 				$font = array_merge($font, array('cw' => $cw));
 			}
 			$name = $font['name'];
@@ -4878,28 +5122,8 @@ if (!class_exists('TCPDF', false)) {
 			$cidinfo .= ' /Supplement '.$font['cidinfo']['Supplement'];
 			$this->_out('/CIDSystemInfo <<'.$cidinfo.'>>');
 			$this->_out('/FontDescriptor '.($this->n + 1).' 0 R');
-			$codes = array_keys($font['cw']);
-			$first = current($codes);
-			$last = end($codes);
 			$this->_out('/DW '.$font['dw']);
-			$w = '/W [';
-			$ranges = array();
-			$currange = 0;
-			for($i = $first; $i <= $last; $i++) {
-				if (isset($font['cw'][$i]) AND (!$currange)) {
-					$currange = $i - 31;
-				} elseif (!isset($font['cw'][$i])) {
-					$currange = 0;
-				}
-				if ($currange) {
-					$ranges[$currange][] = $font['cw'][$i];
-				}
-			}
-			foreach ($ranges as $k => $ws) {
-				$w .= ' '.$k.' [ '.implode(' ', $ws).' ]';
-			}
-			$w .= ' ]';
-			$this->_out($w);
+			$this->_putfontwidths($font);
 			$this->_out('>>');
 			$this->_out('endobj');
 			$this->_newobj();
@@ -5055,6 +5279,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('endobj');
 			$this->_putjavascript();
 			$this->_putbookmarks();
+			$this->_putEmbeddedFiles();
 			// encryption
 			if ($this->encrypted) {
 				$this->_newobj();
@@ -5101,7 +5326,6 @@ if (!class_exists('TCPDF', false)) {
 		protected function _putcatalog() {
 			$this->_out('/Type /Catalog');
 			$this->_out('/Pages 1 0 R');
-			
 			if ($this->ZoomMode == 'fullpage') {
 				$this->_out('/OpenAction [3 0 R /Fit]');
 			} elseif ($this->ZoomMode == 'fullwidth') {
@@ -5120,9 +5344,11 @@ if (!class_exists('TCPDF', false)) {
 			if (isset($this->l['a_meta_language'])) {
 				$this->_out('/Lang /'.$this->l['a_meta_language']);
 			}
+			$this->_out('/Names <<');
 			if (!empty($this->javascript)) {
-				$this->_out('/Names <</JavaScript '.($this->n_js).' 0 R>>');
+				$this->_out('/JavaScript '.($this->n_js).' 0 R');
 			}
+			$this->_out('>>');
 			if (count($this->outlines) > 0) {
 				$this->_out('/Outlines '.$this->OutlineRoot.' 0 R');
 				$this->_out('/PageMode /UseOutlines');
@@ -5256,6 +5482,9 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('0000000000 65535 f ');
 			for($i=1; $i <= $this->n; $i++) {
 				$this->_out(sprintf('%010d 00000 n ',$this->offsets[$i]));
+			}
+			foreach ($this->embeddedfiles as $filename => $filedata) {
+				$this->_out(sprintf('%010d 00000 n ',$this->offsets[$filedata['n']]));
 			}
 			//Trailer
 			$this->_out('trailer');
@@ -5454,112 +5683,6 @@ if (!class_exists('TCPDF', false)) {
 			} else {
 				$this->buffer .= $s."\n";
 			}
-		}
-
-		/**
-		* Adds unicode fonts.<br>
-		* Based on PDF Reference 1.3 (section 5)
-		* @access protected
-		* @author Nicola Asuni
-		* @since 1.52.0.TC005 (2005-01-05)
-		*/
-		protected function _puttruetypeunicode($font) {
-			// Type0 Font
-			// A composite font composed of other fonts, organized hierarchically
-			$this->_newobj();
-			$this->_out('<</Type /Font');
-			$this->_out('/Subtype /Type0');
-			$this->_out('/BaseFont /'.$font['name'].'');
-			$this->_out('/Encoding /Identity-H'); //The horizontal identity mapping for 2-byte CIDs; may be used with CIDFonts using any Registry, Ordering, and Supplement values.
-			$this->_out('/DescendantFonts ['.($this->n + 1).' 0 R]');
-			$this->_out('/ToUnicode '.($this->n + 2).' 0 R');
-			$this->_out('>>');
-			$this->_out('endobj');
-			// CIDFontType2
-			// A CIDFont whose glyph descriptions are based on TrueType font technology
-			$this->_newobj();
-			$this->_out('<</Type /Font');
-			$this->_out('/Subtype /CIDFontType2');
-			$this->_out('/BaseFont /'.$font['name'].'');
-			$this->_out('/CIDSystemInfo '.($this->n + 2).' 0 R'); 
-			$this->_out('/FontDescriptor '.($this->n + 3).' 0 R');
-			$this->_out('/DW '.$font['dw'].''); // default width
-			$w = '';
-			foreach ($font['cw'] as $cid => $width) {
-				$w .= ''.$cid.' ['.$width.'] '; // define a specific width for each individual CID
-			}
-			$this->_out('/W ['.$w.']'); // A description of the widths for the glyphs in the CIDFont
-			$this->_out('/CIDToGIDMap '.($this->n + 4).' 0 R');
-			$this->_out('>>');
-			$this->_out('endobj');
-			// ToUnicode
-			// is a stream object that contains the definition of the CMap
-			// (PDF Reference 1.3 chap. 5.9)
-			$this->_newobj();
-			$this->_out('<</Length 345>>');
-			$this->_out('stream');
-			$this->_out('/CIDInit /ProcSet findresource begin');
-			$this->_out('12 dict begin');
-			$this->_out('begincmap');
-			$this->_out('/CIDSystemInfo');
-			$this->_out('<</Registry (Adobe)');
-			$this->_out('/Ordering (UCS)');
-			$this->_out('/Supplement 0');
-			$this->_out('>> def');
-			$this->_out('/CMapName /Adobe-Identity-UCS def');
-			$this->_out('/CMapType 2 def');
-			$this->_out('1 begincodespacerange');
-			$this->_out('<0000> <FFFF>');
-			$this->_out('endcodespacerange');
-			$this->_out('1 beginbfrange');
-			$this->_out('<0000> <FFFF> <0000>');
-			$this->_out('endbfrange');
-			$this->_out('endcmap');
-			$this->_out('CMapName currentdict /CMap defineresource pop');
-			$this->_out('end');
-			$this->_out('end');
-			$this->_out('endstream');
-			$this->_out('endobj');
-			// CIDSystemInfo dictionary
-			// A dictionary containing entries that define the character collection of the CIDFont.
-			$this->_newobj();
-			$this->_out('<</Registry (Adobe)'); // A string identifying an issuer of character collections
-			$this->_out('/Ordering (UCS)'); // A string that uniquely names a character collection issued by a specific registry
-			$this->_out('/Supplement 0'); // The supplement number of the character collection.
-			$this->_out('>>');
-			$this->_out('endobj');
-			// Font descriptor
-			// A font descriptor describing the CIDFont default metrics other than its glyph widths
-			$this->_newobj();
-			$this->_out('<</Type /FontDescriptor');
-			$this->_out('/FontName /'.$font['name']);
-			foreach ($font['desc'] as $key => $value) {
-				$this->_out('/'.$key.' '.$value);
-			}
-			if ($font['file']) {
-				// A stream containing a TrueType font program
-				$this->_out('/FontFile2 '.$this->FontFiles[$font['file']]['n'].' 0 R');
-			}
-			$this->_out('>>');
-			$this->_out('endobj');
-			// Embed CIDToGIDMap
-			// A specification of the mapping from CIDs to glyph indices
-			$this->_newobj();
-			$ctgfile = $this->_getfontpath().strtolower($font['ctg']);
-			if (!file_exists($ctgfile)) {
-				$this->Error('Font file not found: '.$ctgfile);
-			}
-			$size = filesize($ctgfile);
-			$this->_out('<</Length '.$size.'');
-			if (substr($ctgfile, -2) == '.z') { // check file extension
-				/* Decompresses data encoded using the public-domain 
-				zlib/deflate compression method, reproducing the 
-				original text or binary data */
-				$this->_out('/Filter /FlateDecode');
-			}
-			$this->_out('>>');
-			$this->_putstream(file_get_contents($ctgfile));
-			$this->_out('endobj');
 		}
 		
 		 /**
@@ -6612,10 +6735,12 @@ if (!class_exists('TCPDF', false)) {
 				}
 				case 'CNZ': {
 					$op = 'W n';
+					$this->_outRect($x, $y, $w, $h, $op);
 					break;
 				}
 				case 'CEO': {
 					$op = 'W* n';
+					$this->_outRect($x, $y, $w, $h, $op);
 					break;
 				}
 				default: {
@@ -7725,7 +7850,7 @@ if (!class_exists('TCPDF', false)) {
 				 * Putting the combining mark and shadda in the same glyph allows us to avoid the two marks overlapping each other in an illegible manner.
 				 */
 				$cw = &$this->CurrentFont['cw'];
-				for ($i=0; $i < ($numchars-1); $i++) {
+				for ($i = 0; $i < ($numchars-1); $i++) {
 					if (($chardata2[$i]['char'] == 1617) AND (isset($diacritics[($chardata2[$i+1]['char'])]))) {
 						// check if the subtitution font is defined on current font
 						if (isset($cw[($diacritics[($chardata2[$i+1]['char'])])])) {
@@ -9349,7 +9474,8 @@ if (!class_exists('TCPDF', false)) {
 		
 		/**
 		 * Returns the current font size.
-		 * @return current font size 
+		 * @return current font size
+		 * @access public
 		 * @since 3.2.000 (2008-06-23)
 		 */
 		public function getFontSize() {
@@ -9358,11 +9484,32 @@ if (!class_exists('TCPDF', false)) {
 		
 		/**
 		 * Returns the current font size in points unit.
-		 * @return current font size in points unit 
+		 * @return current font size in points unit
+		 * @access public
 		 * @since 3.2.000 (2008-06-23)
 		 */
 		public function getFontSizePt() {
 			return $this->FontSizePt;
+		}
+		
+		/**
+		 * Returns the current font family name.
+		 * @return string current font family name
+		 * @access public
+		 * @since 4.3.008 (2008-12-05)
+		 */
+		public function getFontFamily() {
+			return $this->FontFamily;
+		}
+		
+		/**
+		 * Returns the current font style.
+		 * @return string current font style
+		 * @access public
+		 * @since 4.3.008 (2008-12-05)
+		 */
+		public function getFontStyle() {
+			return $this->FontStyle;
 		}
 		
 		/**
@@ -9513,7 +9660,7 @@ if (!class_exists('TCPDF', false)) {
 									$fontslist = split(',', strtolower($dom[$key]['style']['font-family']));
 									foreach ($fontslist as $font) {
 										$font = trim(strtolower($font));
-										if (in_array($font, $this->fontlist)) {
+										if (in_array($font, $this->fontlist) OR isset($this->fonts[$font])) {
 											$dom[$key]['fontname'] = $font;
 											break;
 										}
@@ -9604,7 +9751,7 @@ if (!class_exists('TCPDF', false)) {
 								$fontslist = split(',', strtolower($dom[$key]['attribute']['face']));
 								foreach ($fontslist as $font) {
 									$font = trim(strtolower($font));
-									if (in_array($font, $this->fontlist)) {
+									if (in_array($font, $this->fontlist) OR isset($this->fonts[$font])) {
 										$dom[$key]['fontname'] = $font;
 										break;
 									}
@@ -11159,6 +11306,7 @@ if (!class_exists('TCPDF', false)) {
 				'rMargin' => $this->rMargin,
 				'lMargin' => $this->lMargin,
 				'cMargin' => $this->cMargin,
+				'LineWidth' => $this->LineWidth,
 				'linestyleWidth' => $this->linestyleWidth,
 				'linestyleCap' => $this->linestyleCap,
 				'linestyleJoin' => $this->linestyleJoin,
@@ -11188,6 +11336,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->rMargin = $gvars['rMargin'];
 			$this->lMargin = $gvars['lMargin'];
 			$this->cMargin = $gvars['cMargin'];
+			$this->LineWidth = $gvars['LineWidth'];
 			$this->linestyleWidth = $gvars['linestyleWidth'];
 			$this->linestyleCap = $gvars['linestyleCap'];
 			$this->linestyleJoin = $gvars['linestyleJoin'];

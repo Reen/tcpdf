@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_006.php
 // Begin       : 2008-03-04
-// Last Update : 2008-10-17
+// Last Update : 2008-12-05
 // 
 // Description : Example 006 for TCPDF class
 //               WriteHTML and RTL support

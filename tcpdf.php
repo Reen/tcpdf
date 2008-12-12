@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-10
+// Last Update : 2008-12-11
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.4.005
+// Version     : 4.4.006
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.4.005
+ * @version 4.4.006
  */
 
 /**
@@ -147,19 +147,18 @@ require_once(dirname(__FILE__).'/htmlcolors.php');
  */
 require_once(dirname(__FILE__).'/barcodes.php');
 
-
 if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.4.005 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.006 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.4.005
+	* @version 4.4.006
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1060,7 +1059,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @access protected
 		 * @since 4.0.028 (2008-09-26)
 		 */
-		protected $lisymbol = '-';
+		protected $lisymbol = '';
 		
 		/**
 		 * String used to mark the beginning and end of EPS image blocks
@@ -11074,6 +11073,8 @@ if (!class_exists('TCPDF', false)) {
 							$this->lispacer = $parent['attribute']['type'];
 						} elseif (!empty($parent['listtype'])) {
 							$this->lispacer = $parent['listtype'];
+						} elseif (!empty($this->lisymbol)) {
+							$this->lispacer = $this->lisymbol;
 						} else {
 							$this->lispacer = '#';
 						}
@@ -11085,6 +11086,8 @@ if (!class_exists('TCPDF', false)) {
 						// unordered item
 						if (!empty($parent['listtype'])) {
 							$this->lispacer = $parent['listtype'];
+						} elseif (!empty($this->lisymbol)) {
+							$this->lispacer = $this->lisymbol;
 						} else {
 							$this->lispacer = '!';
 						}
@@ -11469,13 +11472,41 @@ if (!class_exists('TCPDF', false)) {
 		}
 		
 		/**
-		 * Set the character or string to be used as LI item symbol on UL lists.
-		 * @param string $symbol character or string to be used
+		 * Set the default bullet to be used as LI bullet symbol
+		 * @param string $symbol character or string to be used (legal values are: '' = automatic, '!' = auto bullet, '#' = auto numbering, 'disc', 'disc', 'circle', 'square', '1', 'decimal', 'decimal-leading-zero', 'i', 'lower-roman', 'I', 'upper-roman', 'a', 'lower-alpha', 'lower-latin', 'A', 'upper-alpha', 'upper-latin', 'lower-greek')
 		 * @access public
 		 * @since 4.0.028 (2008-09-26)
 		 */
-		public function setLIsymbol($symbol='-') {
-			$this->lisymbol = $symbol;
+		public function setLIsymbol($symbol='!') {
+			$symbol = strtolower($symbol);
+			switch ($symbol) {
+				case '!' :
+				case '#' :
+				case 'disc' :
+				case 'disc' :
+				case 'circle' :
+				case 'square' :
+				case '1':
+				case 'decimal':
+				case 'decimal-leading-zero':
+				case 'i':
+				case 'lower-roman':
+				case 'I':
+				case 'upper-roman':
+				case 'a':
+				case 'lower-alpha':
+				case 'lower-latin':
+				case 'A':
+				case 'upper-alpha': 
+				case 'upper-latin':
+				case 'lower-greek': {
+					$this->lisymbol = $symbol;
+					break;
+				}
+				default : {
+					$this->lisymbol = '';
+				}
+			}
 		}
 		
 		/**

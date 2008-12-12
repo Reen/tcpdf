@@ -7,17 +7,10 @@ http://sourceforge.net/donate/index.php?group_id=128076
 
 ------------------------------------------------------------
 
-Name:
-	TCPDF
-
-Version:
-	4.4.005
-	
-Release date:
-	2008-12-10
-
-Author:
-	Nicola Asuni 
+Name: TCPDF
+Version: 4.4.006
+Release date: 2008-12-11
+Author:	Nicola Asuni 
 	
 Copyright (c) 2001-2008:
 	Nicola Asuni
@@ -51,7 +44,7 @@ Main Features:
 // 	* supports automatic page break;
 // 	* supports automatic page numbering and page groups;
 // 	* supports automatic line break and text justification;
-// 	* supports JPEG and PNG images whitout GD library and all images supported by GD: GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM;
+// 	* supports JPEG and PNG images natively, all images supported by GD (GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM) and all images supported via ImagMagick (http://www.imagemagick.org/www/formats.html)
 // 	* supports stroke and clipping mode for text;
 // 	* supports clipping masks;
 // 	* supports Grayscale, RGB, CMYK, Spot colors and transparency;

@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-11
+// Last Update : 2008-12-23
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.4.006
+// Version     : 4.4.007
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.4.006
+ * @version 4.4.007
  */
 
 /**
@@ -151,14 +151,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.4.006 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.007 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.4.006
+	* @version 4.4.007
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1228,7 +1228,7 @@ if (!class_exists('TCPDF', false)) {
 			//Page margins (1 cm)
 			$margin = 28.35 / $this->k;
 			$this->SetMargins($margin, $margin);
-			//Interior cell margin (1 mm)
+			//Interior cell margin
 			$this->cMargin = $margin / 10;
 			//Line width (0.2 mm)
 			$this->LineWidth = 0.57 / $this->k;
@@ -1779,7 +1779,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function Error($msg) {
 			//Fatal error
-			die('<strong>TCPDF error: </strong>'.$msg);
+			die('<strong>TCPDF ERROR: </strong>'.$msg);
 		}
 
 		/**
@@ -2101,7 +2101,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->MultiCell(0, $cell_height, $headerdata['string'], 0, '', 0, 1, '', '', true, 0, false);
 			// print an ending header line
 			$this->SetLineStyle(array('width' => 0.85 / $this->getScaleFactor(), 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0)));
-			$this->SetY(1 + max($imgy, $this->GetY()));
+			$this->SetY((2.835 / $this->getScaleFactor()) + max($imgy, $this->GetY()));
 			if ($this->getRTL()) {
 				$this->SetX($ormargins['right']);
 			} else {

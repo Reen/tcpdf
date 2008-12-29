@@ -55,17 +55,17 @@ $pdf->SetProtection(array('print'));
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 016");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 016');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array("helvetica", '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array("helvetica", '', PDF_FONT_SIZE_DATA));
+$pdf->setHeaderFont(Array('helvetica', '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array('helvetica', '', PDF_FONT_SIZE_DATA));
 
 //set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
@@ -90,7 +90,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont("times", "", 20);
+$pdf->SetFont('times', '', 20);
 
 // print a line using Cell()
 $pdf->Cell(0,10,"Encryption Example",1,1,'C');
@@ -98,7 +98,7 @@ $pdf->Cell(0,10,"Encryption Example",1,1,'C');
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_016.pdf", "I");
+$pdf->Output('example_016.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

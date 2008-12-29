@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 033");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 033');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -74,24 +74,24 @@ $pdf->AddPage();
 
 // set font
 
-$pdf->SetFont("dejavusans", "", 10);
+$pdf->SetFont('dejavusans', '', 10);
 $pdf->MultiCell(80, 0, "[True Type Unicode font] : Cras eros leo, porttitor porta, accumsan fermentum, ornare ac, est. Praesent dui lorem, imperdiet at, cursus sed, facilisis aliquam, nibh. Nulla accumsan nonummy diam. Donec tempus. Etiam posuere. Proin lectus. Donec purus. Duis in sem pretium urna feugiat vehicula. Ut suscipit velit eget massa. Nam nonummy, enim commodo euismod placerat, tortor elit tempus lectus, quis suscipit metus lorem blandit turpis.\n", 1, 'J', 0, 1, 0, 0, true, 0);
 
 $pdf->Ln(2);
 
-$pdf->SetFont("times", "", 10);
+$pdf->SetFont('times', '', 10);
 $pdf->MultiCell(80, 0, "[Core font] : Cras eros leo, porttitor porta, accumsan fermentum, ornare ac, est. Praesent dui lorem, imperdiet at, cursus sed, facilisis aliquam, nibh. Nulla accumsan nonummy diam. Donec tempus. Etiam posuere. Proin lectus. Donec purus. Duis in sem pretium urna feugiat vehicula. Ut suscipit velit eget massa. Nam nonummy, enim commodo euismod placerat, tortor elit tempus lectus, quis suscipit metus lorem blandit turpis.\n", 1, 'J', 0, 1, 0, 0, true, 0);
 
 $pdf->Ln(2);
 
-$pdf->SetFont("arialunicid0", "", 9);
+$pdf->SetFont('arialunicid0', '', 9);
 $pdf->MultiCell(80, 0, "[CID-0 font] : Cras eros leo, porttitor porta, accumsan fermentum, ornare ac, est. Praesent dui lorem, imperdiet at, cursus sed, facilisis aliquam, nibh. Nulla accumsan nonummy diam. Donec tempus. Etiam posuere. Proin lectus. Donec purus. Duis in sem pretium urna feugiat vehicula. Ut suscipit velit eget massa. Nam nonummy, enim commodo euismod placerat, tortor elit tempus lectus, quis suscipit metus lorem blandit turpis.\n", 1, 'J', 0, 1, 0, 0, true, 0);
 
 
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_033.pdf", "I");
+$pdf->Output('example_033.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

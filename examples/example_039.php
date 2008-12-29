@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 039");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 039');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -76,7 +76,7 @@ $pdf->AddPage();
 $htmlcontent = "<span style=\"text-align:justify;\">a <u>abc</u> abcdefghijkl abcdef abcdefg <b>abcdefghi</b> a abc abcd <img src=\"../images/logo_example.png\" border=\"0\" height=\"41\" width=\"41\" /> <img src=\"../images/tiger.ai\" alt=\"test alt attribute\" width=\"100\" height=\"100\" border=\"0\" /> abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a <u>abc</u> abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg <b>abcdefghi</b> a abc abcd abcdef abcdefg abcdefghi a abc abcd <a href=\"http://tcpdf.org\">abcdef abcdefg</a> start a abc before <span style=\"background-color:yellow\">yellow color</span> after a abc abcd abcdef abcdefg abcdefghi a abc abcd end abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi a abc abcd abcdef abcdefg abcdefghi<br />abcd abcdef abcdefg abcdefghi<br />abcd abcde abcdef</span>";
 
 // set core font
-$pdf->SetFont("helvetica", "", 10);
+$pdf->SetFont('helvetica', '', 10);
 
 // output the HTML content
 $pdf->writeHTML($htmlcontent, true, 0, true, true);
@@ -84,7 +84,7 @@ $pdf->writeHTML($htmlcontent, true, 0, true, true);
 $pdf->Ln();
 
 // set UTF-8 font
-$pdf->SetFont("dejavusans", "", 10);
+$pdf->SetFont('dejavusans', '', 10);
 
 // output the HTML content
 $pdf->writeHTML($htmlcontent, true, 0, true, true);
@@ -95,7 +95,7 @@ $pdf->lastPage();
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_039.pdf", "I", "I");
+$pdf->Output('example_039.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

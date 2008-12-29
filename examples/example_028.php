@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 028");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 028');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // remove default header/footer
 $pdf->setPrintHeader(false);
@@ -67,7 +67,7 @@ $pdf->AliasNbPages();
 $pdf->SetDisplayMode("fullpage", "SinglePage", "UseNone");
 
 // set font
-$pdf->SetFont("times", "B", 20);
+$pdf->SetFont('times', "B", 20);
 
 $pdf->AddPage("P","A4");
 $pdf->Cell(0,0,"A4 PORTRAIT",1,1,'C');
@@ -132,7 +132,7 @@ $pdf->lastPage();
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_028.pdf", "I");
+$pdf->Output('example_028.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

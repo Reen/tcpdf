@@ -82,10 +82,10 @@ $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 011");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 011');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -117,7 +117,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont("helvetica", "", 12);
+$pdf->SetFont('helvetica', '', 12);
 
 //Column titles
 $header=array('Country','Capital','Area (sq km)','Pop. (thousands)');
@@ -131,7 +131,7 @@ $pdf->ColoredTable($header,$data);
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_011.pdf", "I");
+$pdf->Output('example_011.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

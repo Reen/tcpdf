@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 030");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 030');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // disable header and footer
 $pdf->setPrintHeader(false);
@@ -68,7 +68,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont("helvetica", "", 14);
+$pdf->SetFont('helvetica', '', 14);
 
 //first page
 
@@ -162,7 +162,7 @@ $pdf->CoonsPatchMesh(10,25,190,200,'','','','',$patch_array,$coords_min,$coords_
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_030.pdf", "I");
+$pdf->Output('example_030.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

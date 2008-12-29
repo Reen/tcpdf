@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 027");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 027');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -76,7 +76,7 @@ $pdf->AddPage();
 $pdf->setBarcode("2008-06-10 19:37");
 
 // set font
-$pdf->SetFont("helvetica", "", 10);
+$pdf->SetFont('helvetica', '', 10);
 
 $style = array(
 	"position" => "S",
@@ -85,7 +85,7 @@ $style = array(
 	"fgcolor" => array(0,0,0),
 	"bgcolor" => false, //array(255,255,255),
 	"text" => true,
-	"font" => "helvetica",
+	"font" => 'helvetica',
 	"fontsize" => 8,
 	"stretchtext" => 4
 );
@@ -173,7 +173,7 @@ $pdf->write1DBarcode("RIGHT", "C128A", '', '', 180, 30, 0.4, $style, 'N');
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_027.pdf", "I");
+$pdf->Output('example_027.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

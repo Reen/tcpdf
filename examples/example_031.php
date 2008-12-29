@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 031");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 031');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // disable header and footer
 $pdf->setPrintHeader(false);
@@ -68,7 +68,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont("helvetica", "", 14);
+$pdf->SetFont('helvetica', '', 14);
 
 $xc = 105;
 $yc = 55;
@@ -84,7 +84,7 @@ $pdf->PieSector($xc, $yc, $r, 250, 20);
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_031.pdf", "I");
+$pdf->Output('example_031.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

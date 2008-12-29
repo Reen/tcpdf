@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 012");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 012');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // disable header and footer
 $pdf->setPrintHeader(false);
@@ -68,7 +68,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont("helvetica", "", 10);
+$pdf->SetFont('helvetica', '', 10);
 
 $style = array("width" => 0.5, "cap" => "butt", "join" => "miter", "dash" => "10,20,5,10", "phase" => 10, "color" => array(255, 0, 0));
 $style2 = array("width" => 0.5, "cap" => "butt", "join" => "miter", "dash" => 0, "color" => array(255, 0, 0));
@@ -156,7 +156,7 @@ $pdf->RoundedRect(140, 255, 40, 30, 8.0, "0101", "DF", $style6, array(200, 200, 
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_012.pdf", "I");
+$pdf->Output('example_012.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

@@ -38,10 +38,10 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor("Nicola Asuni");
-$pdf->SetTitle("TCPDF Example 018");
-$pdf->SetSubject("TCPDF Tutorial");
-$pdf->SetKeywords("TCPDF, PDF, example, test, guide");
+$pdf->SetAuthor('Nicola Asuni');
+$pdf->SetTitle('TCPDF Example 018');
+$pdf->SetSubject('TCPDF Tutorial');
+$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
@@ -80,7 +80,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont("dejavusans", "", 12);
+$pdf->SetFont('dejavusans', '', 12);
 
 // Persian and English content
 $htmlpersian = "<span color=\"#660000\">Persian example:</span><br />سلام بالاخره مشکل PDF فارسی به طور کامل حل شد. اینم یک نمونش.<br />مشکل حرف \"ژ\" در بعضی کلمات مانند کلمه ویژه نیز بر طرف شد.<br />نگارش حروف لام و الف پشت سر هم نیز تصحیح شد.<br />با تشکر از  \"Asuni Nicola\" و محمد علی گل کار برای پشتیبانی زبان فارسی.";
@@ -100,7 +100,7 @@ $pdf->setRTL(true);
 
 $pdf->Ln(10);
 
-$pdf->SetFont("almohanad", "", 18);
+$pdf->SetFont('almohanad', '', 18);
 
 // Arabic and English content
 $pdf->Cell(0,12,"بِسْمِ اللهِ الرَّحْمنِ الرَّحِيمِ",0,1,'C');
@@ -121,7 +121,7 @@ $pdf->WriteHTML($htmlcontent2, true, 0, true, 0);
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output("example_018.pdf", "I");
+$pdf->Output('example_018.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

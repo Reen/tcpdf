@@ -73,7 +73,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont(('times' 'BI', 16));
+$pdf->SetFont('times', 'BI', 16);
 
 // print a line using Cell()
 $pdf->Cell(0,12,"Example 001 - €àèéìòù",1,1,'C');

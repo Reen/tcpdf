@@ -73,7 +73,7 @@ $pdf->AddPage();
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont(('times' 'BI', 16));
+$pdf->SetFont('times', 'BI', 16);
 
 
 // print a line using Cell()

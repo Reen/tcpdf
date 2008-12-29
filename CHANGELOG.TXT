@@ -1,3 +1,9 @@
+4.4.009 (2008-12-29)
+	- Examples 1 and 35 were fixed.
+
+4.4.008 (2008-12-28)
+	- Bug #2472169 "Unordered bullet size not adjusted for unit type" was fixed.
+
 4.4.007 (2008-12-23)
 	- Bug #2459935 "no unit conversion for header line" was fixed.
 	- Example n. 42 for image alpha channel was added.

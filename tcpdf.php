@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2008-12-23
+// Last Update : 2008-12-29
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.4.007
+// Version     : 4.4.009
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2008  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.4.007
+ * @version 4.4.009
  */
 
 /**
@@ -151,14 +151,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER','TCPDF 4.4.007 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER','TCPDF 4.4.009 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.4.007
+	* @version 4.4.009
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -11736,6 +11736,7 @@ if (!class_exists('TCPDF', false)) {
 		* @since 4.4.004 (2008-12-10)
 		*/
 		protected function putHtmlListBullet($listdepth, $listtype='', $size=10) {
+		    $size /= $this->k;
 		    $fill = '';
 		    $color = array(0, 0, 0);
 		    $width = 0;
@@ -11759,8 +11760,8 @@ if (!class_exists('TCPDF', false)) {
 					$fill = 'F';
 				}
 				case 'circle': {
-					$r = $size / 16;
 					$fill .= 'D';
+					$r = $size / 6;
 					$lspace += (2 * $r);
 					if ($this->rtl) {
 						$this->x += $lspace;
@@ -11771,7 +11772,7 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'square': {
-					$l = $size / 8;
+					$l = $size / 3;
 					$lspace += $l;
 					if ($this->rtl) {
 						$this->x += $lspace;

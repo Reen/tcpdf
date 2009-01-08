@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_025.php
 // Begin       : 2008-03-04
-// Last Update : 2008-10-10
+// Last Update : 2009-01-02
 // 
 // Description : Example 025 for TCPDF class
 //               Object Transparency
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Object Transparency
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -64,16 +64,13 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
-
-// add a page
-$pdf->AddPage();
-
 // ---------------------------------------------------------
 
 // set font
 $pdf->SetFont('helvetica', 'BI', 8);
+
+// add a page
+$pdf->AddPage();
 
 /*
  * setAlpha() gives transparency support. You can set the 
@@ -85,18 +82,18 @@ $pdf->SetFont('helvetica', 'BI', 8);
 $pdf->SetLineWidth(1.5);
     
 // draw opaque red square
-$pdf->SetFillColor(255,0,0);
-$pdf->Rect(30,60,40,40,'DF');
+$pdf->SetFillColor(255, 0, 0);
+$pdf->Rect(30, 60, 40, 40, 'DF');
 
 // set alpha to semi-transparency
 $pdf->SetAlpha(0.5);
 
 // draw green square
-$pdf->SetFillColor(0,255,0);
-$pdf->Rect(40,70,40,40,'DF');
+$pdf->SetFillColor(0, 255, 0);
+$pdf->Rect(40, 70, 40, 40, 'DF');
 
 // draw jpeg image
-$pdf->Image("../images/image_demo.jpg", 50, 80, 40, 40, '', 'http://www.tcpdf.org', '', true, 72);
+$pdf->Image('../images/image_demo.jpg', 50, 80, 40, 40, '', 'http://www.tcpdf.org', '', true, 72);
 
 // restore full opacity
 $pdf->SetAlpha(1);

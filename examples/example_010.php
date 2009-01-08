@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_010.php
 // Begin       : 2008-03-04
-// Last Update : 2008-10-30
+// Last Update : 2009-01-02
 // 
 // Description : Example 010 for TCPDF class
 //               Text on multiple columns
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Text on multiple columns
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
@@ -37,13 +37,13 @@ require_once('../tcpdf.php');
 class MYPDF extends TCPDF {
 	
 	//number of colums
-	protected $ncols=3;
+	protected $ncols = 3;
 	
 	// columns width
-	protected $colwidth=57;
+	protected $colwidth = 57;
 	
 	//Current column
-	protected $col=0;
+	protected $col = 0;
 	
 	//Ordinate of column start
 	protected $y0;
@@ -75,9 +75,9 @@ class MYPDF extends TCPDF {
 	
 	//Method accepting or not automatic page break
 	public function AcceptPageBreak() {
-		if($this->col < ($this->ncols-1)) {
+		if($this->col < ($this->ncols - 1)) {
 			//Go to next column
-			$this->SetCol($this->col+1);
+			$this->SetCol($this->col + 1);
 			//Set ordinate to top
 			$this->SetY($this->y0);
 			//Keep on page
@@ -92,12 +92,12 @@ class MYPDF extends TCPDF {
 	}
 	
 	// Set chapter title
-	public function ChapterTitle($num,$label) {
-		$this->SetFont('helvetica','',14);
-		$this->SetFillColor(200,220,255);
-		$this->Cell(0,6,"Chapter $num : $label",0,1,'',1);
+	public function ChapterTitle($num, $label) {
+		$this->SetFont('helvetica', '', 14);
+		$this->SetFillColor(200, 220, 255);
+		$this->Cell(0, 6, 'Chapter '.$num.' : '.$label, 0, 1, '', 1);
 		$this->Ln(4);
-		//Save ordinate
+		// Save ordinate
 		$this->y0 = $this->GetY();
 	}
 	
@@ -108,12 +108,12 @@ class MYPDF extends TCPDF {
 		$rMargin = $this->rMargin;
 		// get esternal file content
 		$txt = file_get_contents($file, false);
-		//Font
-		$this->SetFont('times','',9);
-		//Output text in a column
+		// Font
+		$this->SetFont('times', '', 9);
+		// Output text in a column
 		$this->MultiCell($this->colwidth, 5, $txt, 0, 'J', 0, 1, 0, 0, true, 0);
 		$this->Ln();
-		//Go back to first column
+		// Go back to first column
 		$this->SetCol(0);
 		// restore previous margin values
 		$this->SetLeftMargin($lMargin);
@@ -129,7 +129,7 @@ class MYPDF extends TCPDF {
 }
 
 // create new PDF document
-$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -159,13 +159,10 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
-
 // ---------------------------------------------------------
 
-$pdf->PrintChapter(1,'A RUNAWAY REEF','../cache/chapter_demo_1.txt');
-$pdf->PrintChapter(2,'THE PROS AND CONS','../cache/chapter_demo_2.txt');
+$pdf->PrintChapter(1, 'A RUNAWAY REEF', '../cache/chapter_demo_1.txt');
+$pdf->PrintChapter(2, 'THE PROS AND CONS', '../cache/chapter_demo_2.txt');
 
 // ---------------------------------------------------------
 

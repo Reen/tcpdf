@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_015.php
 // Begin       : 2008-03-04
-// Last Update : 2008-10-10
+// Last Update : 2009-01-02
 // 
 // Description : Example 015 for TCPDF class
 //               Bookmarks (Table of Content)
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Bookmarks (Table of Content)
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -64,46 +64,43 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
-
-// add a page
-$pdf->AddPage();
-
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('times', "B", 20);
+$pdf->SetFont('times', 'B', 20);
+
+// add a page
+$pdf->AddPage();
 
 // set a bookmark for the current position
 $pdf->Bookmark('Chapter 1', 0, 0);
 
 // print a line using Cell()
-$pdf->Cell(0,10,"Chapter 1",0,1,'L');
+$pdf->Cell(0, 10, 'Chapter 1', 0, 1, 'L');
 
 $pdf->AddPage();
 $pdf->Bookmark('Paragraph 1.1', 1, 0);
-$pdf->Cell(0,10,"Paragraph 1.1",0,1,'L');
+$pdf->Cell(0, 10, 'Paragraph 1.1', 0, 1, 'L');
 
 $pdf->AddPage();
 $pdf->Bookmark('Paragraph 1.2', 1, 0);
-$pdf->Cell(0,10,"Paragraph 1.2",0,1,'L');
+$pdf->Cell(0, 10, 'Paragraph 1.2', 0, 1, 'L');
 
 $pdf->AddPage();
 $pdf->Bookmark('Sub-Paragraph 1.2.1', 2, 0);
-$pdf->Cell(0,10,"Sub-Paragraph 1.2.1",0,1,'L');
+$pdf->Cell(0, 10, 'Sub-Paragraph 1.2.1', 0, 1, 'L');
 
 $pdf->AddPage();
 $pdf->Bookmark('Paragraph 1.3', 1, 0);
-$pdf->Cell(0,10,"Paragraph 1.3",0,1,'L');
+$pdf->Cell(0, 10, 'Paragraph 1.3', 0, 1, 'L');
 
 $pdf->AddPage();
 $pdf->Bookmark('Chapter 2', 0, 0);
-$pdf->Cell(0,10,"Chapter 2",0,1,'L');
+$pdf->Cell(0, 10, 'Chapter 2', 0, 1, 'L');
 
 $pdf->AddPage();
 $pdf->Bookmark('Chapter 3', 0, 0);
-$pdf->Cell(0,10,"Chapter 3",0,1,'L');
+$pdf->Cell(0, 10, 'Chapter 3', 0, 1, 'L');
 
 // ---------------------------------------------------------
 

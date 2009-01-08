@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_014.php
 // Begin       : 2008-03-04
-// Last Update : 2008-10-29
+// Last Update : 2009-01-02
 // 
 // Description : Example 014 for TCPDF class
 //               Javascript Form and user rights
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Javascript Form and user rights
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -64,16 +64,13 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
-
-// add a page
-$pdf->AddPage();
-
 // ---------------------------------------------------------
 
 // set font
 $pdf->SetFont('helvetica', 'BI', 20);
+
+// add a page
+$pdf->AddPage();
 
 // Release User's Rights For PDF reader.
 // This is required to display and fill form fields on PDF Readers.
@@ -117,75 +114,75 @@ Upon field creation, an associative array can be passed to set a number of prope
 Colors can be chosen in the following list (case sensitive): black white red green blue cyan magenta yellow dkGray gray ltGray or be in the form #RRGGBB.
 */
 
-$pdf->Cell(0,5,'Subscription form',0,1,'C');
+$pdf->Cell(0, 5, 'Subscription form', 0, 1, 'C');
 $pdf->Ln(10);
-$pdf->SetFont('','',12);
+$pdf->SetFont('', '', 12);
 
 //First name
-$pdf->Cell(35,5,'First name:');
-$pdf->TextField('firstname',50,5,array('strokeColor'=>'ltGray'));
+$pdf->Cell(35, 5, 'First name:');
+$pdf->TextField('firstname', 50, 5, array('strokeColor'=>'ltGray'));
 $pdf->Ln(6);
 
 //Last name
-$pdf->Cell(35,5,'Last name:');
-$pdf->TextField('lastname',50,5,array('strokeColor'=>'ltGray'));
+$pdf->Cell(35, 5, 'Last name:');
+$pdf->TextField('lastname', 50, 5, array('strokeColor'=>'ltGray'));
 $pdf->Ln(6);
 
 //Gender
-$pdf->Cell(35,5,'Gender:');
-$pdf->ComboBox('gender',10,5,array('','M','F'),array('strokeColor'=>'ltGray'));
+$pdf->Cell(35, 5, 'Gender:');
+$pdf->ComboBox('gender', 10, 5, array('', 'M', 'F'), array('strokeColor'=>'ltGray'));
 $pdf->Ln(6);
 
 //Drink
-$pdf->Cell(35,5,'Drink:');
-$pdf->RadioButton('drink',5,false);
-$pdf->Cell(35,5,'Water');
+$pdf->Cell(35, 5, 'Drink:');
+$pdf->RadioButton('drink', 5, false);
+$pdf->Cell(35, 5, 'Water');
 $pdf->Ln(6);
-$pdf->Cell(35,5,'');
-$pdf->RadioButton('drink',5,false);
-$pdf->Cell(35,5,'Beer');
+$pdf->Cell(35, 5, '');
+$pdf->RadioButton('drink', 5, false);
+$pdf->Cell(35, 5, 'Beer');
 $pdf->Ln(6);
-$pdf->Cell(35,5,'');
-$pdf->RadioButton('drink',5,false);
-$pdf->Cell(35,5,'Wine');
+$pdf->Cell(35, 5, '');
+$pdf->RadioButton('drink', 5, false);
+$pdf->Cell(35, 5, 'Wine');
 // set export values
-$pdf->IncludeJS("fdrink.exportValues=[\"Water\", \"Beer\", \"Wine\"];\n");
+$pdf->IncludeJS('fdrink.exportValues=["Water", "Beer", "Wine"];'."\n");
 // check the second radiobutton
 $pdf->IncludeJS("fdrink.checkThisBox(1,true);\n");
 $pdf->Ln(10);
 
 //Gender
-$pdf->Cell(35,5,'List:');
-$pdf->ListBox('listbox',60,15,array('','item1','item2','item3','item4','item5','item6','item7'), array('multipleSelection'=>'true'));
+$pdf->Cell(35, 5, 'List:');
+$pdf->ListBox('listbox', 60, 15, array('', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'), array('multipleSelection'=>'true'));
 $pdf->Ln(20);
 
 //Adress
-$pdf->Cell(35,5,'Address:');
-$pdf->TextField('address',60,18,array('multiline'=>true,'strokeColor'=>'ltGray'));
+$pdf->Cell(35, 5, 'Address:');
+$pdf->TextField('address', 60, 18, array('multiline'=>true,'strokeColor'=>'ltGray'));
 $pdf->Ln(19);
 
 //E-mail
-$pdf->Cell(35,5,'E-mail:');
-$pdf->TextField('email',50,5,array('strokeColor'=>'ltGray'));
+$pdf->Cell(35, 5, 'E-mail:');
+$pdf->TextField('email', 50, 5, array('strokeColor'=>'ltGray'));
 $pdf->Ln(6);
 
 //Newsletter
-$pdf->Cell(35,5,'Receive our',0,1);
-$pdf->Cell(35,5,'newsletter:');
-$pdf->CheckBox('newsletter',5,true);
+$pdf->Cell(35, 5, 'Receive our', 0, 1);
+$pdf->Cell(35, 5, 'newsletter:');
+$pdf->CheckBox('newsletter', 5, true);
 $pdf->Ln(10);
 
 //Date of the day (determined and formatted by JS)
-$pdf->Write(5,'Date: ');
-$pdf->TextField('date',30,5);
+$pdf->Write(5, 'Date: ');
+$pdf->TextField('date', 30, 5);
 $pdf->IncludeJS("getField('date').value=util.printd('dd/mm/yyyy',new Date());\n");
 $pdf->Ln();
-$pdf->Write(5,'Signature:');
+$pdf->Write(5, 'Signature:');
 $pdf->Ln(3);
 
 //Button to validate and print
 $pdf->SetX(95);
-$pdf->Button('print',20,8,'Print','Print()',array('textColor'=>'yellow','fillColor'=>'#FF5050'));
+$pdf->Button('print', 20, 8, 'Print', 'Print()', array('textColor'=>'yellow', 'fillColor'=>'#FF5050'));
 
 //Form validation functions
 $pdf->IncludeJS("

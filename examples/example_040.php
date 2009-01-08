@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_040.php
 // Begin       : 2008-10-28
-// Last Update : 2008-10-28
+// Last Update : 2009-01-02
 // 
 // Description : Example 040 for TCPDF class
 //               Booklet mode (double-sided pages)
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Booklet mode (double-sided pages)
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-10-28
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -64,8 +64,7 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
+// ---------------------------------------------------------
 
 // set booklet mode
 $pdf->SetBooklet(true, 10, 30);
@@ -77,26 +76,26 @@ $pdf->SetFont('helvetica', '', 18);
 $pdf->AddPage();
 
 // print a line using Cell()
-$pdf->Cell(0, 0, "LEFT PAGE 1", 1, 1, 'C');
+$pdf->Cell(0, 0, 'LEFT PAGE 1', 1, 1, 'C');
 
 // add a page (right page)
 $pdf->AddPage();
 
 // print a line using Cell()
-$pdf->Cell(0, 0, "RIGHT PAGE 2", 1, 1, 'C');
+$pdf->Cell(0, 0, 'RIGHT PAGE 2', 1, 1, 'C');
 
 
 // add a page (left page)
 $pdf->AddPage();
 
 // print a line using Cell()
-$pdf->Cell(0, 0, "LEFT PAGE 3", 1, 1, 'C');
+$pdf->Cell(0, 0, 'LEFT PAGE 3', 1, 1, 'C');
 
 // add a page (right page)
 $pdf->AddPage();
 
 // print a line using Cell()
-$pdf->Cell(0, 0, "RIGHT PAGE 4", 1, 1, 'C');
+$pdf->Cell(0, 0, 'RIGHT PAGE 4', 1, 1, 'C');
 
 // ---------------------------------------------------------
 

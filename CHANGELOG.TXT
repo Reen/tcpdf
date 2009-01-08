@@ -1,3 +1,17 @@
+4.5.001 (2009-01-04)
+	- The signature of startPageGroup() function was changed.
+	- Method Footer() was improved to automatically print page or page-group number (see example n. 23).
+	- Protected method formatTOCPageNumber() was added to customize the format of page numbers on the Table Of Content.
+	- The signature of addTOC() was changed to include the font used for page numbers.
+	
+4.5.000 (2009-01-03)
+	- A new $diskcache parameter was added to class constructor to enable disk caching and reduce RAM memory usage (see example n. 43).
+	- The method movePageTo() was added to move pages to previous positions (see example n. 44).
+	- The methods getAliasNumPage() and getPageNumGroupAlias() were added to get the alias for page number (needed when using movepageTo()).
+	- The methods addTOC() was added to print a Table Of Content (see example n. 45).
+	- Imagick class constant was removed for better compatibility with PHP4.
+	- All existing examples were updated and new examples were added.
+
 4.4.009 (2008-12-29)
 	- Examples 1 and 35 were fixed.
 

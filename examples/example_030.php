@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_030.php
 // Begin       : 2008-06-09
-// Last Update : 2008-06-09
+// Last Update : 2009-01-02
 // 
 // Description : Example 030 for TCPDF class
 //               Colour gradients
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Colour gradients
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-06-09
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -59,16 +59,13 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
-
-// add a page
-$pdf->AddPage();
-
 // ---------------------------------------------------------
 
 // set font
 $pdf->SetFont('helvetica', '', 14);
+
+// add a page
+$pdf->AddPage();
 
 //first page
 
@@ -157,7 +154,7 @@ $patch_array[3]['colors'][1] = array('r' => 0, 'g' => 0, 'b' => 255);
 $coords_min = 0;
 $coords_max = 2;
 
-$pdf->CoonsPatchMesh(10,25,190,200,'','','','',$patch_array,$coords_min,$coords_max);
+$pdf->CoonsPatchMesh(10, 25, 190, 200, '', '', '', '', $patch_array, $coords_min, $coords_max);
 
 // ---------------------------------------------------------
 

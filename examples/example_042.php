@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_042.php
 // Begin       : 2008-12-23
-// Last Update : 2008-12-23
+// Last Update : 2009-01-02
 // 
 // Description : Example 042 for TCPDF class
 //               Test Image with alpha channel
@@ -24,7 +24,7 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Test Image with alpha channel
  * @author Nicola Asuni
- * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-12-23
@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -64,18 +64,15 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 //set some language-dependent strings
 $pdf->setLanguageArray($l); 
 
-//initialize document
-$pdf->AliasNbPages();
-
-// add a page
-$pdf->AddPage();
-
 // ---------------------------------------------------------
 
 // set JPEG quality
 //$pdf->setJPEGQuality(75);
 
 $pdf->SetFont('helvetica', '', 18);
+
+// add a page
+$pdf->AddPage();
 
 // create background text
 $background_text = str_repeat('TCPDF test PNG Alpha Channel ', 50);
@@ -84,7 +81,7 @@ $pdf->MultiCell(0, 5, $background_text, 0, 'J', 0, 2, 0 , 0, true, 0, false);
 
 // [A] The Image() method recognizes the alpha channel embedded on the image:
 
-$pdf->Image("../images/image_with_alpha.png", 50, 50, 100, '', '', 'http://www.tcpdf.org', '', false, 300);
+$pdf->Image('../images/image_with_alpha.png', 50, 50, 100, '', '', 'http://www.tcpdf.org', '', false, 300);
 
 
 // [B] provide image + separate 8-bit mask

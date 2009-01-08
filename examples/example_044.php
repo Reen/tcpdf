@@ -1,11 +1,11 @@
 <?php
 //============================================================+
-// File name   : example_031.php
-// Begin       : 2008-06-09
-// Last Update : 2008-06-09
+// File name   : example_044.php
+// Begin       : 2009-01-02
+// Last Update : 2009-01-02
 // 
-// Description : Example 031 for TCPDF class
-//               Pie Chart
+// Description : Example 044 for TCPDF class
+//               Move page
 // 
 // Author: Nicola Asuni
 // 
@@ -22,33 +22,38 @@
 /**
  * Creates an example PDF TEST document using TCPDF
  * @package com.tecnick.tcpdf
- * @abstract TCPDF - Example: Pie Chart
+ * @abstract TCPDF - Example: Move page
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @since 2008-06-09
+ * @since 2009-01-02
  */
 
 require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Nicola Asuni');
-$pdf->SetTitle('TCPDF Example 031');
+$pdf->SetTitle('TCPDF Example 044');
 $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
-// disable header and footer
-$pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
+// set default header data
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 //set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 //set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -62,26 +67,37 @@ $pdf->setLanguageArray($l);
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('helvetica', '', 14);
+$pdf->SetFont('helvetica', '', 18);
 
-// add a page
+// print a line using Cell()
 $pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE A', 0, 1, 'L');
 
-$xc = 105;
-$yc = 55;
-$r = 40;
+$pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE B', 0, 1, 'L');
 
-$pdf->SetFillColor(120, 120, 255);
-$pdf->PieSector($xc, $yc, $r, 20, 120);
-$pdf->SetFillColor(120, 255, 120);
-$pdf->PieSector($xc, $yc, $r, 120, 250);
-$pdf->SetFillColor(255, 120, 120);
-$pdf->PieSector($xc, $yc, $r, 250, 20);
+$pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE D', 0, 1, 'L');
+
+$pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE E', 0, 1, 'L');
+
+$pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE F', 0, 1, 'L');
+
+$pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE C', 0, 1, 'L');
+
+$pdf->AddPage();
+$pdf->Cell(0, 10, 'PAGE G', 0, 1, 'L');
+
+// Move page 6 to page 3
+$pdf->movePage(6, 3);
 
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output('example_031.pdf', 'I');
+$pdf->Output('example_044.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

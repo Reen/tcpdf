@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-01-04
+// Last Update : 2009-01-07
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.001
+// Version     : 4.5.002
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.001
+ * @version 4.5.002
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.001 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.002 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.001
+	* @version 4.5.002
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -8736,7 +8736,7 @@ if (!class_exists('TCPDF', false)) {
 		* @see addTOC()
 		*/
 		protected function formatTOCPageNumber($num) {
-			return sprintf('% 3d', $this->formatPageNumber($num));
+			return number_format((float)$num, 0, '', '.');
 		}
         
         /**
@@ -12517,21 +12517,31 @@ if (!class_exists('TCPDF', false)) {
 		* Output a Table of Content Index (TOC).
 		* You can override this method to achieve different styles.
 		* @param int $page page number where this TOC should be inserted (leave empty for current page).
-		* @param string $numbersfont set the font for page numbers.
+		* @param string $numbersfont set the font for page numbers (please use monospaced font for better alignment).
+		* @param string $filler string used to fill the space between text and page number.
 		* @access public
 		* @author Nicola Asuni
 		* @since 4.5.000 (2009-01-02)
 		*/
-		public function addTOC($page='', $numbersfont='courier') {
+		public function addTOC($page='', $numbersfont='courier', $filler='.') {
 			$fontsize = $this->FontSizePt;
 			$fontfamily = $this->FontFamily;
 			$fontstyle = $this->FontStyle;
-			$this->SetFillColor(240, 240, 240);
 			$w = $this->w - $this->lMargin - $this->rMargin;
-			$tw = $w - $this->GetStringWidth('  {#0000}');
+			$spacer = $this->GetStringWidth(' ') * 4;
 			$page_first = $this->getPage();
+			$lmargin = $this->lMargin;
+			$rmargin = $this->rMargin;
+			$x_start = $this->GetX();
+			if (empty($filler)) {
+				$filler = ' ';
+			}
+			if (empty($page)) {
+				$gap = ' ';
+			} else {
+				$gap = '';
+			}
 			foreach ($this->outlines as $key => $outline) {
-				$spacer = str_repeat(' ', ($outline['l'] * 4));
 				if ($this->rtl) {
 					$aligntext = 'R';
 					$alignnum = 'L';
@@ -12544,59 +12554,51 @@ if (!class_exists('TCPDF', false)) {
 				} else {
 					$this->SetFont($fontfamily, $fontstyle, $fontsize - $outline['l']);
 				}
-				$page_start = $this->getPage();
-				$x_start = $this->GetX();
-				$y_start = $this->GetY();
+				$indent = ($spacer * $outline['l']);
 				if ($this->rtl) {
-					$txtstr = $outline['t'].$spacer;
+					$this->rMargin += $indent;
+					$this->x -= $indent;
 				} else {
-					$txtstr = $spacer.$outline['t'];
+					$this->lMargin += $indent;
+					$this->x += $indent;
 				}
-				// write the text cell
-				$this->MultiCell($tw, 0, $txtstr, 0, $aligntext, 0, 2, 0 ,0, true, 0);
-				$page_end_1 = $this->getPage();
-				$y_end_1 = $this->GetY();
-				$this->setPage($page_start);
+				$link = $this->AddLink();
+				$this->SetLink($link, 0, $outline['p']);
+				// write the text
+				$this->Write(0, $outline['t'], $link, 0, $aligntext, false, 0, false, false, 0);
+				$this->SetFont($numbersfont, $fontstyle, $fontsize);
 				if (empty($page)) {
 					$pagenum = $outline['p'];
 				} else {
-					// pacemark to be replaced with the correct number
+					// placemark to be replaced with the correct number
 					$pagenum = '{#'.($outline['p']).'}';
 					if (($this->CurrentFont['type'] == 'TrueTypeUnicode') OR ($this->CurrentFont['type'] == 'cidfont0')) {
 						$pagenum = '{'.$pagenum.'}';
 				    }
 				}
-				$this->SetFont($numbersfont, $fontstyle, $fontsize);
-				// write the number cell
-				$this->MultiCell(0, 0, $pagenum, 0, $alignnum, 0, 1, $this->GetX(), $y_start, true, 0);
-				$page_end_2 = $this->getPage();
-				$y_end_2 = $this->GetY();
-				$this->setPage($page_start);
-				$link = $this->AddLink();
-				$this->SetLink($link, 0, $outline['p']);
-				if ($page_end_1 == $page_start) {
-					$h = $y_end_1 - $y_start;
+				$numwidth = $this->GetStringWidth($pagenum);
+				if ($this->rtl) {
+					$tw = $this->x - $this->lMargin;
 				} else {
-					$h = $this->FontSize;
+					$tw = $this->w - $this->rMargin - $this->x;
 				}
-				$this->Link($x_start, $y_start, $w, $h, $link, 0);
-				// set the new row position by case
-				if (max($page_end_1,$page_end_2) == $page_start) {
-					$ynew = max($y_end_1, $y_end_2);
-				} elseif ($page_end_1 == $page_end_2) {
-					$ynew = max($y_end_1, $y_end_2);
-				} elseif ($page_end_1 > $page_end_2) {
-					$ynew = $y_end_1;
+				$fw = $tw - $numwidth - $this->GetStringWidth(' ');
+				$numfills = floor($fw / $this->GetStringWidth($filler));
+				$rowfill = str_repeat($filler, $numfills);
+				if ($this->rtl) {
+					$pagenum = $pagenum.$gap.$rowfill.' ';
 				} else {
-					$ynew = $y_end_2;
+					$pagenum = ' '.$rowfill.$gap.$pagenum;
 				}
-				$this->setPage(max($page_end_1,$page_end_2));
-				$this->SetXY($this->GetX(),$ynew);
+				// write the number
+				//$this->SetX($x_start);
+				$this->Cell($tw, 0, $pagenum, 0, 1, $alignnum, 0, $link, 0);
+				$this->SetX($x_start);
+				$this->lMargin = $lmargin;
+				$this->rMargin = $rmargin;
 			}
 			$page_last = $this->getPage();
 			$numpages = $page_last - $page_first + 1;
-			// restore font
-			$this->SetFont($fontfamily, $fontstyle, $fontsize);
 			if (!empty($page)) {
 				for($p = $page_first; $p <= $page_last; $p++) {
 					// get page data
@@ -12604,13 +12606,14 @@ if (!class_exists('TCPDF', false)) {
 					for($n = 1; $n <= $this->numpages; $n++) {
 						// update page numbers
 						$k = '{#'.$n.'}';
+						$ku = '{'.$k.'}';
 						$alias_a = $this->_escape($k);
 						$alias_au = $this->_escape('{'.$k.'}');
 						if ($this->isunicode) {
 							$alias_b = $this->_escape($this->UTF8ToLatin1($k));
-							$alias_bu = $this->_escape($this->UTF8ToLatin1('{'.$k.'}'));
+							$alias_bu = $this->_escape($this->UTF8ToLatin1($ku));
 							$alias_c = $this->_escape($this->utf8StrRev($k, false, $this->tmprtl));
-							$alias_cu = $this->_escape($this->utf8StrRev('{'.$k.'}', false, $this->tmprtl));
+							$alias_cu = $this->_escape($this->utf8StrRev($ku, false, $this->tmprtl));
 						}
 						if ($n >= $page) {
 							$np = $n + $numpages;
@@ -12618,7 +12621,19 @@ if (!class_exists('TCPDF', false)) {
 							$np = $n;
 						}
 						$ns = $this->formatTOCPageNumber($np);
-						$nu = $this->UTF8ToUTF16BE($ns, false);
+						$nu = $ns;
+						$sdiff = strlen($k) - strlen($ns) - 1;
+						$sdiffu = strlen($ku) - strlen($ns) - 1;
+						$sfill = str_repeat($filler, $sdiff);
+						$sfillu = str_repeat($filler, $sdiffu);
+						if ($this->rtl) {
+							$ns = $ns.' '.$sfill;
+							$nu = $nu.' '.$sfillu;
+						} else {
+							$ns = $sfill.' '.$ns;
+							$nu = $sfillu.' '.$nu;
+						}
+						$nu = $this->UTF8ToUTF16BE($nu, false);
 						$temppage = str_replace($alias_au, $nu, $temppage);
 						if ($this->isunicode) {
 							$temppage = str_replace($alias_bu, $nu, $temppage);
@@ -12636,6 +12651,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->movePage($page_last, $page);
 				}
 			}
+			$this->SetFont($fontfamily, $fontstyle, $fontsize);
 		}
 	} // END OF TCPDF CLASS
 }

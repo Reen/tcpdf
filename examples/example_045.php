@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_045.php
 // Begin       : 2008-03-04
-// Last Update : 2009-01-03
+// Last Update : 2009-01-07
 // 
 // Description : Example 045 for TCPDF class
 //               Bookmarks and Table of Content
@@ -94,13 +94,11 @@ $pdf->AddPage();
 $pdf->Bookmark('Paragraph 1.3', 1, 0);
 $pdf->Cell(0, 10, 'Paragraph 1.3', 0, 1, 'L');
 
-$pdf->AddPage();
-$pdf->Bookmark('Chapter 2', 0, 0);
-$pdf->Cell(0, 10, 'Chapter 2', 0, 1, 'L');
-
-$pdf->AddPage();
-$pdf->Bookmark('Chapter 3', 0, 0);
-$pdf->Cell(0, 10, 'Chapter 3', 0, 1, 'L');
+for ($i = 2; $i < 12; $i++) {
+	$pdf->AddPage();
+	$pdf->Bookmark('Chapter '.$i, 0, 0);
+	$pdf->Cell(0, 10, 'Chapter '.$i, 0, 1, 'L');
+}
 
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
@@ -115,7 +113,7 @@ $pdf->Ln();
 $pdf->SetFont('dejavusans', '', 12);
 
 // add table of content at page 1
-$pdf->addTOC(1);
+$pdf->addTOC(1, 'courier', '.');
 
 // ---------------------------------------------------------
 

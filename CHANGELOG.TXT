@@ -1,3 +1,7 @@
+4.5.008 (2009-01-26)
+	- setPage() method was fixed to correctly restore graphic states.
+	- Source code was cleaned up for performances.
+
 4.5.007 (2009-01-24)
 	- checkPageBreak() and write1DBarcode() methods were fixed.
 	- Source code was cleaned up for performances.

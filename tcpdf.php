@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-01-07
+// Last Update : 2009-01-23
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.002
+// Version     : 4.5.006
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.002
+ * @version 4.5.006
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.002 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.006 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.002
+	* @version 4.5.006
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1351,6 +1351,7 @@ if (!class_exists('TCPDF', false)) {
 		//Set scale factor
 			switch (strtolower($unit)) {
 				// points
+				case 'px':
 				case 'pt': {
 					$this->k = 1;
 					break;
@@ -1861,23 +1862,22 @@ if (!class_exists('TCPDF', false)) {
 		}
 
 		/**
-		* Terminates the PDF document. It is not necessary to call this method explicitly because Output() does it automatically. If the document contains no page, AddPage() is called to prevent from getting an invalid document.
+		* Terminates the PDF document.
+		* It is not necessary to call this method explicitly because Output() does it automatically.
+		* If the document contains no page, AddPage() is called to prevent from getting an invalid document.
 		* @since 1.0
 		* @see Open(), Output()
 		*/
 		public function Close() {
-			//Terminate document
 			if ($this->state == 3) {
 				return;
 			}
 			if ($this->page == 0) {
 				$this->AddPage();
 			}
-			//Page footer
-			$this->setFooter();
-			//Close page
-			$this->_endpage();
-			//Close document
+			// close page
+			$this->endPage();
+			// close document
 			$this->_enddoc();
 		}
 		
@@ -1967,7 +1967,9 @@ if (!class_exists('TCPDF', false)) {
 			if (!isset($this->original_rMargin)) {
 				$this->original_rMargin = $this->rMargin;
 			}
+			// terminate previous page
 			$this->endPage();
+			// start new page
 			$this->startPage($orientation, $format);
 		}
 		
@@ -2705,26 +2707,45 @@ if (!class_exists('TCPDF', false)) {
 			if (isset($cw)) {
 				unset($cw); 
 			}
-			// search and include font file
-			if (empty($fontfile) OR ((!file_exists($fontfile)) AND (!file_exists($this->_getfontpath().$fontfile)))) {
-				// build a standard filename
-				$fontfile = str_replace(' ', '', $family).strtolower($style).'.php';
-			}
-			if (file_exists($fontfile)) {
-				include($fontfile);
-			} elseif (file_exists($this->_getfontpath().$fontfile)) {
-				include($this->_getfontpath().$fontfile);
-			} else {
-				// try a new filename without style suffix
-				$fontfile = str_replace(' ', '', $family).'.php';
-				if (file_exists($this->_getfontpath().$fontfile)) {
-					include($this->_getfontpath().$fontfile);
-				} elseif (file_exists($fontfile)) {
-					include($fontfile);
+			// get specified font directory (if any)
+			$fontdir = '';
+			if (!empty($fontfile)) {
+				$fontdir = dirname($fontfile);
+				if (empty($fontdir) OR ($fontdir == '.')) {
+					$fontdir = '';
+				} else {
+					$fontdir .= '/';
 				}
 			}
-			if ((!isset($type)) OR (!isset($cw))) {
+			// search and include font file
+			if (empty($fontfile) OR (!file_exists($fontfile))) {
+				// build a standard filenames for specified font
+				$fontfile1 = str_replace(' ', '', $family).strtolower($style).'.php';
+				$fontfile2 = str_replace(' ', '', $family).'.php';
+				// search files on various directories
+				if (file_exists($fontdir.$fontfile1)) {
+					$fontfile = $fontdir.$fontfile1;
+				} elseif (file_exists($this->_getfontpath().$fontfile1)) {
+					$fontfile = $this->_getfontpath().$fontfile1;
+				} elseif (file_exists($fontfile1)) {
+					$fontfile = $fontfile1;
+				} elseif (file_exists($fontdir.$fontfile2)) {
+					$fontfile = $fontdir.$fontfile2;
+				} elseif (file_exists($this->_getfontpath().$fontfile2)) {
+					$fontfile = $this->_getfontpath().$fontfile2;
+				} else {
+					$fontfile = $fontfile2;
+				}
+			}
+			// include font file
+			if (file_exists($fontfile)) {
+				include($fontfile);
+			} else {
 				$this->Error('Could not include font definition file: '.$family.'');
+			}
+			// check font parameters
+			if ((!isset($type)) OR (!isset($cw))) {
+				$this->Error('The font definition file has a bad format: '.$fontfile.'');
 			}
 			if (!isset($file)) {
 				$file = '';
@@ -2779,9 +2800,9 @@ if (!class_exists('TCPDF', false)) {
 			}
 			if (!empty($file)) {
 				if ((strcasecmp($type,'TrueType') == 0) OR (strcasecmp($type, 'TrueTypeUnicode') == 0)) {
-					$this->FontFiles[$file] = array('length1' => $originalsize);
+					$this->FontFiles[$file] = array('length1' => $originalsize, 'fontdir' => $fontdir);
 				} elseif ($type != 'core') {
-					$this->FontFiles[$file] = array('length1' => $size1, 'length2' => $size2);
+					$this->FontFiles[$file] = array('length1' => $size1, 'length2' => $size2, 'fontdir' => $fontdir);
 				}
 			}
 			return $fontdata;
@@ -5074,14 +5095,19 @@ if (!class_exists('TCPDF', false)) {
 			set_magic_quotes_runtime(0);
 			foreach ($this->FontFiles as $file => $info) {
 				// search and get font file to embedd
-				$filepath = '';
-				if (file_exists($file)) {
-					$filepath = strtolower($file);
+				$fontdir = $info['fontdir'];
+				$file = strtolower($file);
+				$fontfile = '';
+				// search files on various directories
+				if (file_exists($fontdir.$file)) {
+					$fontfile = $fontdir.$file;
 				} elseif (file_exists($this->_getfontpath().$file)) {
-					$filepath = $this->_getfontpath().strtolower($file);
+					$fontfile = $this->_getfontpath().$file;
+				} elseif (file_exists($file)) {
+					$fontfile = $file;
 				}
-				if (!empty($filepath)) {
-					$font = file_get_contents($filepath);
+				if (!empty($fontfile)) {
+					$font = file_get_contents($fontfile);
 					$compressed = (substr($file, -2) == '.z');
 					if ((!$compressed) AND (isset($info['length2']))) {
 						$header = (ord($font{0}) == 128);
@@ -5319,9 +5345,11 @@ if (!class_exists('TCPDF', false)) {
 			foreach ($font['desc'] as $key => $value) {
 				$this->_out('/'.$key.' '.$value);
 			}
+			$fontdir = '';
 			if (!empty($font['file'])) {
 				// A stream containing a TrueType font
 				$this->_out('/FontFile2 '.$this->FontFiles[$font['file']]['n'].' 0 R');
+				$fontdir = $this->FontFiles[$font['file']]['fontdir'];
 			}
 			$this->_out('>>');
 			$this->_out('endobj');
@@ -5331,22 +5359,29 @@ if (!class_exists('TCPDF', false)) {
 				// A specification of the mapping from CIDs to glyph indices
 				// search and get CTG font file to embedd
 				$ctgfile = strtolower($font['ctg']);
-				if (!file_exists($ctgfile)) {
-					$ctgfile = $this->_getfontpath().$ctgfile;
+				// search and get ctg font file to embedd
+				$fontfile = '';
+				// search files on various directories
+				if (file_exists($fontdir.$ctgfile)) {
+					$fontfile = $fontdir.$ctgfile;
+				} elseif (file_exists($this->_getfontpath().$ctgfile)) {
+					$fontfile = $this->_getfontpath().$ctgfile;
+				} elseif (file_exists($ctgfile)) {
+					$fontfile = $ctgfile;
 				}
-				if (!file_exists($ctgfile)) {
+				if (empty($fontfile)) {
 					$this->Error('Font file not found: '.$ctgfile);
 				}
-				$size = filesize($ctgfile);
+				$size = filesize($fontfile);
 				$this->_out('<</Length '.$size.'');
-				if (substr($ctgfile, -2) == '.z') { // check file extension
+				if (substr($fontfile, -2) == '.z') { // check file extension
 					// Decompresses data encoded using the public-domain 
 					// zlib/deflate compression method, reproducing the 
 					// original text or binary data
 					$this->_out('/Filter /FlateDecode');
 				}
 				$this->_out('>>');
-				$this->_putstream(file_get_contents($ctgfile));
+				$this->_putstream(file_get_contents($fontfile));
 			}
 			$this->_out('endobj');
 		}
@@ -6285,9 +6320,9 @@ if (!class_exists('TCPDF', false)) {
 		 * Returns an associative array (keys: R,G,B) from an html color name or a six-digit or three-digit hexadecimal color representation (i.e. #3FE5AA or #7FF).
 		 * @param string $color html color 
 		 * @return array
-		 * @access protected
+		 * @access public
 		 */		
-		protected function convertHTMLColorToDec($color='#000000') {
+		public function convertHTMLColorToDec($color='#000000') {
 			global $webcolor;
 			$color = preg_replace('/[\s]*/', '', $color); // remove extra spaces
 			// set default color to be returned in case of error
@@ -6334,9 +6369,9 @@ if (!class_exists('TCPDF', false)) {
 		}
 		
 		/**
-		 * Converts pixels to Units.
+		 * Converts pixels to User's Units.
 		 * @param int $px pixels
-		 * @return float millimeters
+		 * @return float value in user's unit
 		 * @access public
 		 */
 		public function pixelsToUnits($px) {
@@ -10101,11 +10136,11 @@ if (!class_exists('TCPDF', false)) {
 										break;
 									}
 									case 'larger': {
-										$dom[$key]['fontsize'] = $dom[$parentkey]['fontsize'] - 3;
+										$dom[$key]['fontsize'] = $dom[$parentkey]['fontsize'] + 3;
 										break;
 									}
 									default: {
-										$dom[$key]['fontsize'] = $this->getHTMLUnitToPoints($fsize, $dom[$parentkey]['fontsize'], 'pt');
+										$dom[$key]['fontsize'] = $this->getHTMLUnitToUnits($fsize, $dom[$parentkey]['fontsize'], 'pt', true);
 									}
 								}
 							}
@@ -10140,11 +10175,11 @@ if (!class_exists('TCPDF', false)) {
 							}
 							// check for width attribute
 							if (isset($dom[$key]['style']['width'])) {
-								$dom[$key]['width'] = intval($dom[$key]['style']['width']);
+								$dom[$key]['width'] = $dom[$key]['style']['width'];
 							}
 							// check for height attribute
 							if (isset($dom[$key]['style']['height'])) {
-								$dom[$key]['height'] = intval($dom[$key]['style']['height']);
+								$dom[$key]['height'] = $dom[$key]['style']['height'];
 							}
 							// check for text alignment
 							if (isset($dom[$key]['style']['text-align'])) {
@@ -10240,11 +10275,11 @@ if (!class_exists('TCPDF', false)) {
 						}
 						// check for width attribute
 						if (isset($dom[$key]['attribute']['width'])) {
-							$dom[$key]['width'] = intval($dom[$key]['attribute']['width']);
+							$dom[$key]['width'] = $dom[$key]['attribute']['width'];
 						}
 						// check for height attribute
 						if (isset($dom[$key]['attribute']['height'])) {
-							$dom[$key]['height'] = intval($dom[$key]['attribute']['height']);
+							$dom[$key]['height'] = $dom[$key]['attribute']['height'];
 						}
 						// check for text alignment
 						if (isset($dom[$key]['attribute']['align']) AND (!empty($dom[$key]['attribute']['align'])) AND ($dom[$key]['value'] !== 'img')) {
@@ -10340,7 +10375,7 @@ if (!class_exists('TCPDF', false)) {
 						AND ($dom[$key]['value'] == 'img') 
 						AND (isset($dom[$key]['attribute']['height']))
 						AND ($dom[$key]['attribute']['height'] > 0)
-						AND (!((($this->y + $this->getHTMLUnitToPoints($dom[$key]['attribute']['height'], $this->lasth, 'px')) > $this->PageBreakTrigger) 
+						AND (!((($this->y + $this->getHTMLUnitToUnits($dom[$key]['attribute']['height'], $this->lasth, 'px')) > $this->PageBreakTrigger) 
 							AND (!$this->InFooter) 
 							AND $this->AcceptPageBreak()))
 						) {
@@ -10373,7 +10408,7 @@ if (!class_exists('TCPDF', false)) {
 								}
 							}
 						}
-						$this->y += (($curfontsize / $this->k) - $this->getHTMLUnitToPoints($dom[$key]['attribute']['height'], $this->lasth, 'px'));
+						$this->y += (($curfontsize / $this->k) - $this->getHTMLUnitToUnits($dom[$key]['attribute']['height'], $this->lasth, 'px'));
 						$minstartliney = min($this->y, $minstartliney);
 					} elseif (isset($dom[$key]['fontname']) OR isset($dom[$key]['fontstyle']) OR isset($dom[$key]['fontsize'])) {
 						// account for different font size
@@ -10724,7 +10759,7 @@ if (!class_exists('TCPDF', false)) {
 							$wtmp -= (2 * $this->cMargin);
 							// calculate cell width
 							if (isset($dom[$key]['width'])) {
-								$table_width = $this->getHTMLUnitToPoints($dom[$key]['width'], $wtmp, 'px');
+								$table_width = $this->getHTMLUnitToUnits($dom[$key]['width'], $wtmp, 'px');
 							} else {
 								$table_width = $wtmp;
 							}
@@ -10737,13 +10772,13 @@ if (!class_exists('TCPDF', false)) {
 								$dom[$table_el]['cols'] = $trid['cols'];
 							}
 							if (isset($dom[($dom[$trid]['parent'])]['attribute']['cellpadding'])) {
-								$currentcmargin = $this->getHTMLUnitToPoints($dom[($dom[$trid]['parent'])]['attribute']['cellpadding'], 1, 'px');
+								$currentcmargin = $this->getHTMLUnitToUnits($dom[($dom[$trid]['parent'])]['attribute']['cellpadding'], 1, 'px');
 							} else {
 								$currentcmargin = 0;		
 							}
 							$this->cMargin = $currentcmargin;
 							if (isset($dom[($dom[$trid]['parent'])]['attribute']['cellspacing'])) {
-								$cellspacing = $this->getHTMLUnitToPoints($dom[($dom[$trid]['parent'])]['attribute']['cellspacing'], 1, 'px');
+								$cellspacing = $this->getHTMLUnitToUnits($dom[($dom[$trid]['parent'])]['attribute']['cellspacing'], 1, 'px');
 							} else {
 								$cellspacing = 0;
 							}
@@ -10755,7 +10790,7 @@ if (!class_exists('TCPDF', false)) {
 							$colspan = $dom[$key]['attribute']['colspan'];
 							$wtmp = ($colspan * ($table_width / $dom[$table_el]['cols']));
 							if (isset($dom[$key]['width'])) {
-								$cellw = $this->getHTMLUnitToPoints($dom[$key]['width'], $wtmp, 'px');
+								$cellw = $this->getHTMLUnitToUnits($dom[$key]['width'], $wtmp, 'px');
 							} else {
 								$cellw = $wtmp;
 							}
@@ -11095,12 +11130,12 @@ if (!class_exists('TCPDF', false)) {
 					$cs = 0;
 					$dom[$key]['rowspans'] = array();
 					if (isset($tag['attribute']['cellpadding'])) {
-						$cp = $this->getHTMLUnitToPoints($tag['attribute']['cellpadding'], 1, 'px');
+						$cp = $this->getHTMLUnitToUnits($tag['attribute']['cellpadding'], 1, 'px');
 						$this->oldcMargin = $this->cMargin;
 						$this->cMargin = $cp;
 					}
 					if (isset($tag['attribute']['cellspacing'])) {
-						$cs = $this->getHTMLUnitToPoints($tag['attribute']['cellspacing'], 1, 'px');
+						$cs = $this->getHTMLUnitToUnits($tag['attribute']['cellspacing'], 1, 'px');
 					}
 					$this->checkPageBreak((2 * $cp) + (2 * $cs) + $this->lasth);
 					break;
@@ -11115,7 +11150,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->htmlvspace = 0;
 					$wtmp = $this->w - $this->lMargin - $this->rMargin;
 					if ((isset($tag['attribute']['width'])) AND ($tag['attribute']['width'] != '')) {
-						$hrWidth = $this->getHTMLUnitToPoints($tag['attribute']['width'], $wtmp, 'px');
+						$hrWidth = $this->getHTMLUnitToUnits($tag['attribute']['width'], $wtmp, 'px');
 					} else {
 						$hrWidth = $wtmp;
 					}
@@ -11253,6 +11288,7 @@ if (!class_exists('TCPDF', false)) {
 				case 'ul':
 				case 'ol': {
 					$this->addHTMLVertSpace(0, $cell, '', $firstorlast, $tag['value'], false);
+					$this->htmlvspace = 0;
 					$this->listnum++;
 					if ($tag['value'] == 'ol') {
 						$this->listordered[$this->listnum] = true;
@@ -11272,7 +11308,7 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'li': {
-					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], false);					
+					$this->addHTMLVertSpace(1, $cell, '', $firstorlast, $tag['value'], false);				
 					if ($this->listordered[$this->listnum]) {
 						// ordered item
 						if (!empty($parent['attribute']['type'])) {
@@ -11389,7 +11425,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->setPage($parent['endpage']);
 					$this->y = $parent['endy'];
 					if (isset($dom[$table_el]['attribute']['cellspacing'])) {
-						$cellspacing = $this->getHTMLUnitToPoints($dom[$table_el]['attribute']['cellspacing'], 1, 'px');
+						$cellspacing = $this->getHTMLUnitToUnits($dom[$table_el]['attribute']['cellspacing'], 1, 'px');
 						$this->y += $cellspacing;
 					}				
 					$this->Ln(0, $cell);
@@ -11531,7 +11567,7 @@ if (!class_exists('TCPDF', false)) {
 							}
 						}					
 						if (isset($table_el['attribute']['cellspacing'])) {
-							$cellspacing = $this->getHTMLUnitToPoints($table_el['attribute']['cellspacing'], 1, 'px');
+							$cellspacing = $this->getHTMLUnitToUnits($table_el['attribute']['cellspacing'], 1, 'px');
 							$this->y += $cellspacing;
 						}				
 						$this->Ln(0, $cell);
@@ -11798,21 +11834,26 @@ if (!class_exists('TCPDF', false)) {
 			$this->htmlLinkColorArray = $color;
 			$this->htmlLinkFontStyle = $fontstyle;
         }
-        
+                
         /**
-		* convert html string containing value and unit of measure to points.
+		* convert html string containing value and unit of measure to user's units or points.
 		* @param string $htmlval string containing values and unit
 		* @param string $refsize reference value in points
 		* @param string $defaultunit default unit (can be one of the following: %, em, ex, px, in, mm, pc, pt).
-		* @return float points
-		* @access protected
+		* @param boolean $point if true returns points, otherwise returns value in user's units
+		* @return float value in user's unit or point if $points=true
+		* @access public
 		* @since 4.4.004 (2008-12-10)
 		*/
-        protected function getHTMLUnitToPoints($htmlval, $refsize=1, $defaultunit='px') {
+        public function getHTMLUnitToUnits($htmlval, $refsize=1, $defaultunit='px', $points=false) {
 			$supportedunits = array('%', 'em', 'ex', 'px', 'in', 'cm', 'mm', 'pc', 'pt');
 			$retval = 0;
 			$value = 0;
 			$unit = 'px';
+			$k = $this->k;
+			if ($points) {
+				$k = 1;
+			}
 			if (in_array($defaultunit, $supportedunits)) {
 				$unit = $defaultunit;
 			}
@@ -11829,7 +11870,7 @@ if (!class_exists('TCPDF', false)) {
 			switch ($unit) {
 				// percentage
 				case '%': {
-					$retval = ($value * $refsize) / 100;
+					$retval = (($value * $refsize) / 100);
 					break;
 				}
 				// relative-size
@@ -11841,29 +11882,28 @@ if (!class_exists('TCPDF', false)) {
 					$retval = $value * ($refsize / 2);
 					break;
 				}
-				case 'px': {
-					$retval = $this->pixelsToUnits($value);
-					break;
-				}
 				// absolute-size
 				case 'in': {
-					$retval = $value * $this->dpi;
+					$retval = ($value * $this->dpi) / $k;
 					break;
 				}
 				case 'cm': {
-					$retval = $value / 2.54 * $this->dpi;
+					$retval = ($value / 2.54 * $this->dpi) / $k;
 					break;
 				}
 				case 'mm': {
-					$retval = $value / 25.4 * $this->dpi;
+					$retval = ($value / 25.4 * $this->dpi) / $k;
 					break;
 				}
 				case 'pc': {
-					$retval = $value * 12;
+					// one pica is 12 points
+					$retval = ($value * 12) / $k;
 					break;
 				}
+				case 'px':
 				case 'pt': {
-					$retval = $value;
+					$retval = $value / $k;
+					break;
 				}
 			}
 			return $retval;
@@ -12510,6 +12550,8 @@ if (!class_exists('TCPDF', false)) {
 									}
 									$newpage--;
 									return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+			// return to last page
+			$this->lastPage(true);
 			return true;
 		}
 		

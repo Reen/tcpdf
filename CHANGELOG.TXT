@@ -1,3 +1,8 @@
+4.5.007 (2009-01-24)
+	- checkPageBreak() and write1DBarcode() methods were fixed.
+	- Source code was cleaned up for performances.
+	- barcodes.php was updated.
+
 4.5.006 (2009-01-23)
 	- getHTMLUnitToPoints() method was replaced by getHTMLUnitToUnits() to fix HTML units bugs.
 

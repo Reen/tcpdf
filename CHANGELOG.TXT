@@ -1,3 +1,6 @@
+4.5.009 (2009-01-26)
+	- Bug n. 2538094 "Empty pdf file created" was fixed.
+	
 4.5.008 (2009-01-26)
 	- setPage() method was fixed to correctly restore graphic states.
 	- Source code was cleaned up for performances.

@@ -4,7 +4,7 @@
 // Begin       : 2002-08-03
 // Last Update : 2009-01-26
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.008
+// Version     : 4.5.009
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.008
+ * @version 4.5.009
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.008 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.009 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.008
+	* @version 4.5.009
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1844,7 +1844,8 @@ if (!class_exists('TCPDF', false)) {
 		}
 
 		/**
-		* This method begins the generation of the PDF document. It is not necessary to call it explicitly because AddPage() does it automatically.
+		* This method begins the generation of the PDF document.
+		* It is not necessary to call it explicitly because AddPage() does it automatically.
 		* Note: no page is created by this method
 		* @since 1.0
 		* @see AddPage(), Close()
@@ -1883,6 +1884,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function setPage($pnum, $resetmargins=false) {
 			if (($pnum > 0) AND ($pnum <= $this->numpages)) {
+				$this->state = 2;
 				// save current graphic settings
 				$gvars = $this->getGraphicVars();
 				$oldpage = $this->page;
@@ -5761,6 +5763,7 @@ if (!class_exists('TCPDF', false)) {
 		* @access protected
 		*/
 		protected function _enddoc() {
+			$this->state = 1;
 			$this->_putheader();
 			$this->_putpages();
 			$this->_putresources();
@@ -5795,7 +5798,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->_out('startxref');
 			$this->_out($o);
 			$this->_out('%%EOF');
-			$this->state = 3;
+			$this->state = 3; // end-of-doc
 			if ($this->diskcache) {
 				// remove temporary files used for images
 				foreach ($this->imagekeys as $key) {
@@ -12396,6 +12399,7 @@ if (!class_exists('TCPDF', false)) {
 		
         /**
 		* Move a page to a previous position.
+		* Use this method just before Output().
 		* @param int $frompage number of the source page
 		* @param int $topage number of the destination page (must be less than $frompage)
 		* @return true in case of success, false in case of error.

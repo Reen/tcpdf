@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-01-26
+// Last Update : 2009-01-29
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.009
+// Version     : 4.5.010
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.009
+ * @version 4.5.010
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.009 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.010 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.009
+	* @version 4.5.010
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -286,7 +286,8 @@ if (!class_exists('TCPDF', false)) {
 		* @var cell internal padding
 		* @access protected
 		*/
-		protected $cMargin;
+		//protected 
+		public $cMargin;
 		
 		/**
 		* @var cell internal padding (previous value)
@@ -9649,7 +9650,6 @@ if (!class_exists('TCPDF', false)) {
 				$h = 10 + $extraspace;
 			}
 			$this->checkPageBreak($h);
-			$y = $this->y;
 			// maximum bar heigth
 			$barh = $h - $extraspace;
 			switch ($style['position']) {

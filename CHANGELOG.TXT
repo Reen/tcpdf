@@ -1,3 +1,6 @@
+4.5.010 (2009-01-29)
+	- Bug n. 2546108 "BarCode Y position" was fixed.
+	
 4.5.009 (2009-01-26)
 	- Bug n. 2538094 "Empty pdf file created" was fixed.
 	

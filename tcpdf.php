@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-01-29
+// Last Update : 2009-02-12
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.010
+// Version     : 4.5.013
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.010
+ * @version 4.5.013
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.010 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.013 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.010
+	* @version 4.5.013
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -3577,6 +3577,36 @@ if (!class_exists('TCPDF', false)) {
 		}
 		
 		/**
+		* This method returns the estimated number of lines required to print the text.
+		* @param string $txt text to print
+		* @param float $w width of cell. If 0, they extend up to the right margin of the page.
+		* @return int Return the estimated number of lines.
+		* @since 4.5.011
+		*/
+		public function getNumLines($txt, $w=0) {
+			$lines = 0;
+			if (empty($w) OR ($w <= 0)) {
+				if ($this->rtl) {
+					$w = $this->x - $this->lMargin;
+				} else {
+					$w = $this->w - $this->rMargin - $this->x;
+				}
+			}
+			// max column width
+			$wmax = $w - (2 * $this->cMargin);
+			// remove carriage returns
+			$txt = str_replace("\r", '', $txt);
+			// divide text in blocks
+			$txtblocks = explode("\n", $txt);
+			// for each block;
+			foreach ($txtblocks as $block) {
+				// estimate the number of lines
+				$lines += ceil($this->GetStringWidth($block) / $wmax);
+			}
+			return $lines;
+		}
+			
+		/**
 		* This method prints text from the current position.<br />
 		* @param float $h Line height
 		* @param string $txt String to print
@@ -3919,10 +3949,11 @@ if (!class_exists('TCPDF', false)) {
 		* @param string $palign Allows to center or align the image on the current line. Possible values are:<ul><li>L : left align</li><li>C : center</li><li>R : right align</li><li>'' : empty string : left for LTR or right for RTL</li></ul>
 		* @param boolean $ismask true if this image is a mask, false otherwise
 		* @param mixed $imgmask image object returned by this function or false
+		* @param mixed $border Indicates if borders must be drawn around the image. The value can be either a number:<ul><li>0: no border (default)</li><li>1: frame</li></ul>or a string containing some or all of the following characters (in any order):<ul><li>L: left</li><li>T: top</li><li>R: right</li><li>B: bottom</li></ul>
 		* @return image information
 		* @since 1.1
 		*/
-		public function Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false) {
+		public function Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0) {
 			if ($x === '') {
 				$x = $this->x;
 			}
@@ -4070,6 +4101,15 @@ if (!class_exists('TCPDF', false)) {
 				$xkimg = $ximg * $this->k;
 			}
 			$this->_out(sprintf('q %.2f 0 0 %.2f %.2f %.2f cm /I%d Do Q', ($w * $this->k), ($h * $this->k), $xkimg, (($this->h - ($y + $h)) * $this->k), $info['i']));
+			if (!empty($border)) {
+				$bx = $x;
+				$by = $y;
+				$this->x = $x;
+				$this->y = $y;
+				$this->Cell($w, $h, '', $border, 0, '', 0, '', 0);
+				$this->x = $bx;
+				$this->y = $by;
+			}
 			if ($link) {
 				$this->Link($ximg, $y, $w, $h, $link, 0);
 			}
@@ -9289,11 +9329,12 @@ if (!class_exists('TCPDF', false)) {
 		* @param boolean useBoundingBox specifies whether to position the bounding box (true) or the complete canvas (false) at location (x,y). Default value is true.
 		* @param string $align Indicates the alignment of the pointer next to image insertion relative to image height. The value can be:<ul><li>T: top-right for LTR or top-left for RTL</li><li>M: middle-right for LTR or middle-left for RTL</li><li>B: bottom-right for LTR or bottom-left for RTL</li><li>N: next line</li></ul>
 		* @param string $palign Allows to center or align the image on the current line. Possible values are:<ul><li>L : left align</li><li>C : center</li><li>R : right align</li><li>'' : empty string : left for LTR or right for RTL</li></ul>
+		* @param mixed $border Indicates if borders must be drawn around the image. The value can be either a number:<ul><li>0: no border (default)</li><li>1: frame</li></ul>or a string containing some or all of the following characters (in any order):<ul><li>L: left</li><li>T: top</li><li>R: right</li><li>B: bottom</li></ul>
 		* @author Valentin Schmidt, Nicola Asuni
 		* @since 3.1.000 (2008-06-09)
 		* @access public
 		*/
-		public function ImageEps($file, $x='', $y='', $w=0, $h=0, $link='', $useBoundingBox=true, $align='', $palign='') {
+		public function ImageEps($file, $x='', $y='', $w=0, $h=0, $link='', $useBoundingBox=true, $align='', $palign='', $border=0) {
 			if ($x === '') {
 				$x = $this->x;
 			}
@@ -9511,6 +9552,15 @@ if (!class_exists('TCPDF', false)) {
 			}
 			// restore previous graphic state
 			$this->_out($this->epsmarker.'Q');
+			if (!empty($border)) {
+				$bx = $x;
+				$by = $y;
+				$this->x = $x;
+				$this->y = $y;
+				$this->Cell($w, $h, '', $border, 0, '', 0, '', 0);
+				$this->x = $bx;
+				$this->y = $by;
+			}
 			if ($link) {
 				$this->Link($ximg, $y, $w, $h, $link, 0);
 			}
@@ -10163,6 +10213,10 @@ if (!class_exists('TCPDF', false)) {
 							if (isset($dom[$key]['style']['text-align'])) {
 								$dom[$key]['align'] = strtoupper($dom[$key]['style']['text-align']{0});
 							}
+							// check for border attribute
+							if (isset($dom[$key]['style']['border'])) {
+								$dom[$key]['attribute']['border'] = $dom[$key]['style']['border'];
+							}
 						}
 						// check for font tag
 						if ($dom[$key]['value'] == 'font') {
@@ -10772,6 +10826,12 @@ if (!class_exists('TCPDF', false)) {
 							} else {
 								$cellw = $wtmp;
 							}
+							if (isset($dom[$key]['height'])) {
+								// minimum cell height
+								$cellh = $this->getHTMLUnitToUnits($dom[$key]['height'], 0, 'px');
+							} else {
+								$cellh = 0;
+							}
 							$cellw -= $cellspacing;
 							if (isset($dom[$key]['content'])) {
 								$cell_content = $dom[$key]['content'];
@@ -10861,7 +10921,7 @@ if (!class_exists('TCPDF', false)) {
 							}
 							$prevLastH= $this->lasth;
 							// ****** write the cell content ******
-							$this->MultiCell($cellw, 0, $cell_content, false, $lalign, false, 2, '', '', true, 0, true);
+							$this->MultiCell($cellw, $cellh, $cell_content, false, $lalign, false, 2, '', '', true, 0, true);
 							$this->lasth = $prevLastH;
 							$this->cMargin = $currentcmargin;
 							$dom[$trid]['cellpos'][($cellid - 1)]['endx'] = $this->x;
@@ -11224,10 +11284,25 @@ if (!class_exists('TCPDF', false)) {
 								$xpos -= $this->GetStringWidth(' ');
 							}
 						}
+						$imglink = '';
+						if (isset($this->HREF['url']) AND !empty($this->HREF['url'])) {
+							$imglink = $this->HREF['url'];
+							if ($imglink{0} == '#') {
+								// convert url to internal link
+								$page = intval(substr($imglink, 1));
+								$imglink = $this->AddLink();
+								$this->SetLink($imglink, 0, $page);
+							}
+						}
+						$border = 0;
+						if (isset($tag['attribute']['border']) AND !empty($tag['attribute']['border'])) {
+							// currently only support 1 (frame) or a combination of 'LTRB'
+							$border = $tag['attribute']['border'];
+						}
 						if (($type == 'eps') OR ($type == 'ai')) {
-							$this->ImageEps($tag['attribute']['src'], $xpos, $this->GetY(), $this->pixelsToUnits($tag['attribute']['width']), $this->pixelsToUnits($tag['attribute']['height']), '', true, $align);
+							$this->ImageEps($tag['attribute']['src'], $xpos, $this->GetY(), $this->pixelsToUnits($tag['attribute']['width']), $this->pixelsToUnits($tag['attribute']['height']), $imglink, true, $align, '', $border);
 						} else {
-							$this->Image($tag['attribute']['src'], $xpos, $this->GetY(), $this->pixelsToUnits($tag['attribute']['width']), $this->pixelsToUnits($tag['attribute']['height']), '', '', $align);
+							$this->Image($tag['attribute']['src'], $xpos, $this->GetY(), $this->pixelsToUnits($tag['attribute']['width']), $this->pixelsToUnits($tag['attribute']['height']), '', $imglink, $align, false, 300, '', false, false, $border);
 						}
 						switch($align) {
 							case 'T': {

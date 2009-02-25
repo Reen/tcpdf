@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-02-13
+// Last Update : 2009-02-18
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.014
+// Version     : 4.5.015
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.014
+ * @version 4.5.015
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.014 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.015 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.014
+	* @version 4.5.015
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -3713,7 +3713,7 @@ if (!class_exists('TCPDF', false)) {
 					$w = $this->getRemainingWidth();
 					$wmax = $w - (2 * $this->cMargin);
 				} else {
-					if (preg_match('/[\s]/', $this->unichr($c))) {
+					if (($c != 160) AND preg_match('/[\s]/', $this->unichr($c))) {
 						// update last blank space position
 						$sep = $i;
 					}
@@ -3759,7 +3759,7 @@ if (!class_exists('TCPDF', false)) {
 									return ($this->UTF8ArrSubString($chars, $i));
 								}
 								$j = $i;
-								$i--;
+								--$i;
 							}	
 						} else {
 							// word wrapping
@@ -5311,7 +5311,7 @@ if (!class_exists('TCPDF', false)) {
 						$prevint = false;
 					}
 					unset($range[$k]['interval']);
-					$nextk--;
+					--$nextk;
 				} else {
 					$prevint = false;
 				}
@@ -6322,7 +6322,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @access public
 		 */
 		public function addHtmlLink($url, $name, $fill=0, $firstline=false, $color='', $style=-1) {
-			if ($url{0} == '#') {
+			if (!empty($url) AND ($url{0} == '#')) {
 				// convert url to internal link
 				$page = intval(substr($url, 1));
 				$url = $this->AddLink();
@@ -9545,7 +9545,7 @@ if (!class_exists('TCPDF', false)) {
 						break;
 					}
 					case '*U': {
-						$u--;
+						--$u;
 						break;
 					}
 				}
@@ -11056,7 +11056,7 @@ if (!class_exists('TCPDF', false)) {
 						}
 						$dom[$key]['value'] = ltrim($strrest);
 						if ($loop < 3) {
-							$key--;
+							--$key;
 						}
 					} else {
 						$loop = 0;
@@ -11677,7 +11677,7 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'dl': {
-					$this->listnum--;
+					--$this->listnum;
 					if ($this->listnum <= 0) {
 						$this->listnum = 0;
 						$this->addHTMLVertSpace(2, $cell, '', $firstorlast, $tag['value'], true);
@@ -11701,7 +11701,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				case 'ul':
 				case 'ol': {
-					$this->listnum--;
+					--$this->listnum;
 					$this->lispacer = '';
 					if ($this->rtl) {
 						$this->rMargin -= $this->listindent;
@@ -12024,7 +12024,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			while ($number >= 1) {
 				$roman .= 'I';
-				$number--;
+				--$number;
 			}
 			return $roman;
 		}
@@ -12605,7 +12605,7 @@ if (!class_exists('TCPDF', false)) {
 				} else {
 					$newpage = $pagenum;
 				}
-				$newpage--;
+				--$newpage;
 				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
 			// return to last page
 			$this->lastPage(true);

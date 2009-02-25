@@ -1,3 +1,7 @@
+4.5.014 (2009-02-13)
+	- Bug item #2595015 "POSTNET Barcode Checksum Error" was fixed (on barcode.php).
+	- Pagebreak bug for barcode was fixed.
+	
 4.5.013 (2009-02-12)
 	- border attribute is now supported on HTML images (only accepts the same values accepted by Cell()).
 	

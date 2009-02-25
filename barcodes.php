@@ -2,8 +2,8 @@
 //============================================================+
 // File name   : barcodes.php
 // Begin       : 2008-06-09
-// Last Update : 2009-01-24
-// Version     : 1.0.004
+// Last Update : 2009-02-13
+// Version     : 1.0.005
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2008-2009 Nicola Asuni - Tecnick.com S.r.l.
@@ -47,14 +47,14 @@
  * @copyright 2008-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 1.0.004
+ * @version 1.0.005
  */
 
 	/**
 	* PHP class to creates array representations for common 1D barcodes to be used with TCPDF (http://www.tcpdf.org).<br>
 	* @name TCPDFBarcode
 	* @package com.tecnick.tcpdf
-	* @version 1.0.004
+	* @version 1.0.005
 	* @author Nicola Asuni
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -721,10 +721,11 @@ class TCPDFBarcode {
 		for($i=0; $i < $len; $i++) {
 			$sum += intval($code{$i});
 		}
-		if(($sum % 10) == 0) {
-			return false;
+		$chkd = ($sum % 10);
+		if($chkd > 0) {
+			$chkd = (10 - $chkd);
 		}
-		$code .= ''.(10 - ($sum % 10)).'';
+		$code .= $chkd;
 		$len = strlen($code);
 		// start bar
 		$bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => 2, 'p' => 0);

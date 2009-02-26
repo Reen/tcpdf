@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-02-18
+// Last Update : 2009-02-24
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.015
+// Version     : 4.5.017
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.015
+ * @version 4.5.017
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.015 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.017 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.015
+	* @version 4.5.017
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -2962,7 +2962,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			$this->PageAnnots[$this->page][] = array('x' => $x, 'y' => $y, 'w' => $w, 'h' => $h, 'txt' => $text, 'opt' => $opt, 'numspaces' => $spaces);
 			if (($opt['Subtype'] == 'FileAttachment') AND (!empty($opt['FS'])) AND file_exists($opt['FS']) AND (!isset($this->embeddedfiles[basename($opt['FS'])]))) {
-				$this->embeddedfiles[basename($opt['FS'])] = array('file' => $opt['FS'], 'n' => ($this->n + 10000));
+				$this->embeddedfiles[basename($opt['FS'])] = array('file' => $opt['FS'], 'n' => ($this->n + count($this->embeddedfiles) + 10000));
 			}
 		}
 					
@@ -3601,7 +3601,7 @@ if (!class_exists('TCPDF', false)) {
 			// for each block;
 			foreach ($txtblocks as $block) {
 				// estimate the number of lines
-				$lines += ceil($this->GetStringWidth($block) / $wmax);
+				$lines += empty($block) ? 1 : (ceil($this->GetStringWidth($block) / $wmax));
 			}
 			return $lines;
 		}
@@ -4516,7 +4516,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			switch($dest) {
 				case 'I': {
-					//Send to standard output
+					// Send PDF to the standard output
 					if (ob_get_contents()) {
 						$this->Error('Some data has already been output, can\'t send PDF file');
 					}
@@ -4537,7 +4537,7 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'D': {
-					//Download file
+					// Download PDF as file
 					if (ob_get_contents()) {
 						$this->Error('Some data has already been output, can\'t send PDF file');
 					}
@@ -4562,7 +4562,7 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'F': {
-					//Save to local file
+					// Save PDF to a local file
 					if ($this->diskcache) {
 						copy($this->buffer, $name);
 					} else {
@@ -4576,17 +4576,34 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'S': {
-					//Return as a string
-					return $this->getBuffer();
+					// Returns PDF as a string
+					$buffer = $this->getBuffer();
+					// unset all class variables
+					$this->_destroy();
+					return $buffer;
 				}
 				default: {
 					$this->Error('Incorrect output destination: '.$dest);
 				}
 			}
 			if ($this->diskcache) {
+				// remove buffer files
 				unlink($this->buffer);
 			}
+			// unset all class variables
+			$this->_destroy();
 			return '';
+		}
+		
+		/**
+		 * Unset all class variables.
+		 * @access protected
+		 * @since 4.5.016 (2009-02-24)
+		 */
+		protected function _destroy() {
+			foreach (array_keys(get_object_vars($this)) as $val) {
+				unset($this->$val);
+			}
 		}
 		
 		/**
@@ -8682,13 +8699,13 @@ if (!class_exists('TCPDF', false)) {
 		}
 		
 		/**
-		* Defines an alias for the total number of pages. It will be substituted as the document is closed.<br />
-		* @param string $alias The alias. Default value: {nb}.
+		* Defines an alias for the total number of pages.
+		* It will be substituted as the document is closed.
+		* @param string $alias The alias.
 		* @since 1.4
 		* @see getAliasNbPages(), PageNo(), Footer()
 		*/
 		public function AliasNbPages($alias='{nb}') {
-			//Define an alias for total number of pages
 			$this->AliasNbPages = $alias;
 		}
 		
@@ -8707,8 +8724,9 @@ if (!class_exists('TCPDF', false)) {
 		}
 		
 		/**
-		* Defines an alias for the page number. It will be substituted as the document is closed.<br />
-		* @param string $alias The alias. Default value: {nb}.
+		* Defines an alias for the page number.
+		* It will be substituted as the document is closed.
+		* @param string $alias The alias.
 		* @since 4.5.000 (2009-01-02)
 		* @see getAliasNbPages(), PageNo(), Footer()
 		*/
@@ -10571,7 +10589,7 @@ if (!class_exists('TCPDF', false)) {
 							} elseif (($plalign == 'L') AND ($this->rtl)) {
 								// left alignment on RTL document
 								$t_x = -$mdiff;
-							} elseif (($plalign == 'J') AND ($plalign == $lalign)){
+							} elseif (($plalign == 'J') AND ($plalign == $lalign)) {
 								// Justification
 								if ($this->rtl OR $this->tmprtl) {
 									$t_x = $this->lMargin - $this->endlinex;
@@ -11994,7 +12012,7 @@ if (!class_exists('TCPDF', false)) {
 				$roman .= 'C';
 				$number -= 100;
 			}
-			while ($number >= 90){
+			while ($number >= 90) {
 			$roman .= 'XC';
 			$number -= 90;
 			}
@@ -12288,6 +12306,7 @@ if (!class_exists('TCPDF', false)) {
 		* @since 4.5.000 (2009-01-02)
 		*/
 		protected function setBuffer($data) {
+			$this->bufferlen += strlen($data);
 			if ($this->diskcache) {
 				if (!isset($this->buffer) OR empty($this->buffer)) {
 					$this->buffer = $this->getObjFilename('buffer');
@@ -12296,7 +12315,6 @@ if (!class_exists('TCPDF', false)) {
 			} else {
 				$this->buffer .= $data;
 			}
-			$this->bufferlen += strlen($data);
 		}
 		
         /**
@@ -12334,7 +12352,7 @@ if (!class_exists('TCPDF', false)) {
 					$this->pages[$page] = $data;
 				}
 			}
-			if ($append AND isset($this->pagelen[$page])){
+			if ($append AND isset($this->pagelen[$page])) {
 				$this->pagelen[$page] += strlen($data);
 			} else {
 				$this->pagelen[$page] = strlen($data);

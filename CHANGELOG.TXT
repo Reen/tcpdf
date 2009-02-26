@@ -1,3 +1,11 @@
+4.5.017 (2009-02-24)
+	- A minor bug that raises a PHP warning was fixed.
+	
+4.5.016 (2009-02-24)
+	- Bug item #2631200 "getNumLines() counts wrong" was fixed.
+	- Multiple attachments bug was fixed.
+	- All class variables are now cleared on Output() for memory otpimization.
+	
 4.5.015 (2009-02-18)
 	- Bug item #2612553 "function Write() must not break a line on &nbsp;  character" was fixed.
 	

@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-02-24
+// Last Update : 2009-02-26
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.017
+// Version     : 4.5.018
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.017
+ * @version 4.5.018
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.017 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.018 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.017
+	* @version 4.5.018
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1334,6 +1334,8 @@ if (!class_exists('TCPDF', false)) {
 			if (isset($this->internal_encoding) AND !empty($this->internal_encoding)) {
 				mb_internal_encoding($this->internal_encoding);
 			}
+			// unset all class variables
+			$this->_destroy(true);
 		}
 		
 		/**
@@ -1874,6 +1876,8 @@ if (!class_exists('TCPDF', false)) {
 			$this->endPage();
 			// close document
 			$this->_enddoc();
+			// unset all class variables (except critical ones)
+			$this->_destroy(false);			
 		}
 		
 		/**
@@ -4577,32 +4581,30 @@ if (!class_exists('TCPDF', false)) {
 				}
 				case 'S': {
 					// Returns PDF as a string
-					$buffer = $this->getBuffer();
-					// unset all class variables
-					$this->_destroy();
-					return $buffer;
+					return $this->getBuffer();
 				}
 				default: {
 					$this->Error('Incorrect output destination: '.$dest);
 				}
 			}
-			if ($this->diskcache) {
-				// remove buffer files
-				unlink($this->buffer);
-			}
-			// unset all class variables
-			$this->_destroy();
 			return '';
 		}
 		
 		/**
-		 * Unset all class variables.
-		 * @access protected
+		 * Unset all class variables except the following critical variables: internal_encoding, state, bufferlen, buffer and diskcache.
+		 * @param boolean $destroyall if true destroys all class variables, otherwise preserves critical variables.
+		 * @access public
 		 * @since 4.5.016 (2009-02-24)
 		 */
-		protected function _destroy() {
+		public function _destroy($destroyall=false) {
+			if ($destroyall AND isset($this->diskcache) AND $this->diskcache) {
+				// remove buffer file from cache
+				unlink($this->buffer);
+			}
 			foreach (array_keys(get_object_vars($this)) as $val) {
-				unset($this->$val);
+				if ($destroyall OR (($val != 'internal_encoding') AND ($val != 'state') AND ($val != 'bufferlen') AND ($val != 'buffer') AND ($val != 'diskcache'))) {
+					unset($this->$val);
+				}
 			}
 		}
 		

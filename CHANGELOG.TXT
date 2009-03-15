@@ -1,3 +1,7 @@
+4.5.018 (2009-02-26)
+	- The _destroy() method was added to unset all class variables and frees memory.
+	- Now it's possible to call Output() method multiple times.
+	
 4.5.017 (2009-02-24)
 	- A minor bug that raises a PHP warning was fixed.
 	

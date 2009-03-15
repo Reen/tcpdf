@@ -1,3 +1,10 @@
+4.5.023 (2009-03-06)
+	- The bug #2666688 was fixed "Rowspan in tables".
+
+4.5.022 (2009-03-05)
+	- The bug #2659676 was fixed "refer to #2157099 test 4 < BR > problem still not fixed".
+	- addTOC() function bug was fixed.
+
 4.5.020 (2009-03-03)
 	- The following bug was fixed: "function removeSHY corrupts unicode".
 

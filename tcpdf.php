@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-03
+// Last Update : 2009-03-06
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.020
+// Version     : 4.5.023
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.020
+ * @version 4.5.023
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.020 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.023 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.020
+	* @version 4.5.023
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -10216,13 +10216,13 @@ if (!class_exists('TCPDF', false)) {
 			$html = preg_replace('/[\s]*<th/', '<th', $html);
 			$html = preg_replace('/[\s]*<\/td>[\s]*/', '</td>', $html);
 			$html = preg_replace('/[\s]*<td/', '<td', $html);
-			$html = preg_replace('/<\/th>/', '<marker/></th>', $html);
-			$html = preg_replace('/<\/td>/', '<marker/></td>', $html);
-			$html = preg_replace('/<\/table><marker\/>/', '</table>', $html);
+			$html = preg_replace('/<\/th>/', '<marker style="font-size:0"/></th>', $html);
+			$html = preg_replace('/<\/td>/', '<marker style="font-size:0"/></td>', $html);
+			$html = preg_replace('/<\/table>([\s]*)<marker style="font-size:0"\/>/', '</table>', $html);
 			$html = preg_replace('/<img/', ' <img', $html);
 			$html = preg_replace('/<img([^\>]*)>/xi', '<img\\1><span></span>', $html);
 			$html = preg_replace('/[\s]*<li/', '<li', $html);
-			$html = preg_replace('/<\/li>[\s]*/', '</li>', $html);			
+			$html = preg_replace('/<\/li>[\s]*/', '</li>', $html);
 			// pattern for generic tag
 			$tagpattern = '/(<[^>]+>)/';
 			// explodes the string
@@ -11166,6 +11166,7 @@ if (!class_exists('TCPDF', false)) {
 								$dom[$table_el]['rowspans'][($trsid - 1)]['endpage'] = $this->page;				
 							}
 							if (isset($dom[$table_el]['rowspans'])) {
+								// update endy and endpage on rowspanned cells
 								foreach ($dom[$table_el]['rowspans'] as $k => $trwsp) {
 									if ($trwsp['rowspan'] > 0) {
 										if (isset($dom[$trid]['endpage'])) {
@@ -11693,7 +11694,16 @@ if (!class_exists('TCPDF', false)) {
 								}
 							}
 						}
-					}
+						// report new endy and endpage to the rowspanned cells
+						foreach ($dom[$table_el]['rowspans'] as $k => $trwsp) {
+							if ($dom[$table_el]['rowspans'][$k]['rowspan'] == 0) {
+								$dom[$table_el]['rowspans'][$k]['endpage'] = max($dom[$table_el]['rowspans'][$k]['endpage'], $dom[($dom[$key]['parent'])]['endpage']);
+								$dom[($dom[$key]['parent'])]['endpage'] = $dom[$table_el]['rowspans'][$k]['endpage'];
+								$dom[$table_el]['rowspans'][$k]['endy'] = max($dom[$table_el]['rowspans'][$k]['endy'], $dom[($dom[$key]['parent'])]['endy']);
+								$dom[($dom[$key]['parent'])]['endy'] = $dom[$table_el]['rowspans'][$k]['endy'];
+							}
+						}
+					}			
 					$this->setPage($parent['endpage']);
 					$this->y = $parent['endy'];
 					if (isset($dom[$table_el]['attribute']['cellspacing'])) {
@@ -12899,7 +12909,11 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$fw = $tw - $numwidth - $this->GetStringWidth(' ');
 				$numfills = floor($fw / $this->GetStringWidth($filler));
-				$rowfill = str_repeat($filler, $numfills);
+				if ($numfills > 0) {
+					$rowfill = str_repeat($filler, $numfills);
+				} else {
+					$rowfill = '';
+				}
 				if ($this->rtl) {
 					$pagenum = $pagenum.$gap.$rowfill.' ';
 				} else {

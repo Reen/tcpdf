@@ -1,3 +1,10 @@
+4.5.020 (2009-03-03)
+	- The following bug was fixed: "function removeSHY corrupts unicode".
+
+4.5.019 (2009-02-28)
+	- The problem of decimal separator using different locale was fixed.
+	- The text hyphenation is now supported (see example n. 46).
+	
 4.5.018 (2009-02-26)
 	- The _destroy() method was added to unset all class variables and frees memory.
 	- Now it's possible to call Output() method multiple times.

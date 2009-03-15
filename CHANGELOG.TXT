@@ -1,3 +1,7 @@
+4.5.025 (2009-03-10)
+	- A small bug affecting hypenation support was fixed.
+	- The method SetDefaultMonospacedFont() was added to define the default monospaced font.
+
 4.5.024 (2009-03-07)
 	- The bug #2666493 was fixed "Footer corrupts document".
 

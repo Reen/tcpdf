@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-07
+// Last Update : 2009-03-10
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.024
+// Version     : 4.5.025
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.024
+ * @version 4.5.025
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.024 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.025 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.024
+	* @version 4.5.025
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -935,7 +935,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 3.0.000 (2008-03-27)
 		 */
 		protected $jpeg_quality;
-				
+		
 		/**
 		 * Default cell height ratio.
 		 * @access protected
@@ -1205,6 +1205,13 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 4.5.000 (2009-01-02)
 		 */
 		protected $pageopen = array();
+		
+		/**
+		 * Default monospaced font
+		 * @access protected
+		 * @since 4.5.025 (2009-03-10)
+		 */
+		protected $default_monospaced_font = 'courier';
 		
 		//------------------------------------------------------------
 		// METHODS
@@ -2934,7 +2941,17 @@ if (!class_exists('TCPDF', false)) {
 				$this->_out(sprintf('BT /F%d %.2F Tf ET', $this->CurrentFont['i'], $this->FontSizePt));
 			}
 		}
-
+		
+		/**
+		* Defines the default monospaced font.
+		* @param string $font Font name.
+		* @access public
+		* @since 4.5.025
+		*/
+		public function SetDefaultMonospacedFont($font) {
+			$this->default_monospaced_font = $font;
+		}
+		
 		/**
 		* Creates a new internal link and returns its identifier. An internal link is a clickable area which directs to another place within the document.<br />
 		* The identifier can then be passed to Cell(), Write(), Image() or Link(). The destination is defined with SetLink().
@@ -3757,6 +3774,11 @@ if (!class_exists('TCPDF', false)) {
 				}
 				return;
 			}
+			// replacement for SHY character (minus symbol)
+			$shy_replacement = 45;
+			$shy_replacement_char = $this->unichr($shy_replacement);
+			// widht for SHY replacement
+			$shy_replacement_width = $this->GetCharWidth($shy_replacement);
 			// store current position
 			$prevx = $this->x;
 			$prevy = $this->y;
@@ -3846,7 +3868,7 @@ if (!class_exists('TCPDF', false)) {
 					} else {
 						$l += $this->GetCharWidth($c);
 					}
-					if ($l > $wmax) {
+					if (($l > $wmax) OR ($shy AND (($l + $shy_replacement_width) > $wmax)) ) {
 						// we have reached the end of column
 						if ($sep == -1) {
 							// check if the line was already started
@@ -3891,13 +3913,13 @@ if (!class_exists('TCPDF', false)) {
 							}
 							if ($shy) {
 								// add hypen (minus symbol) at the end of the line
-								$shy_width = $this->GetCharWidth(45);
+								$shy_width = $shy_replacement_width;
 								if ($this->rtl) {
-									$shy_char_left = $this->unichr(45);
+									$shy_char_left = $shy_replacement_char;
 									$shy_char_right = '';
 								} else {
 									$shy_char_left = '';
-									$shy_char_right = $this->unichr(45);
+									$shy_char_right = $shy_replacement_char;
 								}
 							} else {
 								$shy_width = 0;
@@ -10489,7 +10511,7 @@ if (!class_exists('TCPDF', false)) {
 							$dom[$key]['fontstyle'] .= 'D';
 						}
 						if (($dom[$key]['value'] == 'pre') OR ($dom[$key]['value'] == 'tt')) {
-							$dom[$key]['fontname'] = 'courier';
+							$dom[$key]['fontname'] = $this->default_monospaced_font;
 						}
 						if (($dom[$key]['value']{0} == 'h') AND (intval($dom[$key]['value']{1}) > 0) AND (intval($dom[$key]['value']{1}) < 7)) {
 							$headsize = (4 - intval($dom[$key]['value']{1})) * 2;
@@ -12850,7 +12872,7 @@ if (!class_exists('TCPDF', false)) {
 		* @author Nicola Asuni
 		* @since 4.5.000 (2009-01-02)
 		*/
-		public function addTOC($page='', $numbersfont='courier', $filler='.') {
+		public function addTOC($page='', $numbersfont='', $filler='.') {
 			$fontsize = $this->FontSizePt;
 			$fontfamily = $this->FontFamily;
 			$fontstyle = $this->FontStyle;
@@ -12860,6 +12882,9 @@ if (!class_exists('TCPDF', false)) {
 			$lmargin = $this->lMargin;
 			$rmargin = $this->rMargin;
 			$x_start = $this->GetX();
+			if (empty($numbersfont)) {
+				$numbersfont = $this->default_monospaced_font;
+			}
 			if (empty($filler)) {
 				$filler = ' ';
 			}

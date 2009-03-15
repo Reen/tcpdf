@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-06
+// Last Update : 2009-03-07
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.023
+// Version     : 4.5.024
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.023
+ * @version 4.5.024
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.023 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.024 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.023
+	* @version 4.5.024
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -2023,17 +2023,15 @@ if (!class_exists('TCPDF', false)) {
 			// check if page is already closed
 			if (($this->page == 0) OR ($this->numpages > $this->page) OR (!$this->pageopen[$this->page])) {
 				return;
-			}			
-			// save current graphic settings
-			$gvars = $this->getGraphicVars();
+			}
+			$this->InFooter = true;
 			// print page footer
 			$this->setFooter();
-			// restore graphic settings
-			$this->setGraphicVars($gvars);
 			// close page
 			$this->_endpage();
 			// mark page as closed
 			$this->pageopen[$this->page] = false;
+			$this->InFooter = false;
 		}
 		
 		/**
@@ -2308,7 +2306,8 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		protected function setFooter() {
 			//Page footer
-			$this->InFooter = true;
+			// save current graphic settings
+			$gvars = $this->getGraphicVars();
 			// mark this point
 			$this->footerpos[$this->page] = $this->pagelen[$this->page];
 			if ($this->print_footer) {
@@ -2335,8 +2334,10 @@ if (!class_exists('TCPDF', false)) {
 				$this->_out('Q');
 				$this->lasth = $lasth;
 			}
+			// restore graphic settings
+			$this->setGraphicVars($gvars);
+			// calculate footer lenght
 			$this->footerlen[$this->page] = $this->pagelen[$this->page] - $this->footerpos[$this->page];
-			$this->InFooter = false;
 		}
 		
 		/**
@@ -6195,7 +6196,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		protected function _out($s) {
 			if ($this->state == 2) {
-				if (isset($this->footerlen[$this->page]) AND ($this->footerlen[$this->page] > 0)) {
+				if ((!$this->InFooter) AND isset($this->footerlen[$this->page]) AND ($this->footerlen[$this->page] > 0)) {
 					// puts data before page footer
 					$page = substr($this->getPageBuffer($this->page), 0, -$this->footerlen[$this->page]);
 					$footer = substr($this->getPageBuffer($this->page), -$this->footerlen[$this->page]);
@@ -10174,12 +10175,13 @@ if (!class_exists('TCPDF', false)) {
 		 * @param int $fill Indicates if the cell background must be painted (1) or transparent (0). Default value: 0.
 		 * @param boolean $reseth if true reset the last cell height (default true).
 		 * @param string $align Allows to center or align the text. Possible values are:<ul><li>L : left align</li><li>C : center</li><li>R : right align</li><li>'' : empty string : left for LTR or right for RTL</li></ul>
+		 * @param boolean $autopadding if true, uses internal padding and automatically adjust it to account for line width.
 		 * @access public
 		 * @uses MultiCell()
 		 * @see Multicell(), writeHTML()
 		 */
-		public function writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='') {
-			return $this->MultiCell($w, $h, $html, $border, $align, $fill, $ln, $x, $y, $reseth, 0, true);
+		public function writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true) {
+			return $this->MultiCell($w, $h, $html, $border, $align, $fill, $ln, $x, $y, $reseth, 0, true, $autopadding, 0);
 		}
 		
 		/**
@@ -11193,7 +11195,6 @@ if (!class_exists('TCPDF', false)) {
 								}
 								$opentagpos = $this->footerpos[$this->page];
 							}
-							
 							$this->openHTMLTagHandler($dom, $key, $cell);
 						}
 					} else {
@@ -11308,7 +11309,7 @@ if (!class_exists('TCPDF', false)) {
 					} else {
 						$pmid = substr($this->getPageBuffer($startlinepage), $startlinepos);
 						$pend = '';
-					}
+					}	
 					// calculate shifting amount
 					$tw = $w;
 					if ($this->lMargin != $prevlMargin) {
@@ -11337,7 +11338,7 @@ if (!class_exists('TCPDF', false)) {
 						// shift the line
 						$trx = sprintf('1 0 0 1 %.3F %.3F cm', ($t_x * $this->k), ($yshift * $this->k));
 						$this->setPageBuffer($startlinepage, $pstart."\nq\n".$trx."\n".$pmid."\nQ\n".$pend);
-						$endlinepos = strlen($pstart."\nq\n".$trx."\n".$pmid."\nQ\n");
+						$endlinepos = strlen($pstart."\nq\n".$trx."\n".$pmid."\nQ\n");										
 						// shift the annotations and links
 						if (isset($this->PageAnnots[$this->page])) {
 							foreach ($this->PageAnnots[$this->page] as $pak => $pac) {
@@ -12460,6 +12461,7 @@ if (!class_exists('TCPDF', false)) {
 			if (!empty($this->FontFamily)) {
 				$this->SetFont($this->FontFamily, $this->FontStyle, $this->FontSizePt);
 			}
+			
 		}
 				
 		/**

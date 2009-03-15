@@ -1,5 +1,8 @@
+4.5.026 (2009-03-11)
+	- Bug #2681793 affecting URL images with spaces was fixed.
+
 4.5.025 (2009-03-10)
-	- A small bug affecting hypenation support was fixed.
+	- A small bug affecting hyphenation support was fixed.
 	- The method SetDefaultMonospacedFont() was added to define the default monospaced font.
 
 4.5.024 (2009-03-07)

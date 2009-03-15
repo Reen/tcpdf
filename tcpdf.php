@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-10
+// Last Update : 2009-03-11
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.025
+// Version     : 4.5.026
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.025
+ * @version 4.5.026
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.025 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.026 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.025
+	* @version 4.5.026
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -4124,8 +4124,18 @@ if (!class_exists('TCPDF', false)) {
 			if ($y === '') {
 				$y = $this->y;
 			}
-			// get image size
-			list($pixw, $pixh) = getimagesize($file);
+			// get image dimensions
+			$imsize = @getimagesize($file);
+			if ($imsize === FALSE) {
+				// encode spaces on filename
+				$file = str_replace(' ', '%20', $file);
+				$imsize = @getimagesize($file);
+				if ($imsize === FALSE) {
+					$this->Error('[Image] No such file or directory in '.$file);
+				}
+			}
+			// get original image width and height in pixels
+			list($pixw, $pixh) = $imsize;
 			// calculate image width and height on document
 			if (($w <= 0) AND ($h <= 0)) {
 				// convert image size to document unit

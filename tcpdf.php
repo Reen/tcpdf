@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-16
+// Last Update : 2009-03-18
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.027
+// Version     : 4.5.028
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.027
+ * @version 4.5.028
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.027 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.028 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.027
+	* @version 4.5.028
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1610,7 +1610,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function getPageWidth($pagenum='') {
 			if (empty($pagenum)) {
-				$pagenum = $this->page;
+				return $this->w;
 			}
 			return $this->pagedim[$pagenum]['w'];
 		}
@@ -1626,7 +1626,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function getPageHeight($pagenum='') {
 			if (empty($pagenum)) {
-				$pagenum = $this->page;
+				return $this->h;
 			}
 			return $this->pagedim[$pagenum]['h'];
 		}
@@ -1642,7 +1642,7 @@ if (!class_exists('TCPDF', false)) {
 		*/
 		public function getBreakMargin($pagenum='') {
 			if (empty($pagenum)) {
-				$pagenum = $this->page;
+				return $this->bMargin;
 			}
 			return $this->pagedim[$pagenum]['bm'];
 		}
@@ -10291,7 +10291,7 @@ if (!class_exists('TCPDF', false)) {
 			$html = preg_replace("'<pre([^\>]*)>'si", "<table><tr><td\\1>", $html);
 			$html = preg_replace("'</pre>'si", "</td></tr></table>", $html);
 			*/
-			// remove extra spaces from tables
+			// remove extra spaces from code
 			$html = preg_replace('/[\s]*<\/table>[\s]*/', '</table>', $html);
 			$html = preg_replace('/[\s]*<\/tr>[\s]*/', '</tr>', $html);
 			$html = preg_replace('/[\s]*<tr/', '<tr', $html);
@@ -10304,8 +10304,13 @@ if (!class_exists('TCPDF', false)) {
 			$html = preg_replace('/<\/table>([\s]*)<marker style="font-size:0"\/>/', '</table>', $html);
 			$html = preg_replace('/<img/', ' <img', $html);
 			$html = preg_replace('/<img([^\>]*)>/xi', '<img\\1><span></span>', $html);
-			$html = preg_replace('/[\s]*<li/', '<li', $html);
-			$html = preg_replace('/<\/li>[\s]*/', '</li>', $html);
+			$html = preg_replace('/[\s]+<ul/', '<ul', $html);
+			$html = preg_replace('/[\s]+<ol/', '<ol', $html);
+			$html = preg_replace('/[\s]+<li/', '<li', $html);
+			$html = preg_replace('/[\s]*<\/li>[\s]*/', '</li>', $html);
+			$html = preg_replace('/[\s]*<\/ul>[\s]*/', '</ul>', $html);
+			$html = preg_replace('/[\s]*<\/ol>[\s]*/', '</ol>', $html);
+			$html = preg_replace('/[\s]+<br/', '<br', $html);
 			// pattern for generic tag
 			$tagpattern = '/(<[^>]+>)/';
 			// explodes the string
@@ -10546,8 +10551,9 @@ if (!class_exists('TCPDF', false)) {
 								}
 							}
 						}
-						if (($dom[$key]['value'] == 'ul') OR ($dom[$key]['value'] == 'ol') OR ($dom[$key]['value'] == 'dl')) {
-							// force natural alignment for lists
+						// force natural alignment for lists
+						if ((($dom[$key]['value'] == 'ul') OR ($dom[$key]['value'] == 'ol') OR ($dom[$key]['value'] == 'dl'))
+							AND (!isset($dom[$key]['align']) OR empty($dom[$key]['align']) OR ($dom[$key]['align'] != 'J'))) {
 							if ($this->rtl) {
 								$dom[$key]['align'] = 'R';
 							} else {
@@ -11681,7 +11687,9 @@ if (!class_exists('TCPDF', false)) {
 						}
 					} else {
 						// unordered item
-						if (!empty($parent['listtype'])) {
+						if (!empty($parent['attribute']['type'])) {
+							$this->lispacer = $parent['attribute']['type'];
+						} elseif (!empty($parent['listtype'])) {
 							$this->lispacer = $parent['listtype'];
 						} elseif (!empty($this->lisymbol)) {
 							$this->lispacer = $this->lisymbol;

@@ -1,3 +1,10 @@
+4.5.028 (2009-03-18)
+	- Bug #2690945 "List Bugs" was fixed.
+	- HTML text alignment on lists was fixed.
+	- The constant PDF_FONT_MONOSPACED was added to the configuration file to define the default monospaced font.
+	- The following methods were fixed: getPageWidth(), getPageHeight(), getBreakMargin().
+	- All examples were updated.
+
 4.5.027 (2009-03-16)
 	- Method getPageDimensions() was added to get page dimensions.
 	- The signature of the following methos were changed: getPageWidth(), getPageHeight(), getBreakMargin().

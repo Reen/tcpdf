@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
-// Last Update : 2008-11-17
+// Last Update : 2009-03-18
 //
 // Description : Alternative configuration file for TCPDF.
 //
@@ -21,7 +21,7 @@
 /**
  * Alternative configuration file for TCPDF.
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
+ * @copyright 2004-2008 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @package com.tecnick.tcpdf
  * @version 4.0.014
  * @link http://tcpdf.sourceforge.net
@@ -172,24 +172,29 @@ define ('PDF_MARGIN_LEFT', 15);
 define ('PDF_MARGIN_RIGHT', 15);
 
 /**
- * main font name
+ * default main font name
  */
 define ('PDF_FONT_NAME_MAIN', 'helvetica');
 
 /**
- * main font size
+ * default main font size
  */
 define ('PDF_FONT_SIZE_MAIN', 10);
 
 /**
- * data font name
+ * default data font name
  */
 define ('PDF_FONT_NAME_DATA', 'helvetica');
 
 /**
- * data font size
+ * default data font size
  */
 define ('PDF_FONT_SIZE_DATA', 8);
+
+/**
+ * default monospaced font name
+ */
+define ('PDF_FONT_MONOSPACED', 'courier');
 
 /**
  * Ratio used to scale the images

@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-11
+// Last Update : 2009-03-16
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.026
+// Version     : 4.5.027
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.026
+ * @version 4.5.027
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.026 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.027 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.026
+	* @version 4.5.027
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1582,38 +1582,69 @@ if (!class_exists('TCPDF', false)) {
 		public function getImageScale() {
 			return $this->imgscale;
 		}
-
+				
+		/**
+		* Returns an array of page dimensions:
+		* <ul><li>$this->pagedim[$this->page]['w'] => page_width_in_points</li><li>$this->pagedim[$this->page]['h'] => height in points</li><li>$this->pagedim[$this->page]['wk'] => page_width_in_points</li><li>$this->pagedim[$this->page]['hk'] => height</li><li>$this->pagedim[$this->page]['tm'] => top_margin</li><li>$this->pagedim[$this->page]['bm'] => bottom_margin</li><li>$this->pagedim[$this->page]['lm'] => left_margin</li><li>$this->pagedim[$this->page]['rm'] => right_margin</li><li>$this->pagedim[$this->page]['pb'] => auto_page_break</li><li>$this->pagedim[$this->page]['or'] => page_orientation</li><li>$this->pagedim[$this->page]['olm'] => original_left_margin</li><li>$this->pagedim[$this->page]['orm'] => original_right_margin</li></ul>
+		* @param int $pagenum page number (empty = current page)
+		* @return array of page dimensions.
+		* @author Nicola Asuni
+		* @access public
+		* @since 4.5.027 (2009-03-16)
+		*/
+		public function getPageDimensions($pagenum='') {
+			if (empty($pagenum)) {
+				$pagenum = $this->page;
+			}
+			return $this->pagedim[$pagenum];
+		}
+		
 		/**
 		* Returns the page width in units.
+		* @param int $pagenum page number (empty = current page)
 		* @return int page width.
 		* @author Nicola Asuni
 		* @access public
 		* @since 1.5.2
+		* @see getPageDimensions()
 		*/
-		public function getPageWidth() {
-			return $this->w;
+		public function getPageWidth($pagenum='') {
+			if (empty($pagenum)) {
+				$pagenum = $this->page;
+			}
+			return $this->pagedim[$pagenum]['w'];
 		}
 
 		/**
 		* Returns the page height in units.
+		* @param int $pagenum page number (empty = current page)
 		* @return int page height.
 		* @author Nicola Asuni
 		* @access public
 		* @since 1.5.2
+		* @see getPageDimensions()
 		*/
-		public function getPageHeight() {
-			return $this->h;
+		public function getPageHeight($pagenum='') {
+			if (empty($pagenum)) {
+				$pagenum = $this->page;
+			}
+			return $this->pagedim[$pagenum]['h'];
 		}
 
 		/**
 		* Returns the page break margin.
+		* @param int $pagenum page number (empty = current page)
 		* @return int page break margin.
 		* @author Nicola Asuni
 		* @access public
 		* @since 1.5.2
+		* @see getPageDimensions()
 		*/
-		public function getBreakMargin() {
-			return $this->bMargin;
+		public function getBreakMargin($pagenum='') {
+			if (empty($pagenum)) {
+				$pagenum = $this->page;
+			}
+			return $this->pagedim[$pagenum]['bm'];
 		}
 
 		/**
@@ -4278,7 +4309,7 @@ if (!class_exists('TCPDF', false)) {
 			if (!empty($border)) {
 				$bx = $x;
 				$by = $y;
-				$this->x = $x;
+				$this->x = $ximg;
 				$this->y = $y;
 				$this->Cell($w, $h, '', $border, 0, '', 0, '', 0);
 				$this->x = $bx;
@@ -4367,28 +4398,28 @@ if (!class_exists('TCPDF', false)) {
 		* @access protected
 		*/
 		protected function _parsepng($file) {
-			$f = fopen($file,'rb');
+			$f = fopen($file, 'rb');
 			if (empty($f)) {
 				$this->Error('Can\'t open image file: '.$file);
 			}
 			//Check signature
-			if (fread($f,8) != chr(137).'PNG'.chr(13).chr(10).chr(26).chr(10)) {
+			if (fread($f, 8) != chr(137).'PNG'.chr(13).chr(10).chr(26).chr(10)) {
 				$this->Error('Not a PNG file: '.$file);
 			}
 			//Read header chunk
-			fread($f,4);
-			if (fread($f,4) != 'IHDR') {
+			fread($f, 4);
+			if (fread($f, 4) != 'IHDR') {
 				$this->Error('Incorrect PNG file: '.$file);
 			}
 			$w = $this->_freadint($f);
 			$h = $this->_freadint($f);
-			$bpc = ord(fread($f,1));
+			$bpc = ord(fread($f, 1));
 			if ($bpc > 8) {
 				//$this->Error('16-bit depth not supported: '.$file);
 				fclose($f);
 				return false;
 			}
-			$ct = ord(fread($f,1));
+			$ct = ord(fread($f, 1));
 			if ($ct == 0) {
 				$colspace = 'DeviceGray';
 			} elseif ($ct == 2) {
@@ -4400,22 +4431,22 @@ if (!class_exists('TCPDF', false)) {
 				fclose($f);
 				return 'pngalpha';
 			}
-			if (ord(fread($f,1)) != 0) {
+			if (ord(fread($f, 1)) != 0) {
 				//$this->Error('Unknown compression method: '.$file);
 				fclose($f);
 				return false;
 			}
-			if (ord(fread($f,1)) != 0) {
+			if (ord(fread($f, 1)) != 0) {
 				//$this->Error('Unknown filter method: '.$file);
 				fclose($f);
 				return false;
 			}
-			if (ord(fread($f,1)) != 0) {
+			if (ord(fread($f, 1)) != 0) {
 				//$this->Error('Interlacing not supported: '.$file);
 				fclose($f);
 				return false;
 			}
-			fread($f,4);
+			fread($f, 4);
 			$parms = '/DecodeParms <</Predictor 15 /Colors '.($ct==2 ? 3 : 1).' /BitsPerComponent '.$bpc.' /Columns '.$w.'>>';
 			//Scan chunks looking for palette, transparency and image data
 			$pal = '';
@@ -4426,11 +4457,11 @@ if (!class_exists('TCPDF', false)) {
 				$type = fread($f, 4);
 				if ($type == 'PLTE') {
 					//Read palette
-					$pal = fread($f, $n);
+					$pal = $this->rfread($f, $n);
 					fread($f, 4);
 				} elseif ($type == 'tRNS') {
 					//Read transparency info
-					$t = fread($f, $n);
+					$t = $this->rfread($f, $n);
 					if ($ct == 0) {
 						$trns = array(ord(substr($t, 1, 1)));
 					} elseif ($ct == 2) {
@@ -4444,12 +4475,12 @@ if (!class_exists('TCPDF', false)) {
 					fread($f, 4);
 				} elseif ($type == 'IDAT') {
 					//Read image data block
-					$data .= fread($f, $n);
+					$data .= $this->rfread($f, $n);
 					fread($f, 4);
 				} elseif ($type == 'IEND') {
 					break;
 				} else {
-					fread($f, $n + 4);
+					$this->rfread($f, $n + 4);
 				}
 			} while ($n);
 			if (($colspace == 'Indexed') AND (empty($pal))) {
@@ -4459,6 +4490,24 @@ if (!class_exists('TCPDF', false)) {
 			}
 			fclose($f);
 			return array('w' => $w, 'h' => $h, 'cs' => $colspace, 'bpc' => $bpc, 'f' => 'FlateDecode', 'parms' => $parms, 'pal' => $pal, 'trns' => $trns, 'data' => $data);
+		}
+		
+		/**
+		* Binary-safe and URL-safe file read.
+		* Reads up to length  bytes from the file pointer referenced by handle. Reading stops as soon as one of the following conditions is met: length bytes have been read; EOF (end of file) is reached.
+		* @param resource $handle
+		* @param int $length
+		* @author Nicola Asuni
+		* @access protected
+		* @since 4.5.027 (2009-03-16)
+		*/
+		protected function rfread($handle, $length) {
+			$data = fread($handle, $length);
+			$rest = $length - strlen($data);
+			if ($rest > 0) {
+				$data .= $this->rfread($handle, $rest);
+			}
+			return $data;
 		}
 		
 		/**
@@ -6147,7 +6196,7 @@ if (!class_exists('TCPDF', false)) {
 		* @access protected
 		*/
 		protected function _freadint($f) {
-			$a = unpack('Ni', fread($f,4));
+			$a = unpack('Ni', fread($f, 4));
 			return $a['i'];
 		}
 		

@@ -1,3 +1,18 @@
+4.5.032 (2009-03-23)
+	- setPrintFooter(false) bug was fixed.
+	
+4.5.031 (2009-03-20)
+	- Table header support was extended to multiple pages.
+	
+4.5.030 (2009-03-20)
+	- thead tag is now supported on HTML tables (header rows are repeated after page breaks).
+	- The startTransaction() was improved to autocommit.
+	- List bullets now uses the foreground color (putHtmlListBullet()).
+	
+4.5.029 (2009-03-19)
+	- The following methods were added to UNDO commands (see example 47): startTransaction(), commitTransaction(), rollbackTransaction().
+	- All examples were updated.
+
 4.5.028 (2009-03-18)
 	- Bug #2690945 "List Bugs" was fixed.
 	- HTML text alignment on lists was fixed.

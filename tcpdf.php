@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2009-03-18
+// Last Update : 2009-03-23
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.5.028
+// Version     : 4.5.032
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2009  Nicola Asuni - Tecnick.com S.r.l.
@@ -122,7 +122,7 @@
  * @copyright 2002-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.5.028
+ * @version 4.5.032
  */
 
 /**
@@ -146,14 +146,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */ 
-	define('PDF_PRODUCER', 'TCPDF 4.5.028 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.5.032 (http://www.tcpdf.org)');
 	
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.5.028
+	* @version 4.5.032
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -1213,6 +1213,33 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		protected $default_monospaced_font = 'courier';
 		
+		/**
+		 * Used to store a cloned copy of the current class object
+		 * @access protected
+		 * @since 4.5.029 (2009-03-19)
+		 */
+		protected $objcopy;
+		
+		/**
+		 * Array used to store the lenghts of cache files
+		 * @access protected
+		 * @since 4.5.029 (2009-03-19)
+		 */
+		protected $cache_file_lenght = array();
+		
+		/**
+		 * Table header content to be repeated on each new page
+		 * @access protected
+		 * @since 4.5.030 (2009-03-20)
+		 */
+		protected $thead = '';
+		
+		/**
+		 * Distance between the top of page and end of table headers on a new page.
+		 * @access protected
+		 * @since 4.5.030 (2009-03-20)
+		 */
+		protected $theadMargin = '';
 		//------------------------------------------------------------
 		// METHODS
 		//------------------------------------------------------------
@@ -1910,7 +1937,9 @@ if (!class_exists('TCPDF', false)) {
 		* @since 1.0
 		*/
 		public function Error($msg) {
-			//Fatal error
+			// unset all class variables
+			$this->_destroy(true);
+			// exit program and print error
 			die('<strong>TCPDF ERROR: </strong>'.$msg);
 		}
 
@@ -1947,7 +1976,7 @@ if (!class_exists('TCPDF', false)) {
 			// close document
 			$this->_enddoc();
 			// unset all class variables (except critical ones)
-			$this->_destroy(false);			
+			$this->_destroy(false);
 		}
 		
 		/**
@@ -2110,6 +2139,8 @@ if (!class_exists('TCPDF', false)) {
 			$this->setGraphicVars($gvars);
 			// mark this point
 			$this->setPageMark();
+			// print table header (if any)
+			$this->setTableHeader();
 		}
 			
 		/**
@@ -2348,6 +2379,7 @@ if (!class_exists('TCPDF', false)) {
 			$gvars = $this->getGraphicVars();
 			// mark this point
 			$this->footerpos[$this->page] = $this->pagelen[$this->page];
+			$this->_out("\n");
 			if ($this->print_footer) {
 				$lasth = $this->lasth;
 				$this->_out('q');
@@ -2376,6 +2408,30 @@ if (!class_exists('TCPDF', false)) {
 			$this->setGraphicVars($gvars);
 			// calculate footer lenght
 			$this->footerlen[$this->page] = $this->pagelen[$this->page] - $this->footerpos[$this->page];
+		}
+		
+		/**
+	 	 * This method is used to render the table header on new page (if any). 
+	 	 * @access protected
+	 	 * @since 4.5.030 (2009-03-25)
+		 */
+		protected function setTableHeader() {
+			if (!empty($this->theadMargin)) {
+				// restore the original top-margin
+				$this->tMargin = $this->theadMargin;
+				$this->pagedim[$this->page]['tm'] = $this->theadMargin;
+				$this->y = $this->theadMargin;
+			}
+			if (!empty($this->thead)) {
+				// print table header
+				$this->writeHTML($this->thead, false, false, false, false, '');
+				// set new top margin to skip the table headers
+				if (!isset($this->theadMargin) OR (empty($this->theadMargin))) {
+					$this->theadMargin = $this->tMargin;
+				}
+				$this->tMargin = $this->y;
+				$this->pagedim[$this->page]['tm'] = $this->tMargin;
+			}
 		}
 		
 		/**
@@ -4822,17 +4878,20 @@ if (!class_exists('TCPDF', false)) {
 		/**
 		 * Unset all class variables except the following critical variables: internal_encoding, state, bufferlen, buffer and diskcache.
 		 * @param boolean $destroyall if true destroys all class variables, otherwise preserves critical variables.
+		 * @param boolean $preserve_objcopy if true preserves the objcopy variable
 		 * @access public
 		 * @since 4.5.016 (2009-02-24)
 		 */
-		public function _destroy($destroyall=false) {
-			if ($destroyall AND isset($this->diskcache) AND $this->diskcache) {
+		public function _destroy($destroyall=false, $preserve_objcopy=false) {
+			if ($destroyall AND isset($this->diskcache) AND $this->diskcache AND (!$preserve_objcopy) AND (!empty($this->buffer))) {
 				// remove buffer file from cache
 				unlink($this->buffer);
 			}
 			foreach (array_keys(get_object_vars($this)) as $val) {
 				if ($destroyall OR (($val != 'internal_encoding') AND ($val != 'state') AND ($val != 'bufferlen') AND ($val != 'buffer') AND ($val != 'diskcache'))) {
-					unset($this->$val);
+					if (!$preserve_objcopy OR ($val != 'objcopy')) {
+						unset($this->$val);
+					}
 				}
 			}
 		}
@@ -10275,7 +10334,7 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		protected function getHtmlDomArray($html) {
 			// remove all unsupported tags (the line below lists all supported tags)
-			$html = strip_tags($html, '<marker/><a><b><blockquote><br><br/><dd><del><div><dl><dt><em><font><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><pre><small><span><strong><sub><sup><table><td><th><tr><tt><u><ul>'); 
+			$html = strip_tags($html, '<marker/><a><b><blockquote><br><br/><dd><del><div><dl><dt><em><font><h1><h2><h3><h4><h5><h6><hr><i><img><li><ol><p><pre><small><span><strong><sub><sup><table><td><th><thead><tr><tt><u><ul>'); 
 			//replace some blank characters
 			$html = preg_replace('@(\r\n|\r)@', "\n", $html);
 			$repTable = array("\t" => ' ', "\0" => ' ', "\x0B" => ' ', "\\" => "\\\\");
@@ -10317,6 +10376,7 @@ if (!class_exists('TCPDF', false)) {
 			$a = preg_split($tagpattern, $html, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 			// count elements
 			$maxel = count($a);
+			$elkey = 0;
 			$key = 0;
 			// create an array of elements
 			$dom = array();
@@ -10332,21 +10392,32 @@ if (!class_exists('TCPDF', false)) {
 			$dom[$key]['fgcolor'] = $this->fgcolor;
 			$dom[$key]['align'] = '';
 			$dom[$key]['listtype'] = '';
+			$thead = false; // true when we are inside the THEAD tag
 			++$key;
 			$level = array();
 			array_push($level, 0); // root
-			while ($key <= $maxel) {
-				if ($key > 0) {
-					$dom[$key] = array();
-				}
-				$element = $a[($key-1)];
+			while ($elkey < $maxel) {
+				$dom[$key] = array();
+				$element = $a[$elkey];
+				$dom[$key]['elkey'] = $elkey;
 				if (preg_match($tagpattern, $element)) {
 					// html tag
-					$dom[$key]['tag'] = true;
 					$element = substr($element, 1, -1);
 					// get tag name
 					preg_match('/[\/]?([a-zA-Z0-9]*)/', $element, $tag);
-					$dom[$key]['value'] = strtolower($tag[1]);
+					$tagname = strtolower($tag[1]);
+					// check if we are inside a table header
+					if ($tagname == 'thead') {
+						if ($element{0} == '/') {
+							$thead = false;
+						} else {
+							$thead = true;
+						}
+						++$elkey;
+						continue;
+					}
+					$dom[$key]['tag'] = true;
+					$dom[$key]['value'] = $tagname;
 					if ($element{0} == '/') {
 						// closing html tag
 						$dom[$key]['opening'] = false;
@@ -10368,9 +10439,21 @@ if (!class_exists('TCPDF', false)) {
 						if (($dom[$key]['value'] == 'td') OR ($dom[$key]['value'] == 'th')) {
 							$dom[($dom[$key]['parent'])]['content'] = '';
 							for ($i = ($dom[$key]['parent'] + 1); $i < $key; ++$i) {
-								$dom[($dom[$key]['parent'])]['content'] .= $a[($i-1)];
+								$dom[($dom[$key]['parent'])]['content'] .= $a[$dom[$i]['elkey']];
 							}
 							$key = $i;
+						}
+						// store header rows on a new table
+						if (($dom[$key]['value'] == 'tr') AND ($dom[($dom[$key]['parent'])]['thead'] == true)) {
+							if (empty($dom[($dom[($dom[$key]['parent'])]['parent'])]['thead'])) {
+								$dom[($dom[($dom[$key]['parent'])]['parent'])]['thead'] = $a[$dom[($dom[($dom[$key]['parent'])]['parent'])]['elkey']];
+							}
+							for ($i = $dom[$key]['parent']; $i <= $key; ++$i) {
+								$dom[($dom[($dom[$key]['parent'])]['parent'])]['thead'] .= $a[$dom[$i]['elkey']];
+							}
+						}
+						if (($dom[$key]['value'] == 'table') AND (!empty($dom[($dom[$key]['parent'])]['thead']))) {
+							$dom[($dom[$key]['parent'])]['thead'] .= '</table>';
 						}
 					} else {
 						// opening html tag
@@ -10586,6 +10669,7 @@ if (!class_exists('TCPDF', false)) {
 						if (($dom[$key]['value'] == 'table')) {
 							$dom[$key]['rows'] = 0; // number of rows
 							$dom[$key]['trids'] = array(); // IDs of TR elements
+							$dom[$key]['thead'] = ''; // table header rows
 						}
 						if (($dom[$key]['value'] == 'tr')) {
 							$dom[$key]['cols'] = 0;
@@ -10593,6 +10677,11 @@ if (!class_exists('TCPDF', false)) {
 							++$dom[($dom[$key]['parent'])]['rows'];
 							// store the TR elements IDs on table element
 							array_push($dom[($dom[$key]['parent'])]['trids'], $key);
+							if ($thead) {
+								$dom[$key]['thead'] = true;
+							} else {
+								$dom[$key]['thead'] = false;
+							}
 						}
 						if (($dom[$key]['value'] == 'th') OR ($dom[$key]['value'] == 'td')) {
 							if (isset($dom[$key]['attribute']['colspan'])) {
@@ -10630,6 +10719,7 @@ if (!class_exists('TCPDF', false)) {
 					$dom[$key]['value'] = stripslashes($this->unhtmlentities($element));
 					$dom[$key]['parent'] = end($level);
 				}
+				++$elkey;
 				++$key;
 			}
 			return $dom;
@@ -10655,7 +10745,7 @@ if (!class_exists('TCPDF', false)) {
 			$prevrMargin = $this->rMargin;
 			$curfontname = $this->FontFamily;
 			$curfontstyle = $this->FontStyle;
-			$curfontsize = $this->FontSizePt;			
+			$curfontsize = $this->FontSizePt;	
 			$this->newline = true;
 			$minstartliney = $this->y;
 			$yshift = 0;
@@ -11271,7 +11361,7 @@ if (!class_exists('TCPDF', false)) {
 									}
 								}
 							}
-							$this->x += ($cellspacingx / 2);
+							$this->x += ($cellspacingx / 2);							
 						} else {
 							// opening tag (or self-closing tag)
 							if (!isset($opentagpos)) {
@@ -11474,6 +11564,10 @@ if (!class_exists('TCPDF', false)) {
 					$cp = 0;
 					$cs = 0;
 					$dom[$key]['rowspans'] = array();
+					if (!empty($dom[$key]['thead'])) {
+						// set table header
+						$this->thead = $dom[$key]['thead'];
+					}
 					if (isset($tag['attribute']['cellpadding'])) {
 						$cp = $this->getHTMLUnitToUnits($tag['attribute']['cellpadding'], 1, 'px');
 						$this->oldcMargin = $this->cMargin;
@@ -11956,6 +12050,14 @@ if (!class_exists('TCPDF', false)) {
 						$this->cMargin = $this->oldcMargin;
 					}
 					$this->lasth = $this->FontSize * $this->cell_height_ratio;
+					if (!empty($table_el['thead'])) {
+						// reset table header
+						$this->thead = '';
+						// restore top margin
+						$this->tMargin = $this->theadMargin;
+						$this->pagedim[$this->page]['tm'] = $this->theadMargin;
+						$this->theadMargin = '';
+					}
 					break;
 				}
 				case 'a': {
@@ -12356,7 +12458,7 @@ if (!class_exists('TCPDF', false)) {
 		protected function putHtmlListBullet($listdepth, $listtype='', $size=10) {
 		    $size /= $this->k;
 		    $fill = '';
-		    $color = array(0, 0, 0);
+		    $color = $this->fgcolor;
 		    $width = 0;
 		    $textitem = '';
 		    $tmpx = $this->x;		
@@ -12550,7 +12652,6 @@ if (!class_exists('TCPDF', false)) {
 			if (!empty($this->FontFamily)) {
 				$this->SetFont($this->FontFamily, $this->FontStyle, $this->FontSizePt);
 			}
-			
 		}
 				
 		/**
@@ -12584,6 +12685,12 @@ if (!class_exists('TCPDF', false)) {
 			} else {
 				fwrite($f, $data);
 				fclose($f);
+			}
+			// update file lenght (needed for transactions)
+			if (!isset($this->cache_file_lenght[$filename])) {
+				$this->cache_file_lenght[$filename] = strlen($data);
+			} else {
+				$this->cache_file_lenght[$filename] += strlen($data);
 			}
 		}
 		
@@ -12929,7 +13036,7 @@ if (!class_exists('TCPDF', false)) {
 			return true;
 		}
 		
-		/*
+		/**
 		* Output a Table of Content Index (TOC).
 		* You can override this method to achieve different styles.
 		* @param int $page page number where this TOC should be inserted (leave empty for current page).
@@ -13076,6 +13183,65 @@ if (!class_exists('TCPDF', false)) {
 			}
 			$this->SetFont($fontfamily, $fontstyle, $fontsize);
 		}
+		
+		/**
+		* Stores a copy of the current TCPDF object.
+		* @access public
+		* @since 4.5.029 (2009-03-19)
+		*/
+		public function startTransaction() {
+			if (isset($this->objcopy)) {
+				// remove previous copy
+				$this->commitTransaction();
+			}
+			// clone current object
+			$this->objcopy = $this->objclone($this);
+		}
+		
+		/**
+		* Delete the copy of the current TCPDF object
+		* @access public
+		* @since 4.5.029 (2009-03-19)
+		*/
+		public function commitTransaction() {
+			if (isset($this->objcopy)) {
+				$this->objcopy->_destroy(true, true);
+				unset($this->objcopy);
+			}
+		}
+		
+		/**
+		* This method allows to encapsulate some TCPDF commands to be later commited or deleted.
+		* @param string $action the action to be taken. Legal values are 'start' = starts a new transaction; 'commit' = commit the latest transaction; 'rollback' = undo the latest transaction.
+		* @access public
+		* @since 4.5.029 (2009-03-19)
+		*/
+		public function rollbackTransaction() {
+			if (isset($this->objcopy)) {
+				if (isset($this->objcopy->diskcache) AND $this->objcopy->diskcache) {
+					// truncate files to previous values
+					foreach ($this->objcopy->cache_file_lenght as $file => $lenght) {
+						$handle = fopen($file, 'r+');
+						ftruncate($handle, $lenght);
+					}
+				}
+				$this->_destroy(true, true);
+				return $this->objcopy;
+			}
+			return $this;
+		}
+		
+		/**
+		* Creates a copy of a class object
+		* @param object $object class object to be cloned
+		* @return cloned object
+		* @access protected
+		* @since 4.5.029 (2009-03-19)
+		*/
+		public function objclone($object) {
+			return @clone($object);
+		}
+		
 	} // END OF TCPDF CLASS
 }
 //============================================================+

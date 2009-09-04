@@ -1,3 +1,49 @@
+Changes from 2.28 to 2.29
+* modified U+10FB in Sans to be a mirror image of U+2056, since U+10FB is not
+  Georgian-specific (by Roozbeh Pournader)
+* added U+2B1F, U+2B24, U+2B53, U+2B54 in Sans (by Roozbeh Pournader)
+* fixed TUR opentype language tag to TRK in Serif (bug 19825) (by Ben Laenen)
+* early implementation of Abkhaz letter U+0524-U+0525 in Sans
+  (by Michael Everson and abysta)
+* flipped U+1D538 in Sans (by Gee Fung Sit)
+* added U+26B3-U+26B8, U+1D7D8-U+1D7E1 in Sans (by Gee Fung Sit)
+* corrected U+1D7A9 in Sans Bold Oblique (by Gee Fung Sit)
+* Fixed U+0649 to be dual-joining in Sans Mono (by Roozbeh Pournader)
+* Remove unnecessary 'isol' feature from Sans Mono (by Roozbeh Pournader)
+* Remove 'cmap' mappings for U+066E, U+066F, U+067C, U+067D, U+0681, U+0682,
+  U+0685, U+0692, U+06A1, U+06B5, U+06BA, U+06C6, U+06CE, and U+06D5
+  in Sans Mono (bug 20323) (by Roozbeh Pournader)
+* add half brackets (U+2E22 - U+2E25, by Steve Tinney) 
+
+Changes from 2.27 to 2.28
+
+* added U+A789, U+A78A in Sans and Sans Mono (by Denis Jacquerye)
+* modified U+02D6, U+02D7, U+02EE in Sans and Sans Mono (by Denis Jacquerye)
+* added U+1E9E (German capital ß) to Sans and Serif (by Denis Jacquerye)
+* adjusted width of U+01B7-U+01B9 in Serif Italic (by Denis Jacquerye)
+* modified U+021C, U+021D in Sans (by Denis Jacquerye)
+* added U+021C, U+021D in Mono (by Denis Jacquerye)
+* added U+F428 (Georgian Nuskhuri "f") in private use area (by Besarion
+  Gugushvili)
+* updated Georgian mkhedruli (U+10D0-U+10FA) with new version (by Besarion
+  Gugushvili)
+* updated Georgian asomtavruli (U+10A0-U+10C5) with new version (by Besarion
+  Gugushvili)
+* added Georgian nuskhuri (U+2D00-U+2D25) (by Besarion Gugushvili)
+* added Georgian mtavruli in private use area (U+F400-U+F426) (by Besarion
+  Gugushvili)
+* added mark anchors above to Cyrillic U+0430-U+0438, U+043A-U+044F,
+  U+0454-U+0455 in Mono (by Ben Laenen)
+* modified/moved up U+0318-U+0319, U+031C-U+031F, U+0329-U+032A, U+032C-U+032D,
+  U+0339-U+033B, U+0348 and U+0353 in Sans to prevent cut-off (by Gee Fung Sit)
+* added U+035A to Sans (by Gee Fung Sit)
+* updated fontconfig files (by Nicolas Mailhot)
+* added U+2032-2037 to Mono (by Denis Jacquerye)
+* added Ogham to Sans ExtraLight (by Gee Fung Sit)
+* added U+2C6F, U+2C79, U+2C7C-2C7D to Mono (by Gee Fung Sit)
+* added U+210F to Serif and Sans ExtraLight (by Gee Fung Sit)
+* changed U+210F to a more common glyph in Sans and Mono (by Gee Fung Sit)
+
 Changes from 2.26 to 2.27
 
 * added some of Michael Everson's new Cyrillic glyphs to Sans (by Wesley
@@ -1144,4 +1190,4 @@ Changes from 0.9 to 0.9.1:
 - proper caron shape for dcaron and tcaron
 - minor visual changes
 
-$Id: NEWS 2296 2008-09-27 17:30:03Z ben_laenen $
+$Id: NEWS 2344 2009-03-08 13:02:37Z moyogo $

@@ -8,8 +8,8 @@ http://sourceforge.net/donate/index.php?group_id=128076
 ------------------------------------------------------------
 
 Name: TCPDF
-Version: 4.6.021
-Release date: 2009-07-20
+Version: 4.7.003
+Release date: 2009-09-02
 Author:	Nicola Asuni 
 	
 Copyright (c) 2001-2009:
@@ -53,6 +53,7 @@ Main Features:
 // 	* supports page compression (requires zlib extension);
 //  * supports text hyphenation.
 //  * supports transactions to UNDO commands.
+//  * supports signature certifications.
 
 Installation (full instructions on http://www.tcpdf.org):
 	1. copy the folder on your Web server

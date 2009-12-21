@@ -1,11 +1,11 @@
 <?php
 //============================================================+
-// File name   : example_045.php
-// Begin       : 2008-03-04
+// File name   : example_055.php
+// Begin       : 2009-10-21
 // Last Update : 2009-10-21
 // 
-// Description : Example 045 for TCPDF class
-//               Bookmarks and Table of Content
+// Description : Example 055 for TCPDF class
+//               Display all characters available on core fonts.
 // 
 // Author: Nicola Asuni
 // 
@@ -20,14 +20,14 @@
 //============================================================+
 
 /**
- * Creates an example PDF TEST document using TCPDF
+ * Display all characters available on core fonts.
  * @package com.tecnick.tcpdf
- * @abstract TCPDF - Example: Bookmarks and Table of Content
+ * @abstract TCPDF - Example: XHTML Forms
  * @author Nicola Asuni
  * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @since 2008-03-04
+ * @since 2009-10-21
  */
 
 require_once('../config/lang/eng.php');
@@ -39,7 +39,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Nicola Asuni');
-$pdf->SetTitle('TCPDF Example 045');
+$pdf->SetTitle('TCPDF Example 055');
 $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
@@ -70,58 +70,42 @@ $pdf->setLanguageArray($l);
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('times', 'B', 20);
+$pdf->SetFont('helvetica', '', 10);
 
 // add a page
 $pdf->AddPage();
 
-// set a bookmark for the current position
-$pdf->Bookmark('Chapter 1', 0, 0);
+// array of core font names
+$core_fonts = array('courier', 'helvetica', 'times', 'symbol', 'zapfdingbats');
 
-// print a line using Cell()
-$pdf->Cell(0, 10, 'Chapter 1', 0, 1, 'L');
+$html = '<h1>Font Dump</h1>';
 
-$pdf->AddPage();
-$pdf->Bookmark('Paragraph 1.1', 1, 0);
-$pdf->Cell(0, 10, 'Paragraph 1.1', 0, 1, 'L');
-
-$pdf->AddPage();
-$pdf->Bookmark('Paragraph 1.2', 1, 0);
-$pdf->Cell(0, 10, 'Paragraph 1.2', 0, 1, 'L');
-
-$pdf->AddPage();
-$pdf->Bookmark('Sub-Paragraph 1.2.1', 2, 0);
-$pdf->Cell(0, 10, 'Sub-Paragraph 1.2.1', 0, 1, 'L');
-
-$pdf->AddPage();
-$pdf->Bookmark('Paragraph 1.3', 1, 0);
-$pdf->Cell(0, 10, 'Paragraph 1.3', 0, 1, 'L');
-
-for ($i = 2; $i < 12; $i++) {
-	$pdf->AddPage();
-	$pdf->Bookmark('Chapter '.$i, 0, 0);
-	$pdf->Cell(0, 10, 'Chapter '.$i, 0, 1, 'L');
+// create one HTML table for each core font
+foreach($core_fonts as $font) {
+	// create HTML content
+	$html .= '<table cellpadding="1" cellspacing="0" border="1" nobr="true" style="font-family:'.$font.';text-align:center;">';
+	$html .= '<tr><td colspan="16" style="font-family:helvetica;font-weight:bold">'.strtoupper($font).'</td></tr><tr>';
+	// print each character
+	for ($i = 0; $i < 256; ++$i) {
+		if (($i > 0) AND (($i % 16) == 0)) {
+			$html .= '</tr><tr>';
+		}
+		$chr = $pdf->unichr($i);
+		// replace special characters
+		$trans = array('<' => '&lt;', '>' => '&gt;');
+		$chr = strtr($chr, $trans);
+		$html .= '<td>'.$chr.'</td>';
+	}
+	$html .= '</tr></table><br />';
 }
 
-// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-// add a new page for TOC
-$pdf->AddPage();
-
-// write the TOC title
-$pdf->SetFont('times', 'B', 16);
-$pdf->MultiCell(0, 0, 'Table Of Content', 0, 'C', 0, 1, '', '', true, 0);
-$pdf->Ln();
-
-$pdf->SetFont('dejavusans', '', 12);
-
-// add table of content at page 1
-$pdf->addTOC(1, 'courier', '.', 'INDEX');
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
 
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output('example_045.pdf', 'I');
+$pdf->Output('example_055.pdf', 'I');
 
 //============================================================+
 // END OF FILE                                                 

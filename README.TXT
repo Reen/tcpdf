@@ -3,13 +3,13 @@ TCPDF - README
 
 I WISH TO IMPROVE AND EXPAND TCPDF BUT I NEED YOUR SUPPORT.
 PLEASE MAKE A DONATION:
-http:  sourceforge.net/donate/index.php?group_id=128076
+http://sourceforge.net/donate/index.php?group_id=128076
 
 ------------------------------------------------------------
 
 Name: TCPDF
-Version: 5.8.030
-Release date: 2010-09-17
+Version: 5.9.001
+Release date: 2010-10-07
 Author:	Nicola Asuni
 
 Copyright (c) 2002-2010:
@@ -46,6 +46,7 @@ Main Features:
     * multiple columns mode;
     * bookmarks and table of content;
     * text hyphenation;
+    * text stretching and kerning;
     * automatic page break, line break and text alignments including justification;
     * automatic page numbering and page groups;
     * move and delete pages;

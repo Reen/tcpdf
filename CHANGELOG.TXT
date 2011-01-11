@@ -1,3 +1,26 @@
+4.9.009 (2010-04-05)
+		- Text() method was fixed for backward compatibility.
+
+4.9.008 (2010-04-03)
+		- Additional line space after table header was removed.
+		- Support for HTML lists in multicolumn mode was added.
+		- The method setTextRenderingMode() was added to set text rendering modes (see the example n. 26).
+		- The following HTML attributes were added to set text rendering modes (see the example n. 26): stroke, strokecolor, fill.
+
+4.9.007 (2010-04-03)
+		- Font Descent computation was fixed (patch #2981441).
+
+4.9.006 (2010-04-02)
+		- The constant K_TCPDF_CALLS_IN_HTML was added on configuration file to enable/disable the ability to call TCPDF methods in HTML.
+		- The usage of tcpdf tag in HTML mode was changed to remove the possible security flaw offered by the eval() function (thanks to Matthias Hecker for spotting this security problem). See the new example n. 49 for further information.
+
+4.9.005 (2010-04-01)
+		- Bug# 2980354 "Wrong File attachment description with security" was fixed.
+		- Several problems with HTML line alignment were fixed.
+		- The constant K_THAI_TOPCHAR was added on configuration file to enable/disable the special procedure used to avoid the overlappind of symbols on Thai language.
+		- A problem with font name directory was fixed.
+		- A bug on _destroy() method was fixed.
+
 4.9.004 (2010-03-31)
 		- Patch #979681 "GetCharWidth - default character width" was applied (bugfix).
 

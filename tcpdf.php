@@ -1,9 +1,9 @@
 <?php
 //============================================================+
 // File name   : tcpdf.php
-// Version     : 5.3.006
+// Version     : 5.3.008
 // Begin       : 2002-08-03
-// Last Update : 2010-06-10
+// Last Update : 2010-06-13
 // Author      : Nicola Asuni - Tecnick.com S.r.l - Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -126,7 +126,7 @@
  * @copyright 2002-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 5.3.006
+ * @version 5.3.008
  */
 
 /**
@@ -150,14 +150,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */
-	define('PDF_PRODUCER', 'TCPDF 5.3.006 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 5.3.008 (http://www.tcpdf.org)');
 
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 5.3.006
+	* @version 5.3.008
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -6380,27 +6380,36 @@ if (!class_exists('TCPDF', false)) {
 						// ImageMagick library
 						$img = new Imagick();
 						if ($type == 'SVG') {
-							// get SBG file content
+							// get SVG file content
 							$svgimg = file_get_contents($file);
 							// get width and height
 							$regs = array();
 							if (preg_match('/<svg([^\>]*)>/si', $svgimg, $regs)) {
+								$svgtag = $regs[1];
 								$tmp = array();
-								if (preg_match('/[\s]+width[\s]*=[\s]*"([^"]*)"/si', $regs[1], $tmp)) {
-									$ow = $this->getHTMLUnitToUnits($tmp[1], 1, $this->svgunit, false) * $dpi / 72;
-									$svgimg = preg_replace('/[\s]+width[\s]*=[\s]*"[^"]*"/si', ' width="'.$ow.$this->pdfunit.'"', $svgimg);
+								if (preg_match('/[\s]+width[\s]*=[\s]*"([^"]*)"/si', $svgtag, $tmp)) {
+									$ow = $this->getHTMLUnitToUnits($tmp[1], 1, $this->svgunit, false);
+									$owu = sprintf('%.3F', ($ow * $dpi / 72)).$this->pdfunit;
+									$svgtag = preg_replace('/[\s]+width[\s]*=[\s]*"[^"]*"/si', ' width="'.$owu.'"', $svgtag, 1);
+								} else {
+									$ow = $w;
 								}
 								$tmp = array();
-								if (preg_match('/[\s]+height[\s]*=[\s]*"([^"]*)"/si', $regs[1], $tmp)) {
-									$oh = $this->getHTMLUnitToUnits($tmp[1], 1, $this->svgunit, false) * $dpi / 72;
-									$svgimg = preg_replace('/[\s]+height[\s]*=[\s]*"[^"]*"/si', ' height="'.$oh.$this->pdfunit.'"', $svgimg);
+								if (preg_match('/[\s]+height[\s]*=[\s]*"([^"]*)"/si', $svgtag, $tmp)) {
+									$oh = $this->getHTMLUnitToUnits($tmp[1], 1, $this->svgunit, false);
+									$ohu = sprintf('%.3F', ($oh * $dpi / 72)).$this->pdfunit;
+									$svgtag = preg_replace('/[\s]+height[\s]*=[\s]*"[^"]*"/si', ' height="'.$ohu.'"', $svgtag, 1);
+								} else {
+									$oh = $h;
 								}
 								$tmp = array();
-								if (!preg_match('/[\s]+viewBox[\s]*=[\s]*"[\s]*([0-9\.]+)[\s]+([0-9\.]+)[\s]+([0-9\.]+)[\s]+([0-9\.]+)[\s]*"/si', $regs[1], $tmp)) {
-									$vbw = $ow * (72 / $dpi) * $this->imgscale * $this->k;
-									$vbh = $oh * (72 / $dpi) * $this->imgscale * $this->k;
-									$svgimg = preg_replace('/<svg/si', '<svg viewBox="0 0 '.$vbw.' '.$vbh.'"', $svgimg);
+								if (!preg_match('/[\s]+viewBox[\s]*=[\s]*"[\s]*([0-9\.]+)[\s]+([0-9\.]+)[\s]+([0-9\.]+)[\s]+([0-9\.]+)[\s]*"/si', $svgtag, $tmp)) {
+									$vbw = ($ow * $this->imgscale * $this->k);
+									$vbh = ($oh * $this->imgscale * $this->k);
+									$vbox = sprintf(' viewBox="0 0 %.3F %.3F" ', $vbw, $vbh);
+									$svgtag = $vbox.$svgtag;
 								}
+								$svgimg = preg_replace('/<svg([^\>]*)>/si', '<svg'.$svgtag.'>', $svgimg, 1);
 							}
 							$img->readImageBlob($svgimg);
 						} else {
@@ -14832,8 +14841,8 @@ if (!class_exists('TCPDF', false)) {
 		 * @access public
 		 */
 		public function ImageEps($file, $x='', $y='', $w=0, $h=0, $link='', $useBoundingBox=true, $align='', $palign='', $border=0, $fitonpage=false) {
-			if ($this->rasterize_vector_images) {
-				// convert SVG to raster image using GD or ImageMagick libraries
+			if ($this->rasterize_vector_images AND ($w > 0) AND ($h > 0)) {
+				// convert EPS to raster image using GD or ImageMagick libraries
 				return $this->Image($file, $x, $y, $w, $h, 'EPS', $link, $align, true, 300, $palign, false, false, $border, false, false, $fitonpage);
 			}
 			if ($x === '') {
@@ -14920,6 +14929,10 @@ if (!class_exists('TCPDF', false)) {
 					$w = $x - $this->lMargin;
 					$h = $w / $ratio_wh;
 				}
+			}
+			if ($this->rasterize_vector_images) {
+				// convert EPS to raster image using GD or ImageMagick libraries
+				return $this->Image($file, $x, $y, $w, $h, 'EPS', $link, $align, true, 300, $palign, false, false, $border, false, false, $fitonpage);
 			}
 			// set scaling factors
 			$scale_x = $w / (($x2 - $x1) / $k);
@@ -18825,7 +18838,7 @@ if (!class_exists('TCPDF', false)) {
 
 		/**
 		 * Set the booklet mode for double-sided pages.
-		 * @param boolean $booklet true set the booklet mode on, fals eotherwise.
+		 * @param boolean $booklet true set the booklet mode on, false otherwise.
 		 * @param float $inner Inner page margin.
 		 * @param float $outer Outer page margin.
 		 * @access public
@@ -20683,7 +20696,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @access public
 		 */
 		public function ImageSVG($file, $x='', $y='', $w=0, $h=0, $link='', $align='', $palign='', $border=0, $fitonpage=false) {
-			if ($this->rasterize_vector_images) {
+			if ($this->rasterize_vector_images AND ($w > 0) AND ($h > 0)) {
 				// convert SVG to raster image using GD or ImageMagick libraries
 				return $this->Image($file, $x, $y, $w, $h, 'SVG', $link, $align, true, 300, $palign, false, false, $border, false, false, false);
 			}
@@ -20795,6 +20808,10 @@ if (!class_exists('TCPDF', false)) {
 					$h = $w / $ratio_wh;
 				}
 			}
+			if ($this->rasterize_vector_images) {
+				// convert SVG to raster image using GD or ImageMagick libraries
+				return $this->Image($file, $x, $y, $w, $h, 'SVG', $link, $align, true, 300, $palign, false, false, $border, false, false, false);
+			}
 			// set alignment
 			$this->img_rb_y = $y + $h;
 			// set alignment
@@ -20886,6 +20903,10 @@ if (!class_exists('TCPDF', false)) {
 					}
 				}
 			}
+			// store current page break mode
+			$page_break_mode = $this->AutoPageBreak;
+			$page_break_margin = $this->getBreakMargin();
+			$this->SetAutoPageBreak(false);
 			// save the current graphic state
 			$this->_out('q'.$this->epsmarker);
 			// set initial clipping mask
@@ -20956,6 +20977,8 @@ if (!class_exists('TCPDF', false)) {
 				}
 			}
 			$this->endlinex = $this->img_rb_x;
+			// restore page break
+			$this->SetAutoPageBreak($page_break_mode, $page_break_margin);
 		}
 
 		/**
@@ -22136,6 +22159,7 @@ if (!class_exists('TCPDF', false)) {
 				case 'tspan': {
 					// print text
 					$this->Cell(0, 0, trim($this->svgtext), 0, 0, '', 0, '', 0, false, 'L', 'T');
+					$this->svgtext = '';
 					$this->StopTransform();
 					break;
 				}

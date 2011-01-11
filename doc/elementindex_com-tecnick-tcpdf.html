@@ -132,7 +132,7 @@
 							<dt><b>_escape</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_escape">TCPDF::_escape()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Add &quot;\&quot; before &quot;\&quot;, &quot;(&quot; and &quot;)&quot;</dd>
 							<dt><b>_escapetext</b></dt>
-				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_escapetext">TCPDF::_escapetext()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Format a text string</dd>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_escapetext">TCPDF::_escapetext()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;THIS METHOD IS DEPRECATED</dd>
 							<dt><b>_freadint</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_freadint">TCPDF::_freadint()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Read a 4-byte (32 bit) integer from file.</dd>
 							<dt><b>_generateencryptionkey</b></dt>
@@ -143,6 +143,8 @@
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_getBYTE">TCPDF::_getBYTE()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Get BYTE from string (8-bit unsigned integer).</dd>
 							<dt><b>_getfontpath</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_getfontpath">TCPDF::_getfontpath()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return fonts path</dd>
+							<dt><b>_getobj</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_getobj">TCPDF::_getobj()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return the starting object string for the selected object ID.</dd>
 							<dt><b>_getrawstream</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#method_getrawstream">TCPDF::_getrawstream()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;get raw output stream.</dd>
 							<dt><b>_getSHORT</b></dt>
@@ -579,6 +581,8 @@
 				<dd>in file qrcode.php, variable <a href="com-tecnick-tcpdf/QRcode.html#var$eccTable">QRcode::$eccTable</a></dd>
 							<dt><b>$embeddedfiles</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$embeddedfiles">TCPDF::$embeddedfiles</a></dd>
+							<dt><b>$emptypagemrk</b></dt>
+				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$emptypagemrk">TCPDF::$emptypagemrk</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Array used to store page positions to track empty pages.</dd>
 							<dt><b>$encoding</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$encoding">TCPDF::$encoding</a></dd>
 							<dt><b>$encryptdata</b></dt>
@@ -748,13 +752,13 @@
 							<dt><b>getBarcode</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetBarcode">TCPDF::getBarcode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Get current barcode.</dd>
 							<dt><b>getBarcodeArray</b></dt>
+				<dd>in file barcodes.php, method <a href="com-tecnick-tcpdf/TCPDFBarcode.html#methodgetBarcodeArray">TCPDFBarcode::getBarcodeArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return an array representations of barcode.</dd>
+							<dt><b>getBarcodeArray</b></dt>
 				<dd>in file qrcode.php, method <a href="com-tecnick-tcpdf/QRcode.html#methodgetBarcodeArray">QRcode::getBarcodeArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns a barcode array which is readable by TCPDF</dd>
 							<dt><b>getBarcodeArray</b></dt>
 				<dd>in file 2dbarcodes.php, method <a href="com-tecnick-tcpdf/TCPDF2DBarcode.html#methodgetBarcodeArray">TCPDF2DBarcode::getBarcodeArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return an array representations of barcode.</dd>
 							<dt><b>getBarcodeArray</b></dt>
 				<dd>in file pdf417.php, method <a href="com-tecnick-tcpdf/PDF417.html#methodgetBarcodeArray">PDF417::getBarcodeArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns a barcode array which is readable by TCPDF</dd>
-							<dt><b>getBarcodeArray</b></dt>
-				<dd>in file barcodes.php, method <a href="com-tecnick-tcpdf/TCPDFBarcode.html#methodgetBarcodeArray">TCPDFBarcode::getBarcodeArray()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return an array representations of barcode.</dd>
 							<dt><b>getBitStream</b></dt>
 				<dd>in file qrcode.php, method <a href="com-tecnick-tcpdf/QRcode.html#methodgetBitStream">QRcode::getBitStream()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns a stream of bits.</dd>
 							<dt><b>getBorderMode</b></dt>
@@ -807,6 +811,8 @@
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontDescent">TCPDF::getFontDescent()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return the font descent value</dd>
 							<dt><b>getFontFamily</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontFamily">TCPDF::getFontFamily()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the current font family name.</dd>
+							<dt><b>getFontFamilyName</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontFamilyName">TCPDF::getFontFamilyName()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Return normalized font name</dd>
 							<dt><b>getFontSize</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodgetFontSize">TCPDF::getFontSize()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Returns the current font size.</dd>
 							<dt><b>getFontSizePt</b></dt>
@@ -1295,8 +1301,6 @@
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$objcopy">TCPDF::$objcopy</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Used to store a cloned copy of the current class object</dd>
 							<dt><b>$offsets</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$offsets">TCPDF::$offsets</a></dd>
-							<dt><b>$oldcMargin</b></dt>
-				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$oldcMargin">TCPDF::$oldcMargin</a></dd>
 							<dt><b>$opencell</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$opencell">TCPDF::$opencell</a></dd>
 							<dt><b>$openMarkedContent</b></dt>
@@ -1627,6 +1631,8 @@
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$svgstyles">TCPDF::$svgstyles</a></dd>
 							<dt><b>$svgtext</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$svgtext">TCPDF::$svgtext</a></dd>
+							<dt><b>$svgtextanchor</b></dt>
+				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$svgtextanchor">TCPDF::$svgtextanchor</a></dd>
 							<dt><b>$svgunit</b></dt>
 				<dd>in file tcpdf.php, variable <a href="com-tecnick-tcpdf/TCPDF.html#var$svgunit">TCPDF::$svgunit</a></dd>
 							<dt><b>Scale</b></dt>
@@ -1650,9 +1656,9 @@
 							<dt><b>SetAutoPageBreak</b></dt>
 				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodSetAutoPageBreak">TCPDF::SetAutoPageBreak()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Enables or disables the automatic page breaking mode. When enabling, the second parameter is the distance from the bottom of the page that defines the triggering limit. By default, the mode is on and the margin is 2 cm.</dd>
 							<dt><b>setBarcode</b></dt>
-				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodsetBarcode">TCPDF::setBarcode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Set document barcode.</dd>
-							<dt><b>setBarcode</b></dt>
 				<dd>in file barcodes.php, method <a href="com-tecnick-tcpdf/TCPDFBarcode.html#methodsetBarcode">TCPDFBarcode::setBarcode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Set the barcode.</dd>
+							<dt><b>setBarcode</b></dt>
+				<dd>in file tcpdf.php, method <a href="com-tecnick-tcpdf/TCPDF.html#methodsetBarcode">TCPDF::setBarcode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Set document barcode.</dd>
 							<dt><b>setBarcode</b></dt>
 				<dd>in file 2dbarcodes.php, method <a href="com-tecnick-tcpdf/TCPDF2DBarcode.html#methodsetBarcode">TCPDF2DBarcode::setBarcode()</a><br>&nbsp;&nbsp;&nbsp;&nbsp;Set the barcode.</dd>
 							<dt><b>SetBooklet</b></dt>
@@ -2072,7 +2078,7 @@
 	<a href="elementindex_com-tecnick-tcpdf.html#top">top</a><br>
         <div class="credit">
 		    <hr />
-		    Documentation generated on Mon, 16 Aug 2010 12:57:48 +0200 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
+		    Documentation generated on Sun, 22 Aug 2010 11:57:16 +0200 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.3</a>
 	      </div>
       </td></tr></table>
     </td>

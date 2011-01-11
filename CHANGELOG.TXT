@@ -1,3 +1,19 @@
+5.8.018 (2010-08-25)
+	- Method getNumberOfColumns() was added.
+	- A problem related to table header was fixed.
+	- Method getSVGTransformMatrix() was fixed to apply SVG transformations in the correct order.
+	- SVG support was improved and several bugs were fixed.
+
+5.8.017 (2010-08-25)
+	- This version includes support for XObject Templates (see the new example n. 62).
+	- Methods starttemplate(), endTemplate() and printTemplate() were added (see the new example n. 62).
+
+5.8.016 (2010-08-24)
+	- Alignment problem on write2DBarcode was fixed.
+
+5.8.015 (2010-08-24)
+	- A problem arised with the latest bugfix was fixed.
+
 5.8.014 (2010-08-23)
 	- Method _getxobjectdict() was added for better compatibility with external extensions.
 	- A bug related to radiobuttons was fixed.

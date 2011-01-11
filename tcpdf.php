@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : tcpdf.php
 // Begin       : 2002-08-03
-// Last Update : 2010-04-18
+// Last Update : 2010-04-21
 // Author      : Nicola Asuni - info@tecnick.com - http://www.tcpdf.org
-// Version     : 4.9.014
+// Version     : 4.9.017
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2002-2010  Nicola Asuni - Tecnick.com S.r.l.
@@ -121,7 +121,7 @@
  * @copyright 2002-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 4.9.014
+ * @version 4.9.017
  */
 
 /**
@@ -145,14 +145,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */
-	define('PDF_PRODUCER', 'TCPDF 4.9.014 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 4.9.017 (http://www.tcpdf.org)');
 
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 4.9.014
+	* @version 4.9.017
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -391,6 +391,12 @@ if (!class_exists('TCPDF', false)) {
 		 * @access protected
 		 */
 		protected $underline;
+
+		/**
+		 * @var overlining flag
+		 * @access protected
+		 */
+		protected $overline;
 
 		/**
 		 * @var current font info
@@ -1593,6 +1599,7 @@ if (!class_exists('TCPDF', false)) {
 			$this->FontStyle = '';
 			$this->FontSizePt = 12;
 			$this->underline = false;
+			$this->overline = false;
 			$this->linethrough = false;
 			$this->DrawColor = '0 G';
 			$this->FillColor = '0 g';
@@ -1817,17 +1824,28 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 3.0.015 (2008-06-06)
 		 */
 		public function setPageOrientation($orientation, $autopagebreak='', $bottommargin='') {
-			$orientation = strtoupper($orientation);
-			if (($orientation == 'P') OR ($orientation == 'PORTRAIT')) {
-				$this->CurOrientation = 'P';
-				$this->wPt = $this->fwPt;
-				$this->hPt = $this->fhPt;
-			} elseif (($orientation == 'L') OR ($orientation == 'LANDSCAPE')) {
-				$this->CurOrientation = 'L';
+			if ($this->fwPt > $this->fhPt) {
+				// landscape
+				$default_orientation = 'L';
+			} else {
+				// portrait
+				$default_orientation = 'P';
+			}
+			$valid_orientations = array('P', 'L');
+			if (empty($orientation)) {
+				$orientation = $default_orientation;
+			} else {
+				$orientation = $orientation{0};
+				$orientation = strtoupper($orientation);
+			}
+			if (in_array($orientation, $valid_orientations) AND ($orientation != $default_orientation)) {
+				$this->CurOrientation = $orientation;
 				$this->wPt = $this->fhPt;
 				$this->hPt = $this->fwPt;
 			} else {
-				$this->Error('Incorrect orientation: '.$orientation);
+				$this->CurOrientation = $default_orientation;
+				$this->wPt = $this->fwPt;
+				$this->hPt = $this->fhPt;
 			}
 			$this->w = $this->wPt / $this->k;
 			$this->h = $this->hPt / $this->k;
@@ -2356,7 +2374,7 @@ if (!class_exists('TCPDF', false)) {
 
 		/**
 		 * Move pointer at the specified document page and update page dimensions.
-		 * @param int $pnum page number
+		 * @param int $pnum page number (1 ... numpages)
 		 * @param boolean $resetmargins if true reset left, right, top margins and Y position.
 		 * @access public
 		 * @since 2.1.000 (2008-01-07)
@@ -3138,7 +3156,7 @@ if (!class_exists('TCPDF', false)) {
 		 * Returns the length of a string in user unit. A font must be selected.<br>
 		 * @param string $s The string whose length is to be computed
 		 * @param string $fontname Family font. It can be either a name defined by AddFont() or one of the standard families. It is also possible to pass an empty string, in that case, the current family is retained.
-		 * @param string $fontstyle Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line trough</li></ul> or any combination. The default value is regular.
+		 * @param string $fontstyle Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line-trough</li><li>O: overline</li></ul> or any combination. The default value is regular.
 		 * @param float $fontsize Font size in points. The default value is the current size.
 		 * @param boolean $getarray if true returns an array of characters widths, if false returns the total length.
 		 * @return mixed int total string length or array of characted widths
@@ -3154,7 +3172,7 @@ if (!class_exists('TCPDF', false)) {
 		 * Returns the string length of an array of chars in user unit or an array of characters widths. A font must be selected.<br>
 		 * @param string $sa The array of chars whose total length is to be computed
 		 * @param string $fontname Family font. It can be either a name defined by AddFont() or one of the standard families. It is also possible to pass an empty string, in that case, the current family is retained.
-		 * @param string $fontstyle Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line trough</li></ul> or any combination. The default value is regular.
+		 * @param string $fontstyle Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line trough</li><li>O: overline</li></ul> or any combination. The default value is regular.
 		 * @param float $fontsize Font size in points. The default value is the current size.
 		 * @param boolean $getarray if true returns an array of characters widths, if false returns the total length.
 		 * @return mixed int total string length or array of characted widths
@@ -3282,11 +3300,17 @@ if (!class_exists('TCPDF', false)) {
 			} else {
 				$this->underline = false;
 			}
-			// line through (deleted)
+			// line-through (deleted)
 			if (strpos($tempstyle, 'D') !== false) {
 				$this->linethrough = true;
 			} else {
 				$this->linethrough = false;
+			}
+			// overline
+			if (strpos($tempstyle, 'O') !== false) {
+				$this->overline = true;
+			} else {
+				$this->overline = false;
 			}
 			// bold
 			if (strpos($tempstyle, 'B') !== false) {
@@ -3298,7 +3322,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			$bistyle = $style;
 			$fontkey = $family.$style;
-			$font_style = $style.($this->underline ? 'U' : '').($this->linethrough ? 'D' : '');
+			$font_style = $style.($this->underline ? 'U' : '').($this->linethrough ? 'D' : '').($this->overline ? 'O' : '');
 			$fontdata = array('fontkey' => $fontkey, 'family' => $family, 'style' => $font_style);
 			// check if the font has been already added
 			if ($this->getFontBuffer($fontkey) !== false) {
@@ -3450,7 +3474,7 @@ if (!class_exists('TCPDF', false)) {
 		 * If you just wish to change the current font size, it is simpler to call SetFontSize().
 		 * Note: for the standard fonts, the font metric files must be accessible. There are three possibilities for this:<ul><li>They are in the current directory (the one where the running script lies)</li><li>They are in one of the directories defined by the include_path parameter</li><li>They are in the directory defined by the K_PATH_FONTS constant</li></ul><br />
 		 * @param string $family Family font. It can be either a name defined by AddFont() or one of the standard Type1 families (case insensitive):<ul><li>times (Times-Roman)</li><li>timesb (Times-Bold)</li><li>timesi (Times-Italic)</li><li>timesbi (Times-BoldItalic)</li><li>helvetica (Helvetica)</li><li>helveticab (Helvetica-Bold)</li><li>helveticai (Helvetica-Oblique)</li><li>helveticabi (Helvetica-BoldOblique)</li><li>courier (Courier)</li><li>courierb (Courier-Bold)</li><li>courieri (Courier-Oblique)</li><li>courierbi (Courier-BoldOblique)</li><li>symbol (Symbol)</li><li>zapfdingbats (ZapfDingbats)</li></ul> It is also possible to pass an empty string. In that case, the current family is retained.
-		 * @param string $style Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line trough</li></ul> or any combination. The default value is regular. Bold and italic styles do not apply to Symbol and ZapfDingbats basic fonts or other fonts when not defined.
+		 * @param string $style Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line trough</li><li>O: overline</li></ul> or any combination. The default value is regular. Bold and italic styles do not apply to Symbol and ZapfDingbats basic fonts or other fonts when not defined.
 		 * @param float $size Font size in points. The default value is the current size. If no size has been specified since the beginning of the document, the value taken is 12
 		 * @param string $fontfile The font definition file. By default, the name is built from the family and style, in lower case with no spaces.
 		 * @access public
@@ -4219,6 +4243,9 @@ if (!class_exists('TCPDF', false)) {
 				if ($this->linethrough) {
 					$s .= ' '.$this->_dolinethroughw($xdx, $basefonty, $width);
 				}
+				if ($this->overline)  {
+					$s .= ' '.$this->_dooverlinew($xdx, $basefonty, $width);
+				}
 				if ($this->ColorFlag) {
 					$s .= ' Q';
 				}
@@ -4727,7 +4754,7 @@ if (!class_exists('TCPDF', false)) {
 					} else {
 						$l += $this->GetCharWidth($c);
 					}
-					if (($l > $wmax) OR ($shy AND (($l + $tmp_shy_replacement_width) > $wmax)) ) {
+					if (($l > $wmax) OR (($c == 173) AND (($l + $tmp_shy_replacement_width) > $wmax)) ) {
 						// we have reached the end of column
 						if ($sep == -1) {
 							// check if the line was already started
@@ -5014,16 +5041,23 @@ if (!class_exists('TCPDF', false)) {
 		}
 
 		/**
-		 * Return the image type given the file name and path
+		 * Return the image type given the file name or array returned by getimagesize() function.
 		 * @param string $imgfile image file name
+		 * @param array $iminfo array of image information returned by getimagesize() function.
 		 * @return string image type
 		 * @since 4.8.017 (2009-11-27)
 		 */
-		public function getImageFileType($imgfile) {
-			$type = ''; // default type
+		public function getImageFileType($imgfile, $iminfo=array()) {
+			if (isset($iminfo['mime']) AND !empty($iminfo['mime'])) {
+				$mime = explode('/', $iminfo['mime']);
+				if ((count($mime) > 1) AND ($mime[0] == 'image') AND (!empty($mime[1]))) {
+					return trim($mime[1]);
+				}
+			}
+			$type = '';
 			$fileinfo = pathinfo($imgfile);
 			if (isset($fileinfo['extension']) AND (!$this->empty_string($fileinfo['extension']))) {
-				$type = strtolower($fileinfo['extension']);
+				$type = strtolower(trim($fileinfo['extension']));
 			}
 			if ($type == 'jpg') {
 				$type = 'jpeg';
@@ -5147,7 +5181,7 @@ if (!class_exists('TCPDF', false)) {
 			if ($newimage) {
 				//First use of image, get info
 				if ($type == '') {
-					$type = $this->getImageFileType($file);
+					$type = $this->getImageFileType($file, $imsize);
 				}
 				$mqr = $this->get_mqr();
 				$this->set_mqr(false);
@@ -5169,10 +5203,21 @@ if (!class_exists('TCPDF', false)) {
 						$img = $gdfunction($file);
 						if ($resize) {
 							$imgr = imagecreatetruecolor($neww, $newh);
+							if (($type == 'gif') OR ($type == 'png')) {
+								$imgr = $this->_setGDImageTransparency($imgr, $img);
+							}
 							imagecopyresampled($imgr, $img, 0, 0, 0, 0, $neww, $newh, $pixw, $pixh);
-							$info = $this->_toJPEG($imgr);
+							if (($type == 'gif') OR ($type == 'png')) {
+								$info = $this->_toPNG($imgr);
+							} else {
+								$info = $this->_toJPEG($imgr);
+							}
 						} else {
-							$info = $this->_toJPEG($img);
+							if (($type == 'gif') OR ($type == 'png')) {
+								$info = $this->_toPNG($img);
+							} else {
+								$info = $this->_toJPEG($img);
+							}
 						}
 					} elseif (extension_loaded('imagick')) {
 						// ImageMagick library
@@ -5322,7 +5367,7 @@ if (!class_exists('TCPDF', false)) {
 		}
 
 		/**
-		 * Convert the loaded php image to a JPEG and then return a structure for the PDF creator.
+		 * Convert the loaded image to a JPEG and then return a structure for the PDF creator.
 		 * This function requires GD library and write access to the directory defined on K_PATH_CACHE constant.
 		 * @param string $file Image file name.
 		 * @param image $image Image object.
@@ -5337,6 +5382,48 @@ if (!class_exists('TCPDF', false)) {
 			// tidy up by removing temporary image
 			unlink($tempname);
 			return $retvars;
+		}
+
+		/**
+		 * Convert the loaded image to a PNG and then return a structure for the PDF creator.
+		 * This function requires GD library and write access to the directory defined on K_PATH_CACHE constant.
+		 * @param string $file Image file name.
+		 * @param image $image Image object.
+		 * return image PNG image object.
+		 * @access protected
+		 * @since 4.9.016 (2010-04-20)
+		 */
+		protected function _toPNG($image) {
+			$tempname = tempnam(K_PATH_CACHE, 'jpg_');
+			imagepng($image, $tempname);
+			imagedestroy($image);
+			$retvars = $this->_parsepng($tempname);
+			// tidy up by removing temporary image
+			unlink($tempname);
+			return $retvars;
+		}
+
+		/**
+		 * Set the transparency for the given GD image.
+		 * @param image $new_image GD image object
+		 * @param image $image GD image object.
+		 * return GD image object.
+		 * @access protected
+		 * @since 4.9.016 (2010-04-20)
+		 */
+		protected function _setGDImageTransparency($new_image, $image) {
+			// transparency index
+			$tid = imagecolortransparent($image);
+			// default transparency color
+			$tcol = array('red' => 255, 'green' => 255, 'blue' => 255);
+			if ($tid >= 0) {
+				// get the colors for the transparency index
+				$tcol = imagecolorsforindex($image, $tid);
+			}
+			$tid = imagecolorallocate($new_image, $tcol['red'], $tcol['green'], $tcol['blue']);
+			imagefill($new_image, 0, 0, $tid);
+			imagecolortransparent($new_image, $tid);
+			return $new_image;
 		}
 
 		/**
@@ -6293,7 +6380,7 @@ if (!class_exists('TCPDF', false)) {
 						}
 						//$annots .= ' /StructParent ';
 						//$annots .= ' /OC ';
-						$markups = array('text', 'freetext', 'line', 'square', 'circle', 'polygon', 'polyline', 'highlight',  'underline', 'squiggly', 'strikeout', 'stamp', 'caret', 'ink', 'fileattachment', 'sound');
+						$markups = array('text', 'freetext', 'line', 'square', 'circle', 'polygon', 'polyline', 'highlight', 'underline', 'squiggly', 'strikeout', 'stamp', 'caret', 'ink', 'fileattachment', 'sound');
 						if (in_array(strtolower($pl['opt']['subtype']), $markups)) {
 							// this is a markup type
 							if (isset($pl['opt']['t']) AND is_string($pl['opt']['t'])) {
@@ -7692,6 +7779,19 @@ if (!class_exists('TCPDF', false)) {
 		}
 
 		/**
+		 * Underline for rectangular text area.
+		 * @param int $x X coordinate
+		 * @param int $y Y coordinate
+		 * @param int $w width to underline
+		 * @access protected
+		 * @since 4.8.008 (2009-09-29)
+		 */
+		protected function _dounderlinew($x, $y, $w) {
+			$linew = - $this->CurrentFont['ut'] / 1000 * $this->FontSizePt;
+			return sprintf('%.2F %.2F %.2F %.2F re f', $x * $this->k, ($this->h - $y + ($linew / 2)) * $this->k, $w * $this->k, $linew);
+		}
+
+		/**
 		 * Line through text.
 		 * @param int $x X coordinate
 		 * @param int $y Y coordinate
@@ -7704,31 +7804,43 @@ if (!class_exists('TCPDF', false)) {
 		}
 
 		/**
-		 * Underline for rectangular text area.
-		 * @param int $x X coordinate
-		 * @param int $y Y coordinate
-		 * @param int $w width to underline
-		 * @access protected
-		 * @since 4.8.008 (2009-09-29)
-		 */
-		protected function _dounderlinew($x, $y, $w) {
-			$up = $this->CurrentFont['up'];
-			$ut = $this->CurrentFont['ut'];
-			return sprintf('%.2F %.2F %.2F %.2F re f', $x * $this->k, ($this->h - ($y - $up / 1000 * $this->FontSize)) * $this->k, $w * $this->k, -$ut / 1000 * $this->FontSizePt);
-		}
-
-		/**
 		 * Line through for rectangular text area.
 		 * @param int $x X coordinate
 		 * @param int $y Y coordinate
 		 * @param string $txt text to linethrough
 		 * @access protected
-		 * @since 4.8.008 (2009-09-29)
+		 * @since 4.9.008 (2009-09-29)
 		 */
 		protected function _dolinethroughw($x, $y, $w) {
-			$up = $this->CurrentFont['up'];
-			$ut = $this->CurrentFont['ut'];
-			return sprintf('%.2F %.2F %.2F %.2F re f', $x * $this->k, ($this->h - ($y - ($this->FontSize/2) - $up / 1000 * $this->FontSize)) * $this->k, $w * $this->k, -$ut / 1000 * $this->FontSizePt);
+			$linew = - $this->CurrentFont['ut'] / 1000 * $this->FontSizePt;
+			return sprintf('%.2F %.2F %.2F %.2F re f', $x * $this->k, ($this->h - $y + ($this->FontSize / 3) + ($linew / 2)) * $this->k, $w * $this->k, $linew);
+		}
+
+		/**
+		 * Overline text.
+		 * @param int $x X coordinate
+		 * @param int $y Y coordinate
+		 * @param string $txt text to overline
+		 * @access protected
+		 * @since 4.9.015 (2010-04-19)
+		 */
+		protected function _dooverline($x, $y, $txt) {
+			$w = $this->GetStringWidth($txt);
+			return $this->_dooverlinew($x, $y, $w);
+		}
+
+		/**
+		 * Overline for rectangular text area.
+		 * @param int $x X coordinate
+		 * @param int $y Y coordinate
+		 * @param int $w width to overline
+		 * @access protected
+		 * @since 4.9.015 (2010-04-19)
+		 */
+		protected function _dooverlinew($x, $y, $w) {
+			$linew = - $this->CurrentFont['ut'] / 1000 * $this->FontSizePt;
+			return sprintf('%.2F %.2F %.2F %.2F re f', $x * $this->k, ($this->h - $y + $this->FontAscent - ($linew / 2)) * $this->k, $w * $this->k, $linew);
+
 		}
 
 		/**
@@ -13675,9 +13787,14 @@ if (!class_exists('TCPDF', false)) {
 									$dec = trim($dec);
 									if (!$this->empty_string($dec)) {
 										if ($dec{0} == 'u') {
+											// underline
 											$dom[$key]['fontstyle'] .= 'U';
 										} elseif ($dec{0} == 'l') {
+											// line-trough
 											$dom[$key]['fontstyle'] .= 'D';
+										} elseif ($dec{0} == 'o') {
+											// overline
+											$dom[$key]['fontstyle'] .= 'O';
 										}
 									}
 								}
@@ -14156,8 +14273,8 @@ if (!class_exists('TCPDF', false)) {
 						$fontascent = $this->getFontAscent($fontname, $fontstyle, $fontsize);
 						$fontdescent = $this->getFontDescent($fontname, $fontstyle, $fontsize);
 						if (($fontname != $curfontname) OR ($fontstyle != $curfontstyle) OR ($fontsize != $curfontsize)) {
-							if (is_numeric($fontsize) AND ($fontsize > 0)
-								AND is_numeric($curfontsize) AND ($curfontsize > 0)
+							if (is_numeric($fontsize) AND ($fontsize >= 0)
+								AND is_numeric($curfontsize) AND ($curfontsize >= 0)
 								AND ($fontsize != $curfontsize) AND (!$this->newline)
 								AND ($key < ($maxel - 1))
 								) {
@@ -15161,9 +15278,14 @@ if (!class_exists('TCPDF', false)) {
 								$dec = trim($dec);
 								if (!$this->empty_string($dec)) {
 									if ($dec{0} == 'u') {
+										// underline
 										$this->HREF['style'] .= 'U';
 									} elseif ($dec{0} == 'l') {
+										// line-trough
 										$this->HREF['style'] .= 'D';
+									} elseif ($dec{0} == 'o') {
+										// overline
+										$this->HREF['style'] .= 'O';
 									}
 								}
 							}
@@ -16364,7 +16486,6 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				// ordered types
-
 				// $this->listcount[$this->listnum];
 				// $textitem
 				case '1':
@@ -17033,6 +17154,67 @@ if (!class_exists('TCPDF', false)) {
 				}
 				--$newpage;
 				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+			// return to last page
+			$this->lastPage(true);
+			return true;
+		}
+
+		/**
+		 * Clone the specified page to a new page.
+		 * @param int $page number of page to copy (0 = current page)
+		 * @return true in case of success, false in case of error.
+		 * @access public
+		 * @since 4.9.015 (2010-04-20)
+		 */
+		public function copyPage($page=0) {
+			if ($page == 0) {
+				// default value
+				$page = $this->page;
+			}
+			if ($page > $this->numpages) {
+				return false;
+			}
+			if ($page == $this->page) {
+				// close the page before cloning it
+				$this->endPage();
+			}
+			// copy all page-related states
+			++$this->numpages;
+			$this->page = $this->numpages;
+			$this->pages[$this->page] = $this->pages[$page];
+			$this->pagedim[$this->page] = $this->pagedim[$page];
+			$this->pagelen[$this->page] = $this->pagelen[$page];
+			$this->intmrk[$this->page] = $this->intmrk[$page];
+			$this->pageopen[$this->page] = false;
+			if (isset($this->footerpos[$page])) {
+				$this->footerpos[$this->page] = $this->footerpos[$page];
+			}
+			if (isset($this->footerlen[$page])) {
+				$this->footerlen[$this->page] = $this->footerlen[$page];
+			}
+			if (isset($this->transfmrk[$page])) {
+				$this->transfmrk[$this->page] = $this->transfmrk[$page];
+			}
+			if (isset($this->PageAnnots[$page])) {
+				$this->PageAnnots[$this->page] = $this->PageAnnots[$page];
+			}
+			if (isset($this->newpagegroup[$page])) {
+				$this->newpagegroup[$this->page] = $this->newpagegroup[$page];
+			}
+			// copy outlines
+			$tmpoutlines = $this->outlines;
+			foreach ($tmpoutlines as $key => $outline) {
+				if ($outline['p'] == $page) {
+					$this->outlines[] = array('t' => $outline['t'], 'l' => $outline['l'], 'y' => $outline['y'], 'p' => $this->page);
+				}
+			}
+			// copy links
+			$tmplinks = $this->links;
+			foreach ($tmplinks as $key => $link) {
+				if ($link[0] == $page) {
+					$this->links[] = array($this->page, $link[1]);
+				}
+			}
 			// return to last page
 			$this->lastPage(true);
 			return true;

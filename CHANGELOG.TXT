@@ -1,3 +1,19 @@
+4.9.017 (2010-04-21)
+	- Bug item #2990224 "Different behaviour for equivalent HTML strings" was fixed.
+	- Bug item #2990314 "Dash is not appearing with SHY character" was fixed.
+
+4.9.016 (2010-04-20)
+	- An error on htmlcolors.php was fixed.
+	- getImageFileType() method was improved.
+	- GIF images with transparency are now better supported.
+	- Automatic page orientation was improved.
+
+4.9.015 (2010-04-20)
+	- A new method copyPage() was added to clone pages (see example n. 44).
+	- Support for text overline was added.
+	- Underline and linethrough methods were fixed.
+	- Bug #2989058 "SHY character causes unnecessary word-wrapping" was fixed.
+
 4.9.014 (2010-04-18)
 	- Bug item #2988845 was fixed.
 

@@ -1,11 +1,11 @@
 <?php
 //============================================================+
-// File name   : example_031.php
-// Begin       : 2008-06-09
-// Last Update : 2010-05-04
+// File name   : example_058.php
+// Begin       : 2010-04-22
+// Last Update : 2010-05-05
 //
-// Description : Example 031 for TCPDF class
-//               Pie Chart
+// Description : Example 058 for TCPDF class
+//               SVG Image
 //
 // Author: Nicola Asuni
 //
@@ -22,12 +22,12 @@
 /**
  * Creates an example PDF TEST document using TCPDF
  * @package com.tecnick.tcpdf
- * @abstract TCPDF - Example: Pie Chart
+ * @abstract TCPDF - Example: SVG Image
  * @author Nicola Asuni
  * @copyright 2004-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @since 2008-06-09
+ * @since 2010-05-02
  */
 
 require_once('../config/lang/eng.php');
@@ -39,19 +39,24 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Nicola Asuni');
-$pdf->SetTitle('TCPDF Example 031');
+$pdf->SetTitle('TCPDF Example 058');
 $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
-// disable header and footer
-$pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
+// set default header data
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 //set margins
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 //set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -65,26 +70,20 @@ $pdf->setLanguageArray($l);
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('helvetica', '', 14);
+$pdf->SetFont('helvetica', '', 10);
 
 // add a page
 $pdf->AddPage();
 
-$xc = 105;
-$yc = 55;
-$r = 40;
+// NOTE: Uncomment the following line to rasterize SVG image using the ImageMagick library.
+//$pdf->setRasterizeVectorImages(true);
 
-$pdf->SetFillColor(120, 120, 255);
-$pdf->PieSector($xc, $yc, $r, 20, 120, 'FD', false, 0, 2);
-$pdf->SetFillColor(120, 255, 120);
-$pdf->PieSector($xc, $yc, $r, 120, 250, 'FD', false, 0, 2);
-$pdf->SetFillColor(255, 120, 120);
-$pdf->PieSector($xc, $yc, $r, 250, 20, 'FD', false, 0, 2);
+$pdf->ImageSVG($file='../images/testsvg.svg', $x=15, $y=30, $w='', $h='', $link='http://www.tcpdf.org', $align='', $palign='', $border=1, $fitonpage=false);
 
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output('example_031.pdf', 'I');
+$pdf->Output('example_058.pdf', 'I');
 
 //============================================================+
 // END OF FILE

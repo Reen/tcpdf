@@ -1,3 +1,10 @@
+5.5.010 (2010-07-06)
+	- Bug item #3025772 "Borders in all image functions are still flawed" was fixed.
+
+5.5.009 (2010-07-05)
+	- A problem related to last page footer was fixed.
+	- Image alignments and fit-on-page features were improved.
+
 5.5.008 (2010-07-02)
 	- A problem on table header alignment in booklet mode was fixed.
 	- Default graphic vars are now applied for setHeader();

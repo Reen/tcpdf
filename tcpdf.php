@@ -1,9 +1,9 @@
 <?php
 //============================================================+
 // File name   : tcpdf.php
-// Version     : 5.8.020
+// Version     : 5.8.028
 // Begin       : 2002-08-03
-// Last Update : 2010-08-26
+// Last Update : 2010-09-13
 // Author      : Nicola Asuni - Tecnick.com S.r.l - Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
 // License     : GNU-LGPL v3 (http://www.gnu.org/copyleft/lesser.html)
 // -------------------------------------------------------------------
@@ -128,7 +128,7 @@
  * @copyright 2002-2010 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
  * @link http://www.tcpdf.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @version 5.8.020
+ * @version 5.8.028
  */
 
 /**
@@ -152,14 +152,14 @@ if (!class_exists('TCPDF', false)) {
 	/**
 	 * define default PDF document producer
 	 */
-	define('PDF_PRODUCER', 'TCPDF 5.8.020 (http://www.tcpdf.org)');
+	define('PDF_PRODUCER', 'TCPDF 5.8.028 (http://www.tcpdf.org)');
 
 	/**
 	* This is a PHP class for generating PDF documents without requiring external extensions.<br>
 	* TCPDF project (http://www.tcpdf.org) has been originally derived in 2002 from the Public Domain FPDF class by Olivier Plathey (http://www.fpdf.org), but now is almost entirely rewritten.<br>
 	* @name TCPDF
 	* @package com.tecnick.tcpdf
-	* @version 5.8.020
+	* @version 5.8.028
 	* @author Nicola Asuni - info@tecnick.com
 	* @link http://www.tcpdf.org
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -643,7 +643,6 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		protected $default_table_columns = 4;
 
-
 		// variables for html parser
 
 		/**
@@ -798,7 +797,6 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 2.1.002 (2008-02-12)
 		 */
 		protected $OutlineRoot;
-
 
 		// --- javascript and form ---
 
@@ -959,7 +957,6 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 3.2.000 (2008-07-01)
 		 */
 		protected $footerpos = array();
-
 
 		/**
 		 * Array used to store footer length of each page.
@@ -1591,6 +1588,13 @@ if (!class_exists('TCPDF', false)) {
 		 * @since 5.0.000 (2010-05-02)
 		 */
 		protected $svgclippaths = array();
+
+		/**
+		 * @var array of SVG clipPath tranformation matrix
+		 * @access protected
+		 * @since 5.8.022 (2010-08-31)
+		 */
+		protected $svgcliptm = array();
 
 		/**
 		 * @var ID of last SVG clipPath
@@ -3481,7 +3485,6 @@ if (!class_exists('TCPDF', false)) {
 		public function getPage() {
 			return $this->page;
 		}
-
 
 		/**
 		 * Get the total number of insered pages.
@@ -8073,7 +8076,6 @@ if (!class_exists('TCPDF', false)) {
 											// reference to XObject that define the appearance for this mode-state
 											$apsobjid = $this->_putAPXObject($c, $d, $stream);
 											$annots .= ' /'.$apstate.' '.$apsobjid.' 0 R';
-											$annots .= ' /'.$apstate.' /'.$stream;
 										}
 										$annots .= ' >>';
 									} else {
@@ -11195,7 +11197,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @author Klemen Vodopivec, Nicola Asuni
 		 */
 		protected function _RC4($key, $text) {
-			if (function_exists('mcrypt_decrypt') AND ($out = @mcrypt_decrypt(@MCRYPT_ARCFOUR, $key, $text, @MCRYPT_MODE_STREAM))) {
+			if (function_exists('mcrypt_decrypt') AND ($out = @mcrypt_decrypt(MCRYPT_ARCFOUR, $key, $text, MCRYPT_MODE_STREAM, ''))) {
 				// try to use mcrypt function if exist
 				return $out;
 			}
@@ -11888,7 +11890,6 @@ if (!class_exists('TCPDF', false)) {
 
 		// END TRANSFORMATIONS SECTION -------------------------
 
-
 		// START GRAPHIC FUNCTIONS SECTION ---------------------
 		// The following section is based on the code provided by David Hernandez Sanz
 
@@ -12353,7 +12354,6 @@ if (!class_exists('TCPDF', false)) {
 				$this->_outLine($xc, $yc);
 			}
 		}
-
 
 		/**
 		 * Draws a circle.
@@ -14385,12 +14385,9 @@ if (!class_exists('TCPDF', false)) {
 			if (!isset($popt['mk'])) {
 				$popt['mk'] = array();
 			}
-			if (!empty($action)) {
-				if (is_array($action)) {
-					$ann_obj_id = ($this->n + 1);
-				} else {
-					$ann_obj_id = ($this->n + 2);
-				}
+			$ann_obj_id = ($this->n + 1);
+			if (!empty($action) AND !is_array($action)) {
+				$ann_obj_id = ($this->n + 2);
 			}
 			$popt['mk']['ca'] = $this->_textstring($caption, $ann_obj_id);
 			$popt['mk']['rc'] = $this->_textstring($caption, $ann_obj_id);
@@ -16352,7 +16349,7 @@ if (!class_exists('TCPDF', false)) {
 			// create new barcode object
 			$barcodeobj = new TCPDF2DBarcode($code, $type);
 			$arrcode = $barcodeobj->getBarcodeArray();
-			if ($arrcode === false) {
+			if (($arrcode === false) OR empty($arrcode)) {
 				$this->Error('Error in 2D barcode string');
 			}
 			// set default values
@@ -17139,8 +17136,7 @@ if (!class_exists('TCPDF', false)) {
 			$html = preg_replace('/'.$this->re_space['p'].'+<img/'.$this->re_space['m'], chr(32).'<img', $html);
 			$html = preg_replace('/<img([^\>]*)>/xi', '<img\\1><span><marker style="font-size:0"/></span>', $html);
 			$html = preg_replace('/<xre/', '<pre', $html); // restore pre tag
-			$html = preg_replace('/<textarea([^\>]*)>/xi', '<textarea\\1 value="', $html);
-			$html = preg_replace('/<\/textarea>/', '" />', $html);
+			$html = preg_replace('/<textarea([^\>]*)>([^\<]*)<\/textarea>/xi', '<textarea\\1 value="\\2" />', $html);
 			$html = preg_replace('/<li([^\>]*)><\/li>/', '<li\\1>&nbsp;</li>', $html);
 			$html = preg_replace('/<li([^\>]*)>'.$this->re_space['p'].'*<img/'.$this->re_space['m'], '<li\\1><font size="1">&nbsp;</font><img', $html);
 			$html = preg_replace('/<([^\>\/]*)>[\s]/', '<\\1>&nbsp;', $html); // preserve some spaces
@@ -18498,11 +18494,11 @@ if (!class_exists('TCPDF', false)) {
 					} else {
 						$pask = 0;
 					}
-					if ($dom[$key]['tag'] AND $dom[$key]['opening'] AND ($dom[$key]['value'] == 'table')) {
+					if (!($dom[$key]['tag'] AND !$dom[$key]['opening'] AND ($dom[$key]['value'] == 'table') AND ($this->emptypagemrk[$this->page] == $this->pagelen[$this->page]))) {
 						$this->SetFont($fontname, $fontstyle, $fontsize);
-					}
-					if ($wfill) {
-						$this->SetFillColorArray($this->bgcolor);
+						if ($wfill) {
+							$this->SetFillColorArray($this->bgcolor);
+						}
 					}
 				} // end newline
 				if (isset($opentagpos)) {
@@ -21644,7 +21640,7 @@ if (!class_exists('TCPDF', false)) {
 						$k = '{#'.$n.'}';
 						$ku = '{'.$k.'}';
 						$alias_a = $this->_escape($k);
-						$alias_au = $this->_escape('{'.$k.'}');
+						$alias_au = $this->_escape($ku);
 						if ($this->isunicode) {
 							$alias_b = $this->_escape($this->UTF8ToLatin1($k));
 							$alias_bu = $this->_escape($this->UTF8ToLatin1($ku));
@@ -21710,18 +21706,30 @@ if (!class_exists('TCPDF', false)) {
 			$this->htmlLinkColorArray = array();
 			$this->htmlLinkFontStyle = '';
 			$page_first = $this->getPage();
+			// get the font type used for numbers in each template
+			$current_font = $this->FontFamily;
+			foreach ($templates as $level => $html) {
+				$dom = $this->getHtmlDomArray($html);
+				foreach ($dom as $key => $value) {
+					if ($value['value'] == '#TOC_PAGE_NUMBER#') {
+						$this->SetFont($dom[($key - 1)]['fontname']);
+						$templates['F'.$level] = $this->isUnicodeFont();
+					}
+				}
+			}
+			$this->SetFont($current_font);
 			foreach ($this->outlines as $key => $outline) {
+				// get HTML template
+				$row = $templates[$outline['l']];
 				if ($this->empty_string($page)) {
 					$pagenum = $outline['p'];
 				} else {
 					// placemark to be replaced with the correct number
 					$pagenum = '{#'.($outline['p']).'}';
-					if ($this->isUnicodeFont()) {
+					if ($templates['F'.$outline['l']]) {
 						$pagenum = '{'.$pagenum.'}';
 					}
 				}
-				// get HTML template
-				$row = $templates[$outline['l']];
 				// replace templates with current values
 				$row = str_replace('#TOC_DESCRIPTION#', $outline['t'], $row);
 				$row = str_replace('#TOC_PAGE_NUMBER#', $pagenum, $row);
@@ -23150,7 +23158,7 @@ if (!class_exists('TCPDF', false)) {
 			if (preg_match('/url\([\s]*\#([^\)]*)\)/si', $svgstyle['clip-path'], $regs)) {
 				$clip_path = $this->svgclippaths[$regs[1]];
 				foreach ($clip_path as $cp) {
-					$this->startSVGElementHandler('clip-path', $cp['name'], $cp['attribs']);
+					$this->startSVGElementHandler('clip-path', $cp['name'], $cp['attribs'], $cp['tm']);
 				}
 			}
 			// opacity
@@ -23734,17 +23742,21 @@ if (!class_exists('TCPDF', false)) {
 		 * @param resource $parser The first parameter, parser, is a reference to the XML parser calling the handler.
 		 * @param string $name The second parameter, name, contains the name of the element for which this handler is called. If case-folding is in effect for this parser, the element name will be in uppercase letters.
 		 * @param array $attribs The third parameter, attribs, contains an associative array with the element's attributes (if any). The keys of this array are the attribute names, the values are the attribute values. Attribute names are case-folded on the same criteria as element names. Attribute values are not case-folded. The original order of the attributes can be retrieved by walking through attribs the normal way, using each(). The first key in the array was the first attribute, and so on.
+		 * @param array $ctm tranformation matrix for clipping mode (starting transformation matrix).
 		 * @author Nicola Asuni
 		 * @since 5.0.000 (2010-05-02)
 		 * @access protected
 		 */
-		protected function startSVGElementHandler($parser, $name, $attribs) {
+		protected function startSVGElementHandler($parser, $name, $attribs, $ctm=array()) {
 			// check if we are in clip mode
 			if ($this->svgclipmode) {
-				$this->svgclippaths[$this->svgclipid][] = array('name' => $name, 'attribs' => $attribs);
+				$this->svgclippaths[$this->svgclipid][] = array('name' => $name, 'attribs' => $attribs, 'tm' => $this->svgcliptm[$this->svgclipid]);
 				return;
 			}
 			if ($this->svgdefsmode AND !in_array($name, array('clipPath', 'linearGradient', 'radialGradient', 'stop'))) {
+				if (!isset($attribs['id'])) {
+					$attribs['id'] = 'DF_'.(count($this->svgdefs) + 1);
+				}
 				$this->svgdefs[$attribs['id']] = array('name' => $name, 'attribs' => $attribs);
 				return;
 			}
@@ -23796,7 +23808,11 @@ if (!class_exists('TCPDF', false)) {
 				}
 			}
 			// transformation matrix
-			$tm = $this->svgstyles[(count($this->svgstyles) - 1)]['transfmatrix'];
+			if (!empty($ctm)) {
+				$tm = $ctm;
+			} else {
+				$tm = $this->svgstyles[(count($this->svgstyles) - 1)]['transfmatrix'];
+			}
 			if (isset($attribs['transform']) AND !empty($attribs['transform'])) {
 				$tm = $this->getTransformationMatrixProduct($tm, $this->getSVGTransformMatrix($attribs['transform']));
 			}
@@ -23810,8 +23826,12 @@ if (!class_exists('TCPDF', false)) {
 				// clipPath
 				case 'clipPath': {
 					$this->svgclipmode = true;
+					if (!isset($attribs['id'])) {
+						$attribs['id'] = 'CP_'.(count($this->svgcliptm) + 1);
+					}
 					$this->svgclipid = $attribs['id'];
 					$this->svgclippaths[$this->svgclipid] = array();
+					$this->svgcliptm[$this->svgclipid] = $tm;
 					break;
 				}
 				case 'svg': {
@@ -23826,6 +23846,9 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'linearGradient': {
+					if (!isset($attribs['id'])) {
+						$attribs['id'] = 'GR_'.(count($this->svggradients) + 1);
+					}
 					$this->svggradientid = $attribs['id'];
 					$this->svggradients[$this->svggradientid] = array();
 					$this->svggradients[$this->svggradientid]['type'] = 2;
@@ -23856,6 +23879,9 @@ if (!class_exists('TCPDF', false)) {
 					break;
 				}
 				case 'radialGradient': {
+					if (!isset($attribs['id'])) {
+						$attribs['id'] = 'GR_'.(count($this->svggradients) + 1);
+					}
 					$this->svggradientid = $attribs['id'];
 					$this->svggradients[$this->svggradientid] = array();
 					$this->svggradients[$this->svggradientid]['type'] = 3;

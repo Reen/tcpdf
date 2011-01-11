@@ -1,3 +1,28 @@
+5.8.028 (2010-09-13)
+	- Bug #3065224 "mcrypt_create_iv error on TCPDF 5.8.027 on PHP 5.3.2" was fixed.
+
+5.8.027 (2010-09-13)
+	- Bug #3065118 "mcrypt_decrypt error on TCPDF 5.8.026 on PHP 5.3.2" was fixed.
+
+5.8.026 (2010-09-13)
+	- A bug on addHTMLTOC() method was fixed. Note: be sure that the #TOC_PAGE_NUMBER# template has enough width to be printed correctly.
+
+5.8.025 (2010-09-09)
+	- Bug #3062692 "Textarea inside a table" was fixed.
+
+5.8.024 (2010-09-08)
+	- Bug #3062005 "Undefined variable: ann_obj_id" was fixed.
+
+5.8.023 (2010-08-31)
+	- Forms bug added on version 5.8.019 was fixed.
+
+5.8.022 (2010-08-31)
+	- Bug #3056632 "SVG rendered vertically flipped" was fixed.
+
+5.8.021 (2010-08-30)
+	- A new CID-0 'chinese' font was added for traditional Chinese.
+	- Bug #3054287 'Inner tags are ignored due to "align" attribute' was fixed.
+
 5.8.020 (2010-08-26)
 	- CSS "catch-all" class selector is now supported.
 

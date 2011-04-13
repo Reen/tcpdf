@@ -2,9 +2,9 @@
 //============================================================+
 // File name   : makeallttffonts.php
 // Begin       : 2008-12-07
-// Last Update : 2010-08-08
+// Last Update : 2010-12-03
 //
-// Description : Process all TTF files on current directory to 
+// Description : Process all TTF files on current directory to
 //               build TCPDF compatible font files.
 //
 // Author: Nicola Asuni
@@ -18,9 +18,9 @@
 //               www.tecnick.com
 //               info@tecnick.com
 //
-// License: 
+// License:
 //    Copyright (C) 2004-2010  Nicola Asuni - Tecnick.com S.r.l.
-//    
+//
 // This file is part of TCPDF software library.
 //
 // TCPDF is free software: you can redistribute it and/or modify it
@@ -40,30 +40,30 @@
 //============================================================+
 
 /**
+ * @file
  * Process all TTF files on current directory to build TCPDF compatible font files.
  * @package com.tecnick.tcpdf
  * @author Nicola Asuni
- * @copyright Copyright &copy; 2004-2009, Nicola Asuni - Tecnick.com S.r.l. - ITALY - www.tecnick.com - info@tecnick.com
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @link www.tecnick.com
  * @since 2008-12-07
  */
 
-/**
- */
-
-// read directory for files (only graphics files).
+// read directory for files (only TTF files).
 $handle = opendir('.');
-while($file = readdir($handle)) {
+while ($file = readdir($handle)) {
 	$path_parts = pathinfo($file);
-	$file_ext = strtolower($path_parts['extension']);
-	if ($file_ext == 'ttf') {
-		exec('./ttf2ufm -a -F '.$path_parts['basename'].'');
+	if (isset($path_parts['extension']) AND (strtoupper($path_parts['extension']) === 'TTF')) {
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			// windows
+			exec('ttf2ufm.exe -a -F '.$path_parts['basename']);
+		} else {
+			// linux
+			exec('./ttf2ufm -a -F '.$path_parts['basename']);
+		}
 		exec('php -q makefont.php '.$path_parts['basename'].' '.$path_parts['filename'].'.ufm');
 	}
 }
 closedir($handle);
 
 //============================================================+
-// END OF FILE                                                 
+// END OF FILE
 //============================================================+

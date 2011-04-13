@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_004.php
 // Begin       : 2008-03-04
-// Last Update : 2010-08-08
+// Last Update : 2010-10-08
 //
 // Description : Example 004 for TCPDF class
 //               Cell stretching
@@ -24,9 +24,6 @@
  * @package com.tecnick.tcpdf
  * @abstract TCPDF - Example: Cell stretching
  * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
  * @since 2008-03-04
  */
 
@@ -70,7 +67,7 @@ $pdf->setLanguageArray($l);
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('times', 'B', 12);
+$pdf->SetFont('times', '', 11);
 
 // add a page
 $pdf->AddPage();
@@ -78,18 +75,41 @@ $pdf->AddPage();
 //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
 
 // test Cell stretching
-$pdf->Cell(0, 10, 'TEST CELL STRETCH: no stretch', 1, 1, 'C', 0, '', 0);
-$pdf->Cell(0, 10, 'TEST CELL STRETCH: scaling', 1, 1, 'C', 0, '', 1);
-$pdf->Cell(0, 10, 'TEST CELL STRETCH: force scaling', 1, 1, 'C', 0, '', 2);
-$pdf->Cell(0, 10, 'TEST CELL STRETCH: spacing', 1, 1, 'C', 0, '', 3);
-$pdf->Cell(0, 10, 'TEST CELL STRETCH: force spacing', 1, 1, 'C', 0, '', 4);
+$pdf->Cell(0, 0, 'TEST CELL STRETCH: no stretch', 1, 1, 'C', 0, '', 0);
+$pdf->Cell(0, 0, 'TEST CELL STRETCH: scaling', 1, 1, 'C', 0, '', 1);
+$pdf->Cell(0, 0, 'TEST CELL STRETCH: force scaling', 1, 1, 'C', 0, '', 2);
+$pdf->Cell(0, 0, 'TEST CELL STRETCH: spacing', 1, 1, 'C', 0, '', 3);
+$pdf->Cell(0, 0, 'TEST CELL STRETCH: force spacing', 1, 1, 'C', 0, '', 4);
 
-$pdf->Ln(10);
+$pdf->Ln(5);
 
-$pdf->Cell(60, 10, 'TEST CELL STRETCH: scaling', 1, 1, 'C', 0, '', 1);
-$pdf->Cell(60, 10, 'TEST CELL STRETCH: force scaling', 1, 1, 'C', 0, '', 2);
-$pdf->Cell(60, 10, 'TEST CELL STRETCH: spacing', 1, 1, 'C', 0, '', 3);
-$pdf->Cell(60, 10, 'TEST CELL STRETCH: force spacing', 1, 1, 'C', 0, '', 4);
+$pdf->Cell(45, 0, 'TEST CELL STRETCH: scaling', 1, 1, 'C', 0, '', 1);
+$pdf->Cell(45, 0, 'TEST CELL STRETCH: force scaling', 1, 1, 'C', 0, '', 2);
+$pdf->Cell(45, 0, 'TEST CELL STRETCH: spacing', 1, 1, 'C', 0, '', 3);
+$pdf->Cell(45, 0, 'TEST CELL STRETCH: force spacing', 1, 1, 'C', 0, '', 4);
+
+$pdf->AddPage();
+
+// example using general stretching and spacing
+
+for ($stretching = 90; $stretching <= 110; $stretching += 10) {
+	for ($spacing = -0.254; $spacing <= 0.254; $spacing += 0.254) {
+
+		// set general stretching (scaling) value
+		$pdf->setFontStretching($stretching);
+
+		// set general spacing value
+		$pdf->setFontSpacing($spacing);
+
+		$pdf->Cell(0, 0, 'Stretching '.$stretching.'%, Spacing '.sprintf('%+.3F', $spacing).'mm, no stretch', 1, 1, 'C', 0, '', 0);
+		$pdf->Cell(0, 0, 'Stretching '.$stretching.'%, Spacing '.sprintf('%+.3F', $spacing).'mm, scaling', 1, 1, 'C', 0, '', 1);
+		$pdf->Cell(0, 0, 'Stretching '.$stretching.'%, Spacing '.sprintf('%+.3F', $spacing).'mm, force scaling', 1, 1, 'C', 0, '', 2);
+		$pdf->Cell(0, 0, 'Stretching '.$stretching.'%, Spacing '.sprintf('%+.3F', $spacing).'mm, spacing', 1, 1, 'C', 0, '', 3);
+		$pdf->Cell(0, 0, 'Stretching '.$stretching.'%, Spacing '.sprintf('%+.3F', $spacing).'mm, force spacing', 1, 1, 'C', 0, '', 4);
+
+		$pdf->Ln(2);
+	}
+}
 
 // ---------------------------------------------------------
 
@@ -97,5 +117,5 @@ $pdf->Cell(60, 10, 'TEST CELL STRETCH: force spacing', 1, 1, 'C', 0, '', 4);
 $pdf->Output('example_004.pdf', 'I');
 
 //============================================================+
-// END OF FILE                                                
+// END OF FILE
 //============================================================+

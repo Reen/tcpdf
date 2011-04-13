@@ -1,3 +1,22 @@
+5.9.044 (2011-01-15)
+	- Bug #3158422 "writeHTMLCell Loop" was fixed.
+	- Some HTML image alignment problems were fixed.
+
+5.9.043 (2011-01-14)
+	- Bug #3158178 "PHP Notice" was fixed.
+	- Bug #3158193 "Endless loop in writeHTML" was fixed.
+	- Bug #3157764 "SVG Pie chart incorrectly rendered2".
+
+5.9.042 (2011-01-14)
+	- Some problems of the PHP4 version were fixed.
+
+5.9.041 (2011-01-13)
+	- A problem with SVG elliptical arc path was fixed (ref. bug #3156574).
+	- A problem related to font weight on HTML table headers was fixed.
+
+5.9.040 (2011-01-12)
+	- A bug related to empty pages after table was fixed.
+
 5.9.039 (2011-01-12)
 	- Bug item #3155759 "openssl_random_pseudo_bytes() slow under Windows" was fixed.
 

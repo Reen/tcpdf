@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_018.php
 // Begin       : 2008-03-06
-// Last Update : 2010-08-08
+// Last Update : 2011-10-01
 //
 // Description : Example 018 for TCPDF class
 //               RTL document with Persian language
@@ -11,10 +11,10 @@
 //
 // (c) Copyright:
 //               Nicola Asuni
-//               Tecnick.com s.r.l.
-//               Via Della Pace, 11
-//               09044 Quartucciu (CA)
-//               ITALY
+//               Tecnick.com LTD
+//               Manor Coach House, Church Hill
+//               Aldershot, Hants, GU12 4RQ
+//               UK
 //               www.tecnick.com
 //               info@tecnick.com
 //============================================================+
@@ -98,8 +98,8 @@ $pdf->WriteHTML($htmlpersiantranslation, true, 0, true, 0);
 // Restore RTL direction
 $pdf->setRTL(true);
 
-// set font size
-$pdf->SetFont('almohanad', '', 18);
+// set font
+$pdf->SetFont('aefurat', '', 18);
 
 // print newline
 $pdf->Ln();
@@ -112,11 +112,10 @@ $pdf->WriteHTML($htmlcontent, true, 0, true, 0);
 // set LTR direction for english translation
 $pdf->setRTL(false);
 
-// set font size
-$pdf->SetFontSize(18);
-
 // print newline
 $pdf->Ln();
+
+$pdf->SetFont('aealarabiya', '', 18);
 
 // Arabic and English content
 $htmlcontent2 = '<span color="#0000ff">This is Arabic "العربية" Example With TCPDF.</span>';
@@ -128,5 +127,5 @@ $pdf->WriteHTML($htmlcontent2, true, 0, true, 0);
 $pdf->Output('example_018.pdf', 'I');
 
 //============================================================+
-// END OF FILE                                                
+// END OF FILE
 //============================================================+

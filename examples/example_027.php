@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : example_027.php
 // Begin       : 2008-03-04
-// Last Update : 2010-10-21
+// Last Update : 2011-09-22
 //
 // Description : Example 027 for TCPDF class
 //               1D Barcodes
@@ -11,10 +11,10 @@
 //
 // (c) Copyright:
 //               Nicola Asuni
-//               Tecnick.com s.r.l.
-//               Via Della Pace, 11
-//               09044 Quartucciu (CA)
-//               ITALY
+//               Tecnick.com LTD
+//               Manor Coach House, Church Hill
+//               Aldershot, Hants, GU12 4RQ
+//               UK
 //               www.tecnick.com
 //               info@tecnick.com
 //============================================================+
@@ -70,10 +70,19 @@ $pdf->setLanguageArray($l);
 $pdf->setBarcode(date('Y-m-d H:i:s'));
 
 // set font
-$pdf->SetFont('helvetica', '', 10);
+$pdf->SetFont('helvetica', '', 11);
 
 // add a page
 $pdf->AddPage();
+
+// print a message
+$txt = "You can also export 1D barcodes in other formats (PNG, SVG, HTML). Check the source code documentation of TCPDFBarcode class for further information.";
+$pdf->MultiCell(70, 50, $txt, 0, 'J', false, 1, 125, 30, true, 0, false, true, 0, 'T', false);
+$pdf->SetY(30);
+
+// -----------------------------------------------------------------------------
+
+$pdf->SetFont('helvetica', '', 10);
 
 // define barcode style
 $style = array(
@@ -151,6 +160,12 @@ $pdf->write1DBarcode('1234567', 'I25+', '', '', '', 18, 0.4, $style, 'N');
 // add a page ----------
 $pdf->AddPage();
 
+// CODE 128 AUTO
+$pdf->Cell(0, 0, 'CODE 128 AUTO', 0, 1);
+$pdf->write1DBarcode('CODE 128 AUTO', 'C128', '', '', '', 18, 0.4, $style, 'N');
+
+$pdf->Ln();
+
 // CODE 128 A
 $pdf->Cell(0, 0, 'CODE 128 A', 0, 1);
 $pdf->write1DBarcode('CODE 128 A', 'C128A', '', '', '', 18, 0.4, $style, 'N');
@@ -191,7 +206,8 @@ $pdf->Ln();
 $pdf->Cell(0, 0, 'UPC-E', 0, 1);
 $pdf->write1DBarcode('04210000526', 'UPCE', '', '', '', 18, 0.4, $style, 'N');
 
-$pdf->Ln();
+// add a page ----------
+$pdf->AddPage();
 
 // 5-Digits UPC-Based Extention
 $pdf->Cell(0, 0, '5-Digits UPC-Based Extention', 0, 1);
@@ -203,8 +219,7 @@ $pdf->Ln();
 $pdf->Cell(0, 0, '2-Digits UPC-Based Extention', 0, 1);
 $pdf->write1DBarcode('34', 'EAN2', '', '', '', 18, 0.4, $style, 'N');
 
-// add a page ----------
-$pdf->AddPage();
+$pdf->Ln();
 
 // MSI
 $pdf->Cell(0, 0, 'MSI', 0, 1);
